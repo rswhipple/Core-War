@@ -36,4 +36,4 @@ clean:
 	$(RM) -r $(BUILD_DIR)
 
 fclean: clean
-	$(RM) my_bc
+	$(RM) corewar
