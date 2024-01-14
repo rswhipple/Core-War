@@ -2,6 +2,7 @@ TARGET_EXEC := corewar
 BUILD_DIR := ./build
 SRC_DIRS := ./src
 INCLUDE_DIR := -I ./include
+TEST_DIR := ./tests
 
 # Determine the platform
 UNAME_S := $(shell uname -s)
@@ -37,3 +38,7 @@ clean:
 
 fclean: clean
 	$(RM) corewar
+
+# Removes all executable files with _test prefix in tests folder
+tclean:
+	$(RM) $(TEST_DIR)/*_test
