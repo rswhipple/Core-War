@@ -32,8 +32,8 @@ enum parameter_types {
 
 /* registers */ 
 enum registers {
-    R0, R1, R2, R3, R4, R5, R6, R7,         // general purpose registers
-    R8, R9, R10, R11, R12, R13,             // general purpose registers   
+    R1, R2, R3, R4, R5, R6, R7, R8,        // general purpose registers
+    R9, R10, R11, R12, R13, R14,            // general purpose registers   
     RAC,                                    // program counter
     RCND,                                   // condition register handles carry flag
 };
