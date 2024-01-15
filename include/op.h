@@ -30,6 +30,14 @@ enum parameter_types {
   T_LAB = 8
 };
 
+/* registers */ 
+enum registers {
+    R1, R2, R3, R4, R5, R6, R7, R8,        // general purpose registers
+    R9, R10, R11, R12, R13, R14,            // general purpose registers   
+    RAC,                                    // program counter
+    RCND,                                   // condition register handles carry flag
+};
+
 typedef struct champion champion_t;
 typedef struct core_s core_t;
 
@@ -60,7 +68,7 @@ enum op_types {
   OP_LFORK,
   OP_AFF,
   OP_NOTHING,
-  OP_NB
+  OP_NB,
 };
 typedef struct op_s op_t;
 
