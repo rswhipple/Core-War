@@ -1,0 +1,24 @@
+OUR CORE WARS PSEUDO CODE
+Program will not start unless at least two and a maximum of four assembly files are provided
+
+Actions to take upon initiating Program:
+    * initialize core_t with a champion
+    * execute champion instructions in a loop
+    
+
+Structs that need to be defined:
+    * core_t
+        - memory space
+        - registers
+        - ac couter flag?
+        - carry flag?
+    * champion_t
+        - needs NAME_OF_PROGRAM
+        - NBR_OF_PROGRAM
+        - needs an array of instructions
+
+Q's to ask:
+    * What is OP_NOTHING and OP_NB?
+    * Do we need to create a separate "live" struct?
+    * How does the header_t work? Connected to the assembler? Verify champions data?
+    * Does each champion have its own set of registers??

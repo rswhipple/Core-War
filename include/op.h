@@ -17,7 +17,12 @@
 #define NAME_CMD_STRING ".name"
 #define COMMENT_CMD_STRING ".comment"
 
-/*r1 <-->rx*/
+// /* memory type definitions */
+// #define FIRST_BYTE 0xFF
+// #define byte unsigned char
+// #define u64 unsigned long
+
+/*r1 <--> rx*/
 #define REG_NUMBER 16
 
 typedef char args_type_t;
@@ -32,14 +37,21 @@ enum parameter_types {
 
 /* registers */ 
 enum registers {
-    R1, R2, R3, R4, R5, R6, R7, R8,        // general purpose registers
+    R1, R2, R3, R4, R5, R6, R7, R8,         // general purpose registers
     R9, R10, R11, R12, R13, R14,            // general purpose registers   
     RAC,                                    // program counter
     RCND,                                   // condition register handles carry flag
 };
 
 typedef struct champion champion_t;
-typedef struct core_s core_t;
+typedef struct core_s {
+  // u64 *mem;
+  // u64 max_mem;
+  // int ac;
+  // code_t inst;
+  // int carry;
+  // int r[REG_NUMBER];
+} core_t;
 
 struct op_s {
   char *mnemonique;
@@ -51,7 +63,7 @@ struct op_s {
 };
 
 enum op_types {
-  OP_LIVE,
+  OP_LIVE = 1,
   OP_LD,
   OP_ST,
   OP_ADD,
