@@ -1,7 +1,7 @@
 #ifndef _OP_H_
 #define _OP_H_
 
-#include <>
+#include <stdlib.h>
 #define MEM_SIZE (6 * 1024)
 /*modulo of the index*/
 #define IDX_MOD 512
@@ -47,22 +47,6 @@ enum registers {
     RCND,                                   // condition register handles carry flag
 };
 
-typedef struct champion
-{
-    header_t champ_header;                        // header
-    int id;                                       // id of the champ
-    instruction_t instructions[MAX_INSTRUCTIONS]; // instructiom
-} champion_t;
-
-typedef struct core_s
-{
-    size_t memory[MEM_SIZE];           // for storing champions
-    process_t champion[MAX_CHAMPIONS]; // champs processes/instructions
-    int CYCLE_TO_DIE;
-    int NBR_LIVE // cycle to live?
-
-} core_t;
-
 struct op_s {
   char *mnemonique;
   char nbr_args;
@@ -102,6 +86,7 @@ typedef struct op_s op_t;
 /* op_tab */
 extern const op_t op_tab[];
 
+
 /* HEADER */
 #define PROG_NAME_LENGTH 128
 #define COMMENT_LENGTH 2048
@@ -113,6 +98,28 @@ typedef struct header_s {
   int prog_size;
   char comment[COMMENT_LENGTH + 1];
 } header_t;
+
+typedef struct champion
+{
+    header_t *champ_header;       // header
+    int id;                       // id of the champ
+    int address;                  // address of the champ
+    int num_instuctions;          // number of instructions
+    op_t *instructions;           // instruction array
+    struct champion *next;        // next champion
+
+    void (*free_champion)(struct champion *champ);
+    void (*load_champion)(struct champion *champ, char *filename);
+} champion_t;
+
+typedef struct core_s
+{
+    size_t memory[MEM_SIZE];           // for storing champions
+    // process_t champion[MAX_CHAMPIONS]; // champs processes/instructions
+    // int CYCLE_TO_DIE;
+    // int NBR_LIVE // cycle to live?
+
+} core_t;
 
 
 #endif
