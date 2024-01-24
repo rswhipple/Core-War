@@ -3,8 +3,6 @@
 typedef struct champion
 {
     header_t champ_header;                        // header
-    char name[PROG_NAME_LENGTH + 1];              // name of the champ
-    char comment[COMMENT_LENGTH + 1];             // comment of the champ
     int id;                                       // id of the champ
     instruction_t instructions[MAX_INSTRUCTIONS]; // instructiom
 } champion_t;
