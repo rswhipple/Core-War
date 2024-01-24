@@ -1,6 +1,7 @@
 #ifndef _OP_H_
 #define _OP_H_
 
+#include <>
 #define MEM_SIZE (6 * 1024)
 /*modulo of the index*/
 #define IDX_MOD 512
@@ -20,6 +21,14 @@
 /*r1 <-->rx*/
 #define REG_NUMBER 16
 
+/* live */
+
+#define MAX_CHAMPIONS 4
+/* number of cycles before being decleared dead */
+#define CYCLE_TO_DIE 1536
+#define CYCLE_DELTA 5
+#define NBR_LIVE 40
+
 typedef char args_type_t;
 typedef unsigned char code_t;
 
@@ -38,8 +47,21 @@ enum registers {
     RCND,                                   // condition register handles carry flag
 };
 
-typedef struct champion champion_t;
-typedef struct core_s core_t;
+typedef struct champion
+{
+    header_t champ_header;                        // header
+    int id;                                       // id of the champ
+    instruction_t instructions[MAX_INSTRUCTIONS]; // instructiom
+} champion_t;
+
+typedef struct core_s
+{
+    size_t memory[MEM_SIZE];           // for storing champions
+    process_t champion[MAX_CHAMPIONS]; // champs processes/instructions
+    int CYCLE_TO_DIE;
+    int NBR_LIVE // cycle to live?
+
+} core_t;
 
 struct op_s {
   char *mnemonique;
@@ -51,7 +73,7 @@ struct op_s {
 };
 
 enum op_types {
-  OP_LIVE,
+  OP_LIVE = 1,
   OP_LD,
   OP_ST,
   OP_ADD,
@@ -92,12 +114,5 @@ typedef struct header_s {
   char comment[COMMENT_LENGTH + 1];
 } header_t;
 
-/* live */
-
-#define MAX_CHAMPIONS 4
-/* number of cycles before being decleared dead */
-#define CYCLE_TO_DIE 1536
-#define CYCLE_DELTA 5
-#define NBR_LIVE 40
 
 #endif
