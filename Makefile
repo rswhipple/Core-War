@@ -32,6 +32,15 @@ $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+test: testBuildDir sample_test
+	$(TEST_DIR)/build/sample_test
+
+testBuildDir:
+	mkdir -p $(TEST_DIR)/build
+
+sample_test:
+	$(CC) $(TEST_DIR)/sample_test.c -o $(TEST_DIR)/build/sample_test -l cmocka
+
 .PHONY: clean
 clean:
 	$(RM) -r $(BUILD_DIR)
@@ -39,6 +48,6 @@ clean:
 fclean: clean
 	$(RM) corewar
 
-# Removes all executable files with _test prefix in tests folder
+# Delete the build folder containing the test executable files in tests
 tclean:
-	$(RM) $(TEST_DIR)/*_test
+	$(RM) -rf $(TEST_DIR)/build
