@@ -1,0 +1,25 @@
+name: Cmocka CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Install cmocka
+      run: |
+        sudo apt-get update -y
+        sudo apt-get install -y libcmocka-dev
+
+    - name: Build and Test
+      run: |
+        make
+        make test
