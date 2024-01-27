@@ -2,6 +2,7 @@ TARGET_EXEC := corewar
 BUILD_DIR := ./build
 SRC_DIRS := ./src
 INCLUDE_DIR := -I ./include
+TEST_DIR := ./tests
 
 # Determine the platform
 UNAME_S := $(shell uname -s)
@@ -31,9 +32,22 @@ $(BUILD_DIR)/%.c.o: %.c
 	mkdir -p $(dir $@)
 	$(CC) $(CFLAGS) -c $< -o $@
 
+test: testBuildDir sample_test
+	$(TEST_DIR)/build/sample_test
+
+testBuildDir:
+	mkdir -p $(TEST_DIR)/build
+
+sample_test:
+	$(CC) $(TEST_DIR)/sample_test.c -o $(TEST_DIR)/build/sample_test -l cmocka
+
 .PHONY: clean
 clean:
 	$(RM) -r $(BUILD_DIR)
 
 fclean: clean
 	$(RM) corewar
+
+# Delete the build folder containing the test executable files in tests
+tclean:
+	$(RM) -rf $(TEST_DIR)/build
