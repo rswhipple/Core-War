@@ -1,4 +1,5 @@
 #include "../include/op.h"
+#include "../include/vm_parse.h"
 
 int main(int argc, char **argv)
 {
@@ -16,9 +17,3 @@ int main(int argc, char **argv)
 
     return 0;
 }
-
-void print_usage()
-{
-    // print usage instructions
-}
-
