@@ -1,7 +1,9 @@
 #include "../include/op.h"
 
-int inst_fork(champion_t *champion, core_t *core, int *reg_index) 
+int inst_fork(champion_t *champion, core_t *core, int *inst) 
 {
+    // Placeholder value holding the value of *inst
+    int *reg_index = inst;
     //check if the index is valid
     if (*reg_index< 0 || *reg_index >= REG_NUMBER)
     {
@@ -9,12 +11,12 @@ int inst_fork(champion_t *champion, core_t *core, int *reg_index)
     }
 
     //calculate new counter for the child program
-    int new_counter = (champion->counter + champion->regs[*reg_index] % IDX_MOD + MEM_SIZE) % MEM_SIZE; //regs - array of registers
+    int new_counter = (champion->pc + champion->registers[*reg_index] % IDX_MOD + MEM_SIZE) % MEM_SIZE; //regs - array of registers
 
     champion_t *child = (champion_t *)malloc(sizeof(champion_t));
 
     *child = *champion;
-    child->counter = new_counter;
+    child->pc = new_counter;
 
     return 0; // Success
 }
