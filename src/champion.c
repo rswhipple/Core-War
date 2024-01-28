@@ -10,16 +10,16 @@ champion_t *init_champion(void) {
     }
     new_champ->champ_header = NULL;
     new_champ->id = 0;
-    new_champ->address = 0;
+    new_champ->num_instuctions = 0;
     new_champ->instructions = NULL;
+    new_champ->registers = {0};
     new_champ->next = NULL;
 
     new_champ->free_champion = free_champion;
-    new_champ->load_champion = load_champion;
     return new_champ;
 }
 
-int read_champion(champion_t *champ, char *filename) {
+int create_champion(champion_t *champ, char *filename) {
     int fd = open(filename, O_RDONLY);
     if (fd == -1) {
         return NULL;
@@ -53,5 +53,4 @@ op_t *get_instructions(char *filename, int fd) {
     return new_instructions;
 }
 
-
-// store champion in core
+// free champion

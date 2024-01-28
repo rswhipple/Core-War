@@ -41,7 +41,7 @@ enum parameter_types {
 
 /* registers */ 
 enum registers {
-    R1, R2, R3, R4, R5, R6, R7, R8,        // general purpose registers
+    R1 = 1, R2, R3, R4, R5, R6, R7, R8,     // general purpose registers
     R9, R10, R11, R12, R13, R14,            // general purpose registers   
     RAC,                                    // program counter
     RCND,                                   // condition register handles carry flag
@@ -83,6 +83,7 @@ typedef struct op_s op_t;
 #define DIR_SIZE 4
 #define REG_SIZE DIR_SIZE 
 
+
 /* op_tab */
 extern const op_t op_tab[];
 
@@ -106,6 +107,7 @@ typedef struct champion
     int address;                  // address of the champ
     int num_instuctions;          // number of instructions
     op_t *instructions;           // instruction array
+    int registers[16];            // registers
     struct champion *next;        // next champion
 
     void (*free_champion)(struct champion *champ);
@@ -114,11 +116,14 @@ typedef struct champion
 
 typedef struct core_s
 {
-    size_t memory[MEM_SIZE];           // for storing champions
-    // process_t champion[MAX_CHAMPIONS]; // champs processes/instructions
-    // int CYCLE_TO_DIE;
-    // int NBR_LIVE // cycle to live?
-
+    size_t memory[MEM_SIZE];       // for storing champions
+    champion_t *champions_head;    // head of champion linked list
+    int num_champions;             // number of champions
+    int cycle_to_die;              // number of cycles before being declared dead
+    int cycle_delta;               // number of cycles to decrement cycle_to_die by
+    int nbr_live;                  // number of live instructions before cycle_to_die is decremented by cycle_delta
+    int dump;                      // number of cycles before dumping memory
+    int cycle;                     // current cycle
 } core_t;
 
 
