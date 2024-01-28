@@ -12,7 +12,11 @@ champion_t *init_champion(void) {
     new_champ->id = 0;
     new_champ->num_instuctions = 0;
     new_champ->instructions = NULL;
-    new_champ->registers = {0};
+    for (int i = 0; i < 16; i++) {
+        new_champ->registers[i] = 0;
+    }
+    new_champ->pc = new_champ->registers[14];
+    new_champ->carry = new_champ->registers[15];
     new_champ->next = NULL;
 
     new_champ->free_champion = free_champion;
@@ -22,11 +26,15 @@ champion_t *init_champion(void) {
 int create_champion(champion_t *champ, char *filename) {
     int fd = open(filename, O_RDONLY);
     if (fd == -1) {
-        return NULL;
+        return -1;
     }
 
     champ->champ_header = get_header(filename, fd); 
     champ->instructions = get_instructions(filename, fd);
+
+    close(fd);
+
+    return 0;
 }
 
 // create champion header

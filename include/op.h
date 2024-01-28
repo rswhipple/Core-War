@@ -1,7 +1,9 @@
 #ifndef _OP_H_
 #define _OP_H_
-
+#include <string.h>
+#include <unistd.h>
 #include <stdlib.h>
+
 #define MEM_SIZE (6 * 1024)
 /*modulo of the index*/
 #define IDX_MOD 512
@@ -31,6 +33,8 @@
 
 typedef char args_type_t;
 typedef unsigned char code_t;
+typedef struct champion champion_t;
+typedef struct core_s core_t;
 
 enum parameter_types {
   T_REG = 1,
@@ -104,26 +108,29 @@ typedef struct champion
 {
     header_t *champ_header;       // header
     int id;                       // id of the champ
-    int address;                  // address of the champ
     int num_instuctions;          // number of instructions
     op_t *instructions;           // instruction array
-    int registers[16];            // registers
+    int registers[16];            // address of registers
+    int pc;                       // program counter
+    int carry;                    // carry flag
     struct champion *next;        // next champion
 
     void (*free_champion)(struct champion *champ);
-    void (*load_champion)(struct champion *champ, char *filename);
 } champion_t;
 
 typedef struct core_s
 {
     size_t memory[MEM_SIZE];       // for storing champions
-    champion_t *champions_head;    // head of champion linked list
+    champion_t *champions;    // head of champion linked list
     int num_champions;             // number of champions
     int cycle_to_die;              // number of cycles before being declared dead
     int cycle_delta;               // number of cycles to decrement cycle_to_die by
     int nbr_live;                  // number of live instructions before cycle_to_die is decremented by cycle_delta
     int dump;                      // number of cycles before dumping memory
     int cycle;                     // current cycle
+
+    void (*load_champion)(struct core_s *core, champion_t *champ);
+    void (*free_core)(struct core_s *core);
 } core_t;
 
 
