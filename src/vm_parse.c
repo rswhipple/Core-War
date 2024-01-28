@@ -24,6 +24,11 @@ modulo
 #include "../include/op.h"
 #include "../include/champion.h"
 
+void print_usage()
+{
+    // print usage instructions
+}
+
 // parse arguments
 int parse_args(int argc, char **argv)
 {
