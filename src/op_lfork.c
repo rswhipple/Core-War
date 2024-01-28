@@ -9,12 +9,12 @@ int inst_lfork(champion_t *champion, core_t *core, int *reg_index)
     }
 
     //calculate new counter for the child program
-    int new_counter = (champion->counter + champion->regs[*reg_index]) % MEM_SIZE; //regs - array of registers //we dont account for extra mem_size because there is no idx_mod
+    int new_counter = (champion->pc + champion->registers[*reg_index]) % MEM_SIZE; //regs - array of registers //we dont account for extra mem_size because there is no idx_mod
 
     champion_t *child = (champion_t *)malloc(sizeof(champion_t));
 
     *child = *champion;
-    child->counter = new_counter;
+    child->pc = new_counter;
 
     return 0; // Success
 }
