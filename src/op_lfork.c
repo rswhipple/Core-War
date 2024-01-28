@@ -1,6 +1,6 @@
 #include "../include/op.h"
 
-int inst_fork(champion_t *champion, core_t *core, int *reg_index) 
+int inst_lfork(champion_t *champion, core_t *core, int *reg_index) 
 {
     //check if the index is valid
     if (*reg_index< 0 || *reg_index >= REG_NUMBER)
