@@ -2,6 +2,10 @@
 #include "../include/champion.h"
 #include <sys/fcntl.h>
 
+void free_champion(champion_t *champ) {
+
+}
+
 // initialize champion
 champion_t *init_champion(void) {
     champion_t *new_champ = malloc(sizeof(champion_t));
