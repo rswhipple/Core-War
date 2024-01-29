@@ -1,17 +1,32 @@
 #include "../include/op.h"
+#include "../include/core.h"
 
-typedef struct champion
-{
-    header_t champ_header;                        // header
-    int id;                                       // id of the champ
-    instruction_t instructions[MAX_INSTRUCTIONS]; // instructiom
-} champion_t;
+// initialize core
+core_t *init_core(void) {
+    // initialize core
+    core_t *core = malloc(sizeof(core_t));
+    if (core == NULL) {
+        return NULL;
+    }
+    memset(core->memory, 0, MEM_SIZE);  // initialize memory to 0
+    core->champions = NULL;
+    core->num_champions = 0;
+    core->cycle_to_die = CYCLE_TO_DIE;
+    core->cycle_delta = CYCLE_DELTA;
+    core->nbr_live = NBR_LIVE;
+    core->dump = -1;
+    core->cycle = 0;
 
-typedef struct core_s
-{
-    t_byte memory[MEM_SIZE];           // for storing champions
-    process_t champion[MAX_CHAMPIONS]; // champs processes/instructions
-    int CYCLE_TO_DIE;
-    int NBR_LIVE // cycle to live?
+    core->free_core = free_core;
+    core->load_champion = load_champion;
 
-} core_t;
+    return core;
+}
+
+void load_champion(core_t *core, champion_t *champ) {
+
+}
+
+void free_core(core_t *core) {
+
+}
