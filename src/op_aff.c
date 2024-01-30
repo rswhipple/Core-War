@@ -1,7 +1,7 @@
 #include "../include/op.h"
 #include <unistd.h>
 
-int inst_aff(champion_t *champion, core_t *core, int *inst)
+int inst_aff(champion_t *champion, core_t *core, code_t code, int *inst)
 {
     char c;
 

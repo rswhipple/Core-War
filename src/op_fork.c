@@ -1,6 +1,6 @@
 #include "../include/op.h"
 
-int inst_fork(champion_t *champion, core_t *core, int *inst) 
+int inst_fork(champion_t *champion, core_t *core, code_t code, int *inst) 
 {
     // Placeholder value holding the value of *inst
     int *reg_index = inst;
