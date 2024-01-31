@@ -57,7 +57,7 @@ struct op_s {
   args_type_t type[MAX_ARGS_NUMBER];
   char code;
   int nbr_cycles;
-  int (*inst)(champion_t *, core_t *, int *);
+  int (*inst)(champion_t *, core_t *, code_t, int *);
 };
 
 enum op_types {
@@ -87,10 +87,8 @@ typedef struct op_s op_t;
 #define DIR_SIZE 4
 #define REG_SIZE DIR_SIZE 
 
-
 /* op_tab */
 extern const op_t op_tab[];
-
 
 /* HEADER */
 #define PROG_NAME_LENGTH 128
@@ -133,21 +131,21 @@ typedef struct core_s
     void (*free_core)(struct core_s *core);
 } core_t;
 
-int inst_live(champion_t *champ, core_t *core, int *inst);
-int inst_ld(champion_t *champ, core_t *core, int *inst);
-int inst_st(champion_t *champ, core_t *core, int *inst);
-int inst_add(champion_t *champ, core_t *core, int *inst);
-int inst_sub(champion_t *champ, core_t *core, int *inst);
-int inst_and(champion_t *champ, core_t *core, int *inst);
-int inst_or(champion_t *champ, core_t *core, int *inst);
-int inst_xor(champion_t *champ, core_t *core, int *inst);
-int inst_zjmp(champion_t *champ, core_t *core, int *inst);
-int inst_ldi(champion_t *champ, core_t *core, int *inst);
-int inst_sti(champion_t *champ, core_t *core, int *inst);
-int inst_fork(champion_t *champ, core_t *core, int *inst);
-int inst_lld(champion_t *champ, core_t *core, int *inst);
-int inst_lldi(champion_t *champ, core_t *core, int *inst);
-int inst_lfork(champion_t *champ, core_t *core, int *inst);
-int inst_aff(champion_t *champ, core_t *core, int *inst);
+int inst_live(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_ld(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_st(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_add(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_sub(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_and(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_or(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_xor(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_zjmp(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_ldi(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_sti(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_fork(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_lld(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_lldi(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_lfork(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_aff(champion_t *champ, core_t *core, code_t code, int *inst);
 
 #endif
