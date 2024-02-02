@@ -36,6 +36,7 @@ int parse_args(int argc, char **argv)
     int i = 1;
     while (i < argc) {
         // initialize a new champion
+        
         // read flags 
         champion_t *new_champ = init_champion();
         while (i < argc ) {

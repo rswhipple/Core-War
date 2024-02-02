@@ -33,7 +33,7 @@ int create_champion(champion_t *champ, char *filename) {
         return -1;
     }
 
-    champ->champ_header = get_header(filename, fd); 
+    champ->champ_header = get_header(fd); 
     champ->instructions = get_instructions(filename, fd);
 
     close(fd);
@@ -42,15 +42,18 @@ int create_champion(champion_t *champ, char *filename) {
 }
 
 // create champion header
-header_t *get_header(char *filename, int fd) {
-    header_t *new_header = malloc(sizeof(header_t));
-    if (new_header == NULL) {
+header_t *get_header(int fd) {
+    header_t *header = malloc(sizeof(header_t));
+    if (header == NULL) {
         return NULL;
     }
-
+    header->magic = COREWAR_EXEC_MAGIC;
+    header->prog_size = 0;
+    getline(header->prog_name, PROG_NAME_LENGTH, fd);
+    while (getline(header->prog_name, COMMENT_LENGTH, fd) != )
     // TODO read header from file
 
-    return new_header;
+    return header;
 }
 
 // create champion instructions

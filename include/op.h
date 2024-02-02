@@ -3,6 +3,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <stdlib.h>
+#include <stdio.h>
 
 #define MEM_SIZE (6 * 1024)
 /*modulo of the index*/
