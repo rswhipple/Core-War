@@ -34,7 +34,7 @@ champion_t *init_champion(flag_t *flags) {
     return champ;
 }
 
-int create_champion(flag_t *flags, char *filename) {
+champion_t *create_champion(flag_t *flags, char *filename) {
     int fd = open(filename, O_RDONLY);
     if (fd == -1) {
         return -1;
@@ -46,7 +46,7 @@ int create_champion(flag_t *flags, char *filename) {
 
     close(fd);
 
-    return 0;
+    return champ;
 }
 
 // create champion header
@@ -76,7 +76,7 @@ op_t *get_instructions(champion_t *champ, int fd) {
     ssize_t bytes = 0;
     char *buf = init_str(IDX_MOD);
     while ((bytes = getline(buf, IDX_MOD, fd)) != -1) {
-        
+
     }
 
     return new_instructions;

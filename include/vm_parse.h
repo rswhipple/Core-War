@@ -10,7 +10,7 @@ typedef struct flag_s {
 } flag_t;
 
 // function prototypes
-int parse_args(int argc, char **argv);
+champion_t *parse_args(int argc, char **argv, flag_t *flags);
 flag_t init_flag();
 void print_usage();
 
