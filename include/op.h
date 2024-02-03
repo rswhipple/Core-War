@@ -107,9 +107,10 @@ typedef struct champion
 {
     header_t *champ_header;       // header
     int id;                       // id of the champ
-    int num_instuctions;          // number of instructions
-    op_t *instructions;           // instruction array
-    int registers[16];            // address of registers
+    int address;                  // address of champ
+    int num_inst;          // number of instructions
+    op_t *inst;           // instruction array
+    int reg[16];            // address of registers
     int pc;                       // program counter
     int carry;                    // carry flag
     struct champion *next;        // next champion
