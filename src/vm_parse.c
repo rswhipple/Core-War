@@ -23,48 +23,55 @@ modulo
 
 #include "../include/op.h"
 #include "../include/champion.h"
+#include "../include/vm_parse.h"
 
 void print_usage()
 {
     // print usage instructions
 }
 
+flag_t init_flag() {
+    flag_t flags;
+    flags.num_champions = 0;
+    flags.dump = 0;
+    flags.id = 0;
+    flags.address = 0;
+}
+
 // parse arguments
 int parse_args(int argc, char **argv)
 {
-    int num_champions = 0;
     int i = 1;
+    flag_t flags = init_flag();
+
     while (i < argc) {
-        // initialize a new champion
-        
         // read flags 
-        champion_t *new_champ = init_champion();
         while (i < argc ) {
             if (argv[i][0] == '-') {
                 if (argv[i][1] == 'n') {
                     // set id
-                    // argv[i + 1] is the id
+                    flags.id = my_atoi(argv[i + 1]);    // argv[i + 1] is the id
                 } else if (argv[i][1] == 'a') {
                     // set address
-                    // argv[i + 1] is the address
+                    flags.address = my_atoi(argv[i + 1]);  // argv[i + 1] is the address
                 } else if (argv[i][1] == 'd') {
                     // set dump
-                    // argv[i + 1] is the dump
+                    flags.dump = my_atoi(argv[i + 1]);    // argv[i + 1] is the dump
                 } else {
                     print_usage();
                     break;
                 }
-                // increment i by 2
+                i += 2;     // increment i by 2
             } else {
-                // parse file and store in champion
-                // argv[i] is the file
+                // parse file, create champion, 
+                create_champion(&flags, argv[i]);
                 break;
             }
         }
         i++;
     }
 
-    return num_champions;
+    return flags.num_champions;
 }
 
 
