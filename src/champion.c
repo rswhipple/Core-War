@@ -1,5 +1,6 @@
 #include "../include/op.h"
 #include "../include/champion.h"
+#include "../include/vm_parse.h"
 #include <sys/fcntl.h>
 
 void free_champion(champion_t *champ) {
@@ -7,34 +8,41 @@ void free_champion(champion_t *champ) {
 }
 
 // initialize champion
-champion_t *init_champion(void) {
-    champion_t *new_champ = malloc(sizeof(champion_t));
-    if (new_champ == NULL) {
+champion_t *init_champion(flag_t *flags) {
+    champion_t *champ = malloc(sizeof(champion_t));
+    if (champ == NULL) {
         return NULL;
     }
-    new_champ->champ_header = NULL;
-    new_champ->id = 0;
-    new_champ->num_instuctions = 0;
-    new_champ->instructions = NULL;
-    for (int i = 0; i < 16; i++) {
-        new_champ->registers[i] = 0;
-    }
-    new_champ->pc = new_champ->registers[14];
-    new_champ->carry = new_champ->registers[15];
-    new_champ->next = NULL;
+    champ->champ_header = NULL;
+    // set id 
+    if (flags->id) { champ->id = flags->id; } 
+    else { champ->id = flags->num_champions + 1; }
 
-    new_champ->free_champion = free_champion;
-    return new_champ;
+    if (flags->address) { champ->address = flags->address; }
+    else { champ->address = 0; }
+
+    champ->num_inst = 0;
+    champ->inst = NULL;
+    for (int i = 0; i < 16; i++) {
+        champ->reg[i] = 0;
+    }
+    champ->pc = champ->reg[14];
+    champ->carry = champ->reg[15];
+    champ->next = NULL;
+
+    champ->free_champion = free_champion;
+    return champ;
 }
 
-int create_champion(champion_t *champ, char *filename) {
+int create_champion(flag_t *flags, char *filename) {
     int fd = open(filename, O_RDONLY);
     if (fd == -1) {
         return -1;
     }
 
+    champion_t *champ = init_champion(flags);
     champ->champ_header = get_header(fd); 
-    champ->instructions = get_instructions(filename, fd);
+    champ->inst = get_instructions(champ->champ_header, fd);
 
     close(fd);
 
@@ -50,20 +58,26 @@ header_t *get_header(int fd) {
     header->magic = COREWAR_EXEC_MAGIC;
     header->prog_size = 0;
     getline(header->prog_name, PROG_NAME_LENGTH, fd);
-    while (getline(header->prog_name, COMMENT_LENGTH, fd) != )
+    // buf for comment
+    // while (getline(header->prog_name, COMMENT_LENGTH, fd) != )
     // TODO read header from file
 
     return header;
 }
 
 // create champion instructions
-op_t *get_instructions(char *filename, int fd) {
+op_t *get_instructions(champion_t *champ, int fd) {
     op_t *new_instructions = malloc(sizeof(op_t));
     if (new_instructions == NULL) {
         return NULL;
     }
 
     // TODO read instructions from file
+    ssize_t bytes = 0;
+    char *buf = init_str(IDX_MOD);
+    while ((bytes = getline(buf, IDX_MOD, fd)) != -1) {
+        
+    }
 
     return new_instructions;
 }
