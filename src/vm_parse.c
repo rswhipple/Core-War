@@ -39,10 +39,10 @@ flag_t init_flag() {
 }
 
 // parse arguments
-int parse_args(int argc, char **argv)
+champion_t *parse_args(int argc, char **argv, flag_t* flags)
 {
     int i = 1;
-    flag_t flags = init_flag();
+    champion_t *head = NULL;
 
     while (i < argc) {
         // read flags 
@@ -50,28 +50,31 @@ int parse_args(int argc, char **argv)
             if (argv[i][0] == '-') {
                 if (argv[i][1] == 'n') {
                     // set id
-                    flags.id = my_atoi(argv[i + 1]);    // argv[i + 1] is the id
+                    flags->id = my_atoi(argv[i + 1]);    // argv[i + 1] is the id
                 } else if (argv[i][1] == 'a') {
                     // set address
-                    flags.address = my_atoi(argv[i + 1]);  // argv[i + 1] is the address
+                    flags->address = my_atoi(argv[i + 1]);  // argv[i + 1] is the address
                 } else if (argv[i][1] == 'd') {
                     // set dump
-                    flags.dump = my_atoi(argv[i + 1]);    // argv[i + 1] is the dump
+                    flags->dump = my_atoi(argv[i + 1]);    // argv[i + 1] is the dump
                 } else {
-                    print_usage();
+                    print_usage();  // handles -h flag too
                     break;
                 }
                 i += 2;     // increment i by 2
             } else {
-                // parse file, create champion, 
-                create_champion(&flags, argv[i]);
-                break;
+                // parse file, create champion, return linked list head for champions
+                // TODO add error handling if champion isn't created
+                if (head == NULL) {
+                    head = create_champion(flags, argv[i]);
+                }
+                create_champion(flags, argv[i]);
             }
         }
         i++;
     }
 
-    return flags.num_champions;
+    return head;
 }
 
 

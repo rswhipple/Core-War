@@ -7,11 +7,13 @@ int main(int argc, char **argv)
     if (argc < 2) {
         print_usage();
         return EXIT_FAILURE;
-    } else {
-       parse_args(argc, argv);
     }
+    
+    flag_t flags = init_flag();
+    parse_args(argc, argv, &flags);
 
-    // run core
+    // init and run core
+    core_t *core = NULL;
 
     // print winner
 
