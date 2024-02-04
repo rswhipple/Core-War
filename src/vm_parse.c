@@ -30,16 +30,18 @@ void print_usage()
     // print usage instructions
 }
 
-flag_t init_flag() {
-    flag_t flags;
-    flags.num_champions = 0;
-    flags.dump = 0;
-    flags.id = 0;
-    flags.address = 0;
+flag_t *init_flag() {
+    flag_t *flags = malloc(sizeof(flag_t));
+    flags->num_champions = 0;
+    flags->dump = -1;
+    flags->id = 0;
+    flags->address = 0;
+
+    return flags;
 }
 
 // parse arguments
-champion_t *parse_args(int argc, char **argv, flag_t* flags)
+champion_t *parse_args(int argc, char **argv, flag_t** flags)
 {
     int i = 1;
     champion_t *head = NULL;
@@ -50,31 +52,34 @@ champion_t *parse_args(int argc, char **argv, flag_t* flags)
             if (argv[i][0] == '-') {
                 if (argv[i][1] == 'n') {
                     // set id
-                    flags->id = my_atoi(argv[i + 1]);    // argv[i + 1] is the id
+                    (*flags)->id = my_atoi(argv[i + 1]);    // argv[i + 1] is the id
                 } else if (argv[i][1] == 'a') {
                     // set address
-                    flags->address = my_atoi(argv[i + 1]);  // argv[i + 1] is the address
+                    (*flags)->address = my_atoi(argv[i + 1]);  // argv[i + 1] is the address
                 } else if (argv[i][1] == 'd') {
                     // set dump
-                    flags->dump = my_atoi(argv[i + 1]);    // argv[i + 1] is the dump
+                    (*flags)->dump = my_atoi(argv[i + 1]);    // argv[i + 1] is the dump
                 } else {
                     print_usage();  // handles -h flag too
                     break;
                 }
                 i += 2;     // increment i by 2
             } else {
-                // parse file, create champion, return linked list head for champions
-                // TODO add error handling if champion isn't created
+                // create champion, adjust flags
+                    // TODO add error handling if champion isn't created
                 if (head == NULL) {
-                    head = create_champion(flags, argv[i]);
+                    head = create_champion(*flags, argv[i]);
                 }
-                create_champion(flags, argv[i]);
+                create_champion(*flags, argv[i]);
+                (*flags)->id = 0;
+                (*flags)->address = 0;
+                (*flags)->num_champions += 1;
             }
         }
         i++;
     }
 
-    return head;
+    return head;    // return head of champion linked list
 }
 
 

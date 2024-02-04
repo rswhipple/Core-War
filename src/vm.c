@@ -9,11 +9,11 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;
     }
     
-    flag_t flags = init_flag();
+    flag_t *flags = init_flag();
     parse_args(argc, argv, &flags);
 
-    // init and run core
-    core_t *core = NULL;
+    // init core, load champs, run core
+    core_t *core = init_core(flags);
 
     // print winner
 

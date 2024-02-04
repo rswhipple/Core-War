@@ -44,14 +44,6 @@ enum parameter_types {
   T_LAB = 8
 };
 
-/* registers */ 
-enum registers {
-    R1 = 1, R2, R3, R4, R5, R6, R7, R8,     // general purpose registers
-    R9, R10, R11, R12, R13, R14,            // general purpose registers   
-    RAC,                                    // program counter
-    RCND,                                   // condition register handles carry flag
-};
-
 struct op_s {
   char *mnemonique;
   char nbr_args;
@@ -106,12 +98,12 @@ typedef struct header_s {
 typedef struct champion
 {
     header_t *champ_header;       // header
-    int id;                       // id of the champ
+    int id;                       // id of champ
     int address;                  // address of champ
-    int num_inst;          // number of instructions
-    op_t *inst;           // instruction array
-    int reg[16];            // address of registers
-    int pc;                       // program counter
+    int num_inst;                 // number of instructions
+    unsigned long long *inst;     // instruction array
+    int reg[REG_NUMBER];          // address of registers
+    int ac;                       // program counter
     int carry;                    // carry flag
     struct champion *next;        // next champion
 
@@ -121,7 +113,7 @@ typedef struct champion
 typedef struct core_s
 {
     size_t memory[MEM_SIZE];       // for storing champions
-    champion_t *champions;    // head of champion linked list
+    champion_t *champions;         // head of champion linked list
     int num_champions;             // number of champions
     int cycle_to_die;              // number of cycles before being declared dead
     int cycle_delta;               // number of cycles to decrement cycle_to_die by

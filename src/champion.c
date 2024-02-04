@@ -26,8 +26,8 @@ champion_t *init_champion(flag_t *flags) {
     for (int i = 0; i < 16; i++) {
         champ->reg[i] = 0;
     }
-    champ->pc = champ->reg[14];
-    champ->carry = champ->reg[15];
+    champ->ac = 0;
+    champ->carry = 0;
     champ->next = NULL;
 
     champ->free_champion = free_champion;

@@ -1,6 +1,7 @@
 #ifndef _CHAMPION_H_
 #define _CHAMPION_H_
 #include "op.h"
+#include "vm_parse.h"
 
 // function prototypes
 champion_t *init_champion(flag_t *flags);                       // initializes an empty champion
