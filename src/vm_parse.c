@@ -22,6 +22,7 @@ modulo
 */
 
 #include "../include/op.h"
+#include "../include/helper.h"
 #include "../include/champion.h"
 #include "../include/vm_parse.h"
 

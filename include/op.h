@@ -32,6 +32,9 @@
 #define CYCLE_DELTA 5
 #define NBR_LIVE 40
 
+/* buffer for getline */
+#define BUF_SIZE 512UL
+
 typedef char args_type_t;
 typedef unsigned char code_t;
 typedef struct champion champion_t;

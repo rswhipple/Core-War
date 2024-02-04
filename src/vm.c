@@ -1,5 +1,6 @@
 #include "../include/op.h"
 #include "../include/vm_parse.h"
+#include "../include/core.h"
 
 int main(int argc, char **argv)
 {
