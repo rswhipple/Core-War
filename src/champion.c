@@ -3,9 +3,6 @@
 #include "../include/vm_parse.h"
 #include <sys/fcntl.h>
 
-void free_champion(champion_t *champ) {
-
-}
 
 // initialize champion
 champion_t *init_champion(flag_t *flags) {
@@ -83,3 +80,6 @@ op_t *get_instructions(champion_t *champ, int fd) {
 }
 
 // free champion
+void free_champion(champion_t *champ) {
+
+}

@@ -25,11 +25,6 @@ modulo
 #include "../include/champion.h"
 #include "../include/vm_parse.h"
 
-void print_usage()
-{
-    // print usage instructions
-}
-
 flag_t *init_flag() {
     flag_t *flags = malloc(sizeof(flag_t));
     flags->num_champions = 0;
@@ -81,6 +76,12 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
 
     return head;    // return head of champion linked list
 }
+
+void print_usage()
+{
+    // print usage instructions
+}
+
 
 
 
