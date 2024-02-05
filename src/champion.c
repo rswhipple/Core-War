@@ -48,17 +48,17 @@ champion_t *create_champion(flag_t *flags, char *filename) {
 }
 
 // create champion header
-int read_file(champion_t **champ, int fd) {
-    // (*champ)->champ_header->magic = COREWAR_EXEC_MAGIC;
+// int read_file(champion_t **champ, int fd) {
+//     // (*champ)->champ_header->magic = COREWAR_EXEC_MAGIC;
 
-    ssize_t bytes = 0;
-    char *buf = init_str(BUF_SIZE);
-    while ((bytes = getline(buf, BUF_SIZE, fd)) != -1) {
+//     ssize_t bytes = 0;
+//     char *buf = init_str(BUF_SIZE);
+//     while ((bytes = getline(buf, BUF_SIZE, fd)) != -1) {
 
-    }
+//     }
 
-    return EXIT_SUCCESS;
-}
+//     return EXIT_SUCCESS;
+// }
 
 
 // free champion
