@@ -40,7 +40,7 @@ champion_t *create_champion(flag_t *flags, char *filename) {
     }
 
     champion_t *champ = init_champion(flags);
-    int success = read_file(&champ, fd);
+    // int success = read_file(&champ, fd);
 
     close(fd);
 
