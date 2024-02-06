@@ -114,15 +114,11 @@ int read_file(champion_t **champ, FILE *fp) {
             my_strcpy((*champ)->champ_header->prog_name, line + 7);
             int copied_len = my_strlen((*champ)->champ_header->prog_name);
             (*champ)->champ_header->prog_name[copied_len - 2] = '\0';
-            printf("Line stored in prog_name:\n");
-            fwrite((*champ)->champ_header->prog_name, copied_len, 1, stdout);
         }
         else if (my_strncmp(line, ".comment", 8) == 0) { 
             my_strcpy((*champ)->champ_header->comment, line + 10);
             int copied_len = my_strlen((*champ)->champ_header->comment);
             (*champ)->champ_header->comment[copied_len - 2] = '\0';
-            printf("Line stored in comment:\n");
-            fwrite((*champ)->champ_header->comment, copied_len, 1, stdout);
         } else if (my_strncmp(line, "/n", 1) == 0) {
             continue;
         }
@@ -147,5 +143,17 @@ void free_champion(champion_t *head) {
         if (next) {
             next = next->next;
         }
+    }
+}
+
+
+// print champion
+void print_champions(champion_t *head) {
+    champion_t *curr = head;
+    while (curr) {
+        // print
+        printf("\nChamp id number %i is named %s\n", curr->id, curr->champ_header->prog_name);
+        printf("Comment: %s\n", curr->champ_header->comment);
+        curr = curr->next;
     }
 }
