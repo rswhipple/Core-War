@@ -84,3 +84,30 @@ char* my_strcat(char *dst, char *src)
 
     return original_dst;
 }
+
+int my_strncmp(char* str_1, char* str_2, int index)
+{
+    int i = 0;
+    int str_to_int_1 = 0;
+    int str_to_int_2 = 0;
+
+    while (i < index && str_1[i] != '\0') {
+        str_to_int_1 += str_1[i];
+        i++;
+    } 
+
+    i = 0;
+    while (i < index && str_2[i] != '\0') {
+        str_to_int_2 += str_2[i];
+        i++;
+    } 
+    
+    if (str_to_int_1 == str_to_int_2) {
+        return 0;
+    } else if (str_to_int_1 > str_to_int_2) {
+        return -1;
+    } else {
+        return 1;
+    }
+
+}

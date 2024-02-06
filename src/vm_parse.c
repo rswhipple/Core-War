@@ -42,7 +42,6 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
     int i = 1;
     champion_t *head = NULL;
 
-
     // read flags 
     while (i < argc ) {
         if (argv[i][0] == '-') {
@@ -65,8 +64,9 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
                 // TODO add error handling if champion isn't created
             if (head == NULL) {
                 head = create_champion(*flags, argv[i]);
+            } else {
+                create_champion(*flags, argv[i]);
             }
-            create_champion(*flags, argv[i]);
             (*flags)->id = 0;
             (*flags)->address = 0;
             (*flags)->num_champions += 1;
