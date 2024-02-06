@@ -65,7 +65,11 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
             if (head == NULL) {
                 head = create_champion(*flags, argv[i]);
             } else {
-                create_champion(*flags, argv[i]);
+                champion_t *temp = head; 
+                while (temp->next) {
+                    temp = temp->next;
+                }
+                temp->next = create_champion(*flags, argv[i]);
             }
             (*flags)->id = 0;
             (*flags)->address = 0;

@@ -12,6 +12,7 @@ champion_t *init_champion(flag_t *flags) {
 
     champ->champ_header = malloc(sizeof(header_t));
     if (champ->champ_header == NULL) { return NULL; }
+    champ->champ_header->magic = COREWAR_EXEC_MAGIC;
 
     // set id 
     if (flags->id) { champ->id = flags->id; } 
@@ -41,6 +42,7 @@ champion_t *create_champion(flag_t *flags, char *filename) {
     }
 
     champion_t *champ = init_champion(flags);
+
     read_file(&champ, fp);
 
     fclose(fp);
@@ -48,12 +50,12 @@ champion_t *create_champion(flag_t *flags, char *filename) {
     return champ;
 }
 
-// create champion header
+// create champion 
 int read_file(champion_t **champ, FILE *fp) {
-    
     char *line = NULL;
     size_t len = 0;
     ssize_t nread;
+
     while ((nread = getline(&line, &len, fp)) != -1) {
         printf("Retrieved line of length %zd:\n", nread);
         fwrite(line, nread, 1, stdout);
@@ -75,6 +77,7 @@ int read_file(champion_t **champ, FILE *fp) {
         }
         // else {
         //     // send instruction through assembler
+        //     // increment (*champ)->num_inst
         // }
     }
     
@@ -83,7 +86,15 @@ int read_file(champion_t **champ, FILE *fp) {
 
 
 // free champion
-void free_champion(champion_t *champ) {
-    free(champ->champ_header);
-    free(champ);
+void free_champion(champion_t *head) {
+    champion_t *curr = head;
+    champion_t *next = head->next; 
+    while (curr) {
+        free(curr->champ_header);
+        free(curr);
+        curr = next;
+        if (next) {
+            next = next->next;
+        }
+    }
 }
