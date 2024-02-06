@@ -42,6 +42,7 @@ champion_t *create_champion(flag_t *flags, char *filename) {
     }
 
     champion_t *champ = init_champion(flags);
+
     read_file(&champ, fp);
 
     fclose(fp);
@@ -100,15 +101,35 @@ void print_champ_regs(champion_t *champ) {
 	printf("carry: %d\n", champ->carry);
 }
 
-// create champion header
+// create champion 
 int read_file(champion_t **champ, FILE *fp) {
-    // (*champ)->champ_header->magic = COREWAR_EXEC_MAGIC;
     char *line = NULL;
     size_t len = 0;
     ssize_t nread;
+
     while ((nread = getline(&line, &len, fp)) != -1) {
         printf("Retrieved line of length %zd:\n", nread);
         fwrite(line, nread, 1, stdout);
+        if (my_strncmp(line, ".name", 5) == 0) { 
+            my_strcpy((*champ)->champ_header->prog_name, line + 7);
+            int copied_len = my_strlen((*champ)->champ_header->prog_name);
+            (*champ)->champ_header->prog_name[copied_len - 2] = '\0';
+            printf("Line stored in prog_name:\n");
+            fwrite((*champ)->champ_header->prog_name, copied_len, 1, stdout);
+        }
+        else if (my_strncmp(line, ".comment", 8) == 0) { 
+            my_strcpy((*champ)->champ_header->comment, line + 10);
+            int copied_len = my_strlen((*champ)->champ_header->comment);
+            (*champ)->champ_header->comment[copied_len - 2] = '\0';
+            printf("Line stored in comment:\n");
+            fwrite((*champ)->champ_header->comment, copied_len, 1, stdout);
+        } else if (my_strncmp(line, "/n", 1) == 0) {
+            continue;
+        }
+        // else {
+        //     // send instruction through assembler
+        //     // increment (*champ)->num_inst
+        // }
     }
     
     return EXIT_SUCCESS;
@@ -116,7 +137,15 @@ int read_file(champion_t **champ, FILE *fp) {
 
 
 // free champion
-void free_champion(champion_t *champ) {
-    free(champ->champ_header);
-    free(champ);
+void free_champion(champion_t *head) {
+    champion_t *curr = head;
+    champion_t *next = head->next; 
+    while (curr) {
+        free(curr->champ_header);
+        free(curr);
+        curr = next;
+        if (next) {
+            next = next->next;
+        }
+    }
 }
