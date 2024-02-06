@@ -77,7 +77,7 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
         }
         i++;
     }
-
+    print_champions(head);
     return head;    // return head of champion linked list
 }
 
