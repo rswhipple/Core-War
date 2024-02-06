@@ -1,5 +1,6 @@
 #include "../include/op.h"
 #include "../include/vm_parse.h"
+#include "../include/core.h"
 
 int main(int argc, char **argv)
 {
@@ -7,11 +8,13 @@ int main(int argc, char **argv)
     if (argc < 2) {
         print_usage();
         return EXIT_FAILURE;
-    } else {
-       parse_args(argc, argv);
     }
+    
+    flag_t *flags = init_flag();
+    parse_args(argc, argv, &flags);
 
-    // run core
+    // init core, load champs, run core
+    core_t *core = init_core(flags);
 
     // print winner
 

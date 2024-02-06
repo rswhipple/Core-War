@@ -11,12 +11,12 @@ int inst_fork(champion_t *champion, core_t *core, code_t code, int *inst)
     }
 
     //calculate new counter for the child program
-    int new_counter = (champion->pc + champion->registers[*reg_index] % IDX_MOD + MEM_SIZE) % MEM_SIZE; //regs - array of registers
+    int new_counter = (champion->ac + champion->reg[*reg_index] % IDX_MOD + MEM_SIZE) % MEM_SIZE; //regs - array of registers
 
     champion_t *child = (champion_t *)malloc(sizeof(champion_t));
 
     *child = *champion;
-    child->pc = new_counter;
+    child->ac = new_counter;
 
     return 0; // Success
 }

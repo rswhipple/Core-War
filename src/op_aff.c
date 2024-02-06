@@ -15,7 +15,7 @@ int inst_aff(champion_t *champion, core_t *core, code_t code, int *inst)
     }
 
     // get value from the register
-    int register_value = champion->registers[reg];
+    int register_value = champion->reg[reg];
 
     c = (char)(register_value % 256);
     write(STDOUT_FILENO, &c, 1);

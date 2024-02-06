@@ -22,49 +22,66 @@ modulo
 */
 
 #include "../include/op.h"
+#include "../include/helper.h"
 #include "../include/champion.h"
+#include "../include/vm_parse.h"
+
+flag_t *init_flag() {
+    flag_t *flags = malloc(sizeof(flag_t));
+    flags->num_champions = 0;
+    flags->dump = -1;
+    flags->id = 0;
+    flags->address = 0;
+
+    return flags;
+}
+
+// parse arguments
+champion_t *parse_args(int argc, char **argv, flag_t** flags)
+{
+    int i = 1;
+    champion_t *head = NULL;
+
+
+    // read flags 
+    while (i < argc ) {
+        if (argv[i][0] == '-') {
+            if (argv[i][1] == 'n') {
+                // set id
+                (*flags)->id = my_atoi(argv[i + 1]);    // argv[i + 1] is the id
+            } else if (argv[i][1] == 'a') {
+                // set address
+                (*flags)->address = my_atoi(argv[i + 1]);  // argv[i + 1] is the address
+            } else if (argv[i][1] == 'd') {
+                // set dump
+                (*flags)->dump = my_atoi(argv[i + 1]);    // argv[i + 1] is the dump
+            } else {
+                print_usage();  // handles -h flag too
+                break;
+            }
+            i += 2;     // increment i by 2
+        } else {
+            // create champion, adjust flags
+                // TODO add error handling if champion isn't created
+            if (head == NULL) {
+                head = create_champion(*flags, argv[i]);
+            }
+            create_champion(*flags, argv[i]);
+            (*flags)->id = 0;
+            (*flags)->address = 0;
+            (*flags)->num_champions += 1;
+        }
+        i++;
+    }
+
+    return head;    // return head of champion linked list
+}
 
 void print_usage()
 {
     // print usage instructions
 }
 
-// parse arguments
-int parse_args(int argc, char **argv)
-{
-    int num_champions = 0;
-    int i = 1;
-    while (i < argc) {
-        // initialize a new champion
-        // read flags 
-        champion_t *new_champ = init_champion();
-        while (i < argc ) {
-            if (argv[i][0] == '-') {
-                if (argv[i][1] == 'n') {
-                    // set id
-                    // argv[i + 1] is the id
-                } else if (argv[i][1] == 'a') {
-                    // set address
-                    // argv[i + 1] is the address
-                } else if (argv[i][1] == 'd') {
-                    // set dump
-                    // argv[i + 1] is the dump
-                } else {
-                    print_usage();
-                    break;
-                }
-                // increment i by 2
-            } else {
-                // parse file and store in champion
-                // argv[i] is the file
-                break;
-            }
-        }
-        i++;
-    }
-
-    return num_champions;
-}
 
 
 
