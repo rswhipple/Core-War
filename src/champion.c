@@ -42,7 +42,6 @@ champion_t *create_champion(flag_t *flags, char *filename) {
     }
 
     champion_t *champ = init_champion(flags);
-
     read_file(&champ, fp);
 
     fclose(fp);
@@ -89,4 +88,35 @@ void print_champions(champion_t *head) {
         printf("Comment: %s\n", curr->champ_header->comment);
         curr = curr->next;
     }
+}
+
+// Print the contents of the 16 general purpose, ac, and carry flag registers
+void print_champ_regs(champion_t *champ) {
+	printf("-----Printing champion %d register contents-----\n", champ->id);
+	for (int i = 0; i < REG_NUMBER; i++) {
+		printf("register %d: %d\n", i + 1, champ->reg[i]);
+	}
+	printf("ac: %d\n", champ->ac);
+	printf("carry: %d\n", champ->carry);
+}
+
+// create champion header
+int read_file(champion_t **champ, FILE *fp) {
+    // (*champ)->champ_header->magic = COREWAR_EXEC_MAGIC;
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t nread;
+    while ((nread = getline(&line, &len, fp)) != -1) {
+        printf("Retrieved line of length %zd:\n", nread);
+        fwrite(line, nread, 1, stdout);
+    }
+    
+    return EXIT_SUCCESS;
+}
+
+
+// free champion
+void free_champion(champion_t *champ) {
+    free(champ->champ_header);
+    free(champ);
 }
