@@ -34,15 +34,16 @@ champion_t *init_champion(flag_t *flags) {
 }
 
 champion_t *create_champion(flag_t *flags, char *filename) {
-    int fd = open(filename, O_RDONLY);
-    if (fd == -1) {
+    const char *read = "r";
+    FILE *fp = fopen(filename, read);
+    if (!fp) {
         return NULL;
     }
 
     champion_t *champ = init_champion(flags);
-    // int success = read_file(&champ, fd);
+    read_file(&champ, fp);
 
-    close(fd);
+    fclose(fp);
 
     return champ;
 }
@@ -58,20 +59,22 @@ void print_champ_regs(champion_t *champ) {
 }
 
 // create champion header
-// int read_file(champion_t **champ, int fd) {
-//     // (*champ)->champ_header->magic = COREWAR_EXEC_MAGIC;
-
-//     ssize_t bytes = 0;
-//     char *buf = init_str(BUF_SIZE);
-//     while ((bytes = getline(buf, BUF_SIZE, fd)) != -1) {
-
-//     }
-
-//     return EXIT_SUCCESS;
-// }
+int read_file(champion_t **champ, FILE *fp) {
+    // (*champ)->champ_header->magic = COREWAR_EXEC_MAGIC;
+    char *line = NULL;
+    size_t len = 0;
+    ssize_t nread;
+    while ((nread = getline(&line, &len, fp)) != -1) {
+        printf("Retrieved line of length %zd:\n", nread);
+        fwrite(line, nread, 1, stdout);
+    }
+    
+    return EXIT_SUCCESS;
+}
 
 
 // free champion
 void free_champion(champion_t *champ) {
-
+    free(champ->champ_header);
+    free(champ);
 }
