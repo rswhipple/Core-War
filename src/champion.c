@@ -131,22 +131,6 @@ int read_file(champion_t **champ, FILE *fp) {
     return EXIT_SUCCESS;
 }
 
-
-// free champion
-void free_champion(champion_t *head) {
-    champion_t *curr = head;
-    champion_t *next = head->next; 
-    while (curr) {
-        free(curr->champ_header);
-        free(curr);
-        curr = next;
-        if (next) {
-            next = next->next;
-        }
-    }
-}
-
-
 // print champion
 void print_champions(champion_t *head) {
     champion_t *curr = head;
