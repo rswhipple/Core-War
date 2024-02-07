@@ -3,7 +3,8 @@
 #include "asm.h"
 
 // function prototypes
-void parse_args(int argc, char **argv);
+void create_cor_file(char *filename);
+int read_file(FILE *fp);
 void print_usage();
 
 #endif

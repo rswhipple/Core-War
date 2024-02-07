@@ -7,10 +7,12 @@ int main(int argc, char **argv)
         print_usage();
         return EXIT_FAILURE;  
     }
-    
 
-    // memory cleanup
+    int i, success = 1;
+    while (argv[i]) {
+        if (!(success = create_cor_file(argv[i]))) return EXIT_FAILURE;
+        i++;
+    }
 
-
-    return 0;
+    return EXIT_SUCCESS;
 }
