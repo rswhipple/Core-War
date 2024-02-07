@@ -8,7 +8,7 @@ int main(int argc, char **argv)
     // parse arguments
     if (argc < 2) {
         print_usage();
-        return EXIT_FAILURE;  
+        return EXIT_FAILURE;   
     }
     
     flag_t *flags = init_flag();
