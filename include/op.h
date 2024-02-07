@@ -109,8 +109,6 @@ typedef struct champion
     int ac;                       // program counter
     int carry;                    // carry flag
     struct champion *next;        // next champion
-
-    void (*free_champion)(struct champion *champ);
 } champion_t;
 
 typedef struct core_s
@@ -125,7 +123,6 @@ typedef struct core_s
     int cycle;                     // current cycle
 
     void (*load_champion)(struct core_s *core, champion_t *champ);
-    void (*free_core)(struct core_s *core);
 } core_t;
 
 int inst_live(champion_t *champ, core_t *core, code_t code, int *inst);

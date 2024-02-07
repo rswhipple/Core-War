@@ -2,6 +2,7 @@
 #include "../include/helper.h"
 #include "../include/champion.h"
 #include "../include/vm_parse.h"
+#include "../include/memory.h"
 #include <sys/fcntl.h>
 
 
@@ -30,7 +31,6 @@ champion_t *init_champion(flag_t *flags) {
     champ->carry = 0;
     champ->next = NULL;
 
-    champ->free_champion = free_champion;
     return champ;
 }
 
@@ -79,22 +79,6 @@ int read_file(champion_t **champ, FILE *fp) {
     
     return EXIT_SUCCESS;
 }
-
-
-// free champion
-void free_champion(champion_t *head) {
-    champion_t *curr = head;
-    champion_t *next = head->next; 
-    while (curr) {
-        free(curr->champ_header);
-        free(curr);
-        curr = next;
-        if (next) {
-            next = next->next;
-        }
-    }
-}
-
 
 // print champion
 void print_champions(champion_t *head) {

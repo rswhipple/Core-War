@@ -1,6 +1,7 @@
 #include "../include/op.h"
 #include "../include/vm_parse.h"
 #include "../include/core.h"
+#include "../include/memory.h"
 
 int main(int argc, char **argv)
 {
@@ -11,12 +12,15 @@ int main(int argc, char **argv)
     }
     
     flag_t *flags = init_flag();
-    parse_args(argc, argv, &flags);
+    champion_t* head = parse_args(argc, argv, &flags);
 
     // init core, load champs, run core
     core_t *core = init_core(flags);
 
     // print winner
+
+    // memory cleanup
+    cleanup(head, core);
 
     return 0;
 }

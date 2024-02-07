@@ -1,5 +1,6 @@
 #include "../include/op.h"
 #include "../include/core.h"
+#include "../include/memory.h"
 
 // initialize core
 core_t *init_core(flag_t *flags) {
@@ -17,7 +18,6 @@ core_t *init_core(flag_t *flags) {
     core->dump = flags->dump;
     core->cycle = 0;
 
-    core->free_core = free_core;
     core->load_champion = load_champion;
 
     free(flags);    // all information from flag_t has been recorded
@@ -26,9 +26,5 @@ core_t *init_core(flag_t *flags) {
 }
 
 void load_champion(core_t *core, champion_t *champ) {
-
-}
-
-void free_core(core_t *core) {
 
 }
