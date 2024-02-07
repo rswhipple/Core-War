@@ -1,4 +1,5 @@
 #include "../include/asm.h"
+#include "../include/asm_parse.h"
 
 int main(int argc, char **argv)
 {
@@ -8,9 +9,9 @@ int main(int argc, char **argv)
         return EXIT_FAILURE;  
     }
 
-    int i, success = 1;
+    int i = 1;
     while (argv[i]) {
-        if (!(success = create_cor_file(argv[i]))) return EXIT_FAILURE;
+        if (!(create_cor_file(argv[i]))) return EXIT_FAILURE;
         i++;
     }
 

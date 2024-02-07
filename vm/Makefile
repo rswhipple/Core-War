@@ -1,4 +1,4 @@
-TARGET_EXEC := vm 
+TARGET_EXEC := corewar
 BUILD_DIR := ./build
 SRC_DIRS := ./src
 INCLUDE_DIR := -I ./include

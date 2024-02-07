@@ -1,10 +1,11 @@
 #include "../include/asm_parse.h"
+#include "../include/helper.h"
 
-void create_cor_file(char *filename) {
+int create_cor_file(char *filename) {
     const char *read = "r";
     FILE *fp = fopen(filename, read);
     if (!fp) {
-        return NULL;
+        return EXIT_FAILURE;
     }
 
     // init new_file
@@ -13,6 +14,7 @@ void create_cor_file(char *filename) {
 
     fclose(fp);
 
+    return EXIT_SUCCESS;
 }
 
 int read_file(FILE *fp) {
@@ -42,4 +44,9 @@ int read_file(FILE *fp) {
     }
     
     return EXIT_SUCCESS;
+}
+
+void print_usage()
+{
+    // print usage instructions
 }

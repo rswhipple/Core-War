@@ -1,7 +1,6 @@
 #ifndef HELPER_H
 #define HELPER_H
-
-#include "op.h"
+#include "asm.h"
 
 // function prototypes
 int my_atoi(char *num);

@@ -1,4 +1,4 @@
-TARGET_EXEC := corewar 
+TARGET_EXEC := asm
 BUILD_DIR := ./build
 SRC_DIRS := ./src
 INCLUDE_DIR := -I ./include
@@ -46,7 +46,7 @@ clean:
 	$(RM) -r $(BUILD_DIR)
 
 fclean: clean
-	$(RM) corewar
+	$(RM) asm
 
 # Delete the build folder containing the test executable files in tests
 tclean:
