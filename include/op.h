@@ -136,7 +136,7 @@ typedef struct core_s
 int inst_live(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_ld(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_st(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_add(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_add(champion_t *champ, core_t *core, code_t code, int *args);
 int inst_sub(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_and(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_or(champion_t *champ, core_t *core, code_t code, int *inst);
@@ -149,5 +149,6 @@ int inst_lld(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_lldi(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_lfork(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_aff(champion_t *champ, core_t *core, code_t code, int *inst);
+void update_carry(champion_t *champ, int dest_reg);
 
 #endif
