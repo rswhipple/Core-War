@@ -3,7 +3,7 @@
 #include "../include/champion.h"
 #include "../include/vm_parse.h"
 #include <sys/fcntl.h>
-
+#include <stdio.h>
 
 // initialize champion
 champion_t *init_champion(flag_t *flags) {
@@ -46,6 +46,16 @@ champion_t *create_champion(flag_t *flags, char *filename) {
     fclose(fp);
 
     return champ;
+}
+
+// Print the contents of the 16 general purpose, ac, and carry flag registers
+void print_champ_regs(champion_t *champ) {
+	printf("-----Printing champion %d register contents-----\n", champ->id);
+	for (int i = 0; i < REG_NUMBER; i++) {
+		printf("register %d: %d\n", i + 1, champ->reg[i]);
+	}
+	printf("ac: %d\n", champ->ac);
+	printf("carry: %d\n", champ->carry);
 }
 
 // create champion header
