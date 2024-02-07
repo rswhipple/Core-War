@@ -47,6 +47,14 @@ enum parameter_types {
   T_LAB = 8
 };
 
+enum inst_elems {
+  OPCODE,
+  PARAM_DESC,
+  VALUE_1,
+  VALUE_2,
+  VALUE_3,
+};
+
 struct op_s {
   char *mnemonique;
   char nbr_args;
