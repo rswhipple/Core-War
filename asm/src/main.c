@@ -10,8 +10,16 @@ int main(int argc, char **argv)
     }
 
     int i = 1;
-    while (argv[i]) {
-        if (!(create_cor_file(argv[i]))) return EXIT_FAILURE;
+    while (i < argc) {
+        if (argv[i][0] == '-' && argv[i][1] == 'h') {
+            print_usage();
+        }
+        else {
+            if (!(create_cor_file(argv[i]))) {
+                print_usage();
+                return EXIT_FAILURE;
+            }
+        }
         i++;
     }
 
