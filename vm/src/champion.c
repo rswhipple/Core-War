@@ -35,29 +35,29 @@ champion_t *init_champion(flag_t *flags) {
 }
 
 champion_t *create_champion(flag_t *flags, char *filename) {
-    const char *read = "r";
-    FILE *fp = fopen(filename, read);
-    if (!fp) {
+    int fd = open(filename, O_RDONLY, 0644);
+    if (!fd) {
         return NULL;
     }
 
     champion_t *champ = init_champion(flags);
 
-    read_file(&champ, fp);
+    read_file(&champ, fd);
 
-    fclose(fp);
+    close(fd);
 
     return champ;
 }
 
 // create champion 
-int read_file(champion_t **champ, FILE *fp) {
-    char *line = NULL;
-    size_t len = 0;
-    ssize_t nread;
+int read_file(champion_t **champ, int fd) {
+    ssize_t bytes;
+    // Read header 
+    bytes = read(fd, (*champ)->champ_header, sizeof(header_t));
 
-    while ((nread = getline(&line, &len, fp)) != -1) {
-
+    while (bytes > 0) 
+    {
+        // Read instructions
     }
     
     return EXIT_SUCCESS;
