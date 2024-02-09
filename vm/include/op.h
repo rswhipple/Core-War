@@ -140,7 +140,7 @@ int inst_add(champion_t *champ, core_t *core, code_t code, int *args);
 int inst_sub(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_and(champion_t *champ, core_t *core, code_t code, int *args);
 int inst_or(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_xor(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_xor(champion_t *champ, core_t *core, code_t code, int *args);
 int inst_zjmp(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_ldi(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_sti(champion_t *champ, core_t *core, code_t code, int *inst);
