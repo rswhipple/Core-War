@@ -43,6 +43,7 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
     champion_t *head = NULL;
 
     // read flags 
+    // TODO: the option handlier is still having segv issues, fix in the following lines
     while (i < argc ) {
         if (argv[i][0] == '-') {
             if (argv[i][1] == 'n') {
