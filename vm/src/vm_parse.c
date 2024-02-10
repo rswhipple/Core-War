@@ -61,7 +61,7 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
             i += 2;     // increment i by 2
         } else {
             // create champion, adjust flags
-                // TODO add error handling if champion isn't created
+                // TODO: add error handling if champion isn't created
             if (head == NULL) {
                 head = create_champion(*flags, argv[i]);
             } else {
