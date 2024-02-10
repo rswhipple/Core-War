@@ -57,7 +57,7 @@ int read_file(champion_t **champ, int fd) {
 
     while (bytes > 0) 
     {
-        // Read instructions
+        // TODO: Read instructions
     }
     
     return EXIT_SUCCESS;

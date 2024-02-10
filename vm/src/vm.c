@@ -15,7 +15,7 @@ int main(int argc, char **argv)
     champion_t* head = parse_args(argc, argv, &flags);
 
     // init core, load champs, run core
-    core_t *core = init_core(flags); 
+    core_t *core = init_core(head, flags); 
 
     // print winner
 

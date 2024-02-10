@@ -42,11 +42,8 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
     int i = 1;
     champion_t *head = NULL;
 
-<<<<<<< HEAD:vm/src/vm_parse.c
-=======
-
->>>>>>> 4f2d565 (updates):src/vm_parse.c
     // read flags 
+    // TODO: the option handlier is still having segv issues, fix in the following lines
     while (i < argc ) {
         if (argv[i][0] == '-') {
             if (argv[i][1] == 'n') {
@@ -65,10 +62,9 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
             i += 2;     // increment i by 2
         } else {
             // create champion, adjust flags
-                // TODO add error handling if champion isn't created
+                // TODO: add error handling if champion isn't created
             if (head == NULL) {
                 head = create_champion(*flags, argv[i]);
-<<<<<<< HEAD:vm/src/vm_parse.c
             } else {
                 champion_t *temp = head; 
                 while (temp->next) {
@@ -76,10 +72,6 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
                 }
                 temp->next = create_champion(*flags, argv[i]);
             }
-=======
-            }
-            create_champion(*flags, argv[i]);
->>>>>>> 4f2d565 (updates):src/vm_parse.c
             (*flags)->id = 0;
             (*flags)->address = 0;
             (*flags)->num_champions += 1;
