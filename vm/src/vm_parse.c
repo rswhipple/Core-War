@@ -42,7 +42,10 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
     int i = 1;
     champion_t *head = NULL;
 
+<<<<<<< HEAD:vm/src/vm_parse.c
+=======
 
+>>>>>>> 4f2d565 (updates):src/vm_parse.c
     // read flags 
     while (i < argc ) {
         if (argv[i][0] == '-') {
@@ -65,15 +68,25 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
                 // TODO add error handling if champion isn't created
             if (head == NULL) {
                 head = create_champion(*flags, argv[i]);
+<<<<<<< HEAD:vm/src/vm_parse.c
+            } else {
+                champion_t *temp = head; 
+                while (temp->next) {
+                    temp = temp->next;
+                }
+                temp->next = create_champion(*flags, argv[i]);
+            }
+=======
             }
             create_champion(*flags, argv[i]);
+>>>>>>> 4f2d565 (updates):src/vm_parse.c
             (*flags)->id = 0;
             (*flags)->address = 0;
             (*flags)->num_champions += 1;
         }
         i++;
     }
-
+    print_champions(head);
     return head;    // return head of champion linked list
 }
 
