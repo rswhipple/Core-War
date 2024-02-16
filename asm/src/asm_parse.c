@@ -1,18 +1,22 @@
 #include "../include/asm_parse.h"
 #include "../include/helper.h"
 
-int create_cor_file(char *filename) {
+int execute_asm(char *filename) {
+    // init .cor file
+    int fd = create_cor_file(filename);
+
+    // open, read and transform .S file
     const char *read = "r";
     FILE *fp = fopen(filename, read);
     if (!fp) {
         return EXIT_FAILURE;
     }
-
-    // init new_file
-
+    
     read_file(fp);
 
+    // close streams
     fclose(fp);
+    close(fd);
 
     return EXIT_SUCCESS;
 }
@@ -44,6 +48,20 @@ int read_file(FILE *fp) {
     }
     
     return EXIT_SUCCESS;
+}
+
+int create_cor_file(char *filename) {
+
+}
+
+char *replace_ext(char *filename) {
+    int len = my_strlen(filename);
+    char *new_ext = "cor";
+    char *new_filename = init_str(len + 2);
+    my_strncpy(new_filename, filename, len - 1);
+    my_strcat(new_filename, new_ext);
+
+    return new_filename;
 }
 
 void print_usage()
