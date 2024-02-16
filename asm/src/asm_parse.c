@@ -25,33 +25,35 @@ int read_file(FILE *fp) {
     char *line = NULL;
     size_t len = 0;
     ssize_t nread;
+    t_header *header = init_header();
 
     while ((nread = getline(&line, &len, fp)) != -1) {
         printf("Retrieved line of length %zd:\n", nread);
         fwrite(line, nread, 1, stdout);
         if (my_strncmp(line, ".name", 5) == 0) { 
-            // my_strcpy((*champ)->champ_header->prog_name, line + 7);
-            // int copied_len = my_strlen((*champ)->champ_header->prog_name);
-            // (*champ)->champ_header->prog_name[copied_len - 2] = '\0';
+            my_strcpy(header->prog_name, line + 7);
+            int copied_len = my_strlen(header->prog_name);
+            header->prog_name[copied_len - 2] = '\0';
         }
         else if (my_strncmp(line, ".comment", 8) == 0) { 
-            // my_strcpy((*champ)->champ_header->comment, line + 10);
-            // int copied_len = my_strlen((*champ)->champ_header->comment);
-            // (*champ)->champ_header->comment[copied_len - 2] = '\0';
+            my_strcpy(header->comment, line + 10);
+            int copied_len = my_strlen(header->comment);
+             header->comment[copied_len - 2] = '\0';
         } else if (my_strncmp(line, "/n", 1) == 0) {
             continue;
         }
-        // else {
-        //     // send instruction through assembler
-        //     // increment (*champ)->num_inst
-        // }
+        else {
+            // send instruction through assembler
+            // increment (*champ)->num_inst
+        }
     }
     
     return EXIT_SUCCESS;
 }
 
 int create_cor_file(char *filename) {
-
+    int fd = open(filename, O_CREAT | O_RDWR, 0755);
+    return fd;
 }
 
 char *replace_ext(char *filename) {
