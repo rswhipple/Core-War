@@ -15,7 +15,7 @@ int main(int argc, char **argv)
             print_usage();
         }
         else {
-            if (!(create_cor_file(argv[i]))) {
+            if (!(execute_asm(argv[i]))) {
                 print_usage();
                 return EXIT_FAILURE;
             }
