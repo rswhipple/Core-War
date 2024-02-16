@@ -4,7 +4,7 @@
 
 // function prototypes
 int execute_asm(char *filename);
-int create_cor_file(char *filename);
+FILE *create_cor_file(char *filename);
 int read_file(FILE *fp);
 void print_usage();
 

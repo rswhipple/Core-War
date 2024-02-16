@@ -3,7 +3,8 @@
 
 int execute_asm(char *filename) {
     // init .cor file
-    int fd = create_cor_file(filename);
+    FILE *cor;
+    cor = create_cor_file(filename);
 
     // open, read and transform .S file
     const char *read = "r";
@@ -16,7 +17,7 @@ int execute_asm(char *filename) {
 
     // close streams
     fclose(fp);
-    close(fd);
+    fclose(cor);
 
     return EXIT_SUCCESS;
 }
@@ -51,9 +52,9 @@ int read_file(FILE *fp) {
     return EXIT_SUCCESS;
 }
 
-int create_cor_file(char *filename) {
-    int fd = open(filename, O_CREAT | O_RDWR, 0755);
-    return fd;
+FILE *create_cor_file(char *filename) {
+    FILE *cor= fopen(filename, 'wb');
+    return cor;
 }
 
 char *replace_ext(char *filename) {
