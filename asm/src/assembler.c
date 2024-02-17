@@ -7,31 +7,29 @@ int write_header(FILE *cor, t_header *header)
     size_t bytes_written = fwrite(header, sizeof(t_header), 1, cor);
 
     // ERROR + EXIT
-    if (bytes_written != 2192) {  // TODO double check size
-        return EXIT_FAILURE;
-    }
+    if (bytes_written != 2192) return EXIT_FAILURE; // TODO double check size
 
     free(header);
 
     return EXIT_SUCCESS;
 }
 
-int write_instructions(FILE *cor, t_array *instructions) 
+int write_inst(FILE *cor, t_array *inst) 
 {
     int i = 0;
-    while (i < instructions->size) {
-        int len = my_strlen(instructions->array[i]);
-        size_t bytes_written = fwrite(instructions->array[i], len, 1, cor);
+    while (i < inst->size) {
+        int len = my_strlen(inst->array[i]);
+        size_t bytes_written = fwrite(inst->array[i], len, 1, cor);
 
         // ERROR + EXIT
         if (bytes_written != len) {  // TODO double check size
             return EXIT_FAILURE;
         }
-        free(instructions->array[i]);
+        free(inst->array[i]);
         i++;
     }
 
-    free(instructions);
+    free(inst);
 
     return EXIT_SUCCESS;
 }
