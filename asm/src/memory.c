@@ -14,6 +14,8 @@ t_array *init_t_array(void) {
     t_array *new = malloc(sizeof(t_array));
     new->size = 0;
     new->array = NULL;
+
+    return new;
 }
 
 char* init_str(int size)  
