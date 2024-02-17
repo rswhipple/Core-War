@@ -1,5 +1,6 @@
 #include "../include/asm_parse.h"
 #include "../include/helper.h"
+#include "../include/memory.h"
 
 int execute_asm(char *filename) {
     // init .cor file
@@ -57,11 +58,13 @@ int read_file(FILE *fp, t_header **header, t_array **inst) {
 }
 
 FILE *create_cor_file(char *filename) {
-    FILE *cor= fopen(filename, 'wb');
+    const char *write = "wb";
+    FILE *cor= fopen(filename, write);
     return cor;
 }
 
 char *replace_ext(char *filename) {
+    // TODO remove path if any
     int len = my_strlen(filename);
     char *new_ext = "cor";
     char *new_filename = init_str(len + 2);
