@@ -46,8 +46,10 @@ int read_file(FILE *fp, t_header **header, t_array **inst) {
             continue;
         }
         else {
-            // send instruction through assembler
-            // increment (*champ)->num_inst
+            // read line
+            // send line through assembler
+            // save line into t_array
+            // increment t_array size 
         }
     }
     
