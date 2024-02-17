@@ -24,6 +24,7 @@ typedef struct s_string_array {
 } t_array;
 
 // function prototypes
-int write_header(FILE *cor, t_header* header);
+int write_header(FILE *cor, t_header *header);
+int write_instructions(FILE *cor, t_array *instructions);
 
 #endif
