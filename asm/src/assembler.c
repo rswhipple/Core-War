@@ -1,4 +1,5 @@
 #include "../include/asm.h"
+#include "../include/helper.h"
 
 // convert instruction to machine code
 int write_header(FILE *cor, t_header *header) 
