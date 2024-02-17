@@ -70,4 +70,6 @@ char *replace_ext(char *filename) {
 void print_usage()
 {
     // print usage instructions
+    char *message = "USAGE\n\t./asm file_name[.s]\n";
+    my_putstr(message);
 }
