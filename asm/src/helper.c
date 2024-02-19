@@ -55,7 +55,6 @@ char* my_strncpy(char* dst, char* src, int n)
 
 char* my_strcat(char *dst, char *src) 
 { 
-    // Save original destination pointer
     char *original_dst = dst; 
     
     // Move destination pointer to the end of the first string
@@ -69,8 +68,6 @@ char* my_strcat(char *dst, char *src)
         dst += 1;
         src += 1;
     }
-
-    // Null-terminate 
     *dst = '\0';
 
     return original_dst;

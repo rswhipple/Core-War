@@ -28,8 +28,6 @@ int write_inst(FILE *cor, t_array *inst)
     while (i < inst->size) {
         int len = my_strlen(inst->array[i]);
         size_t bytes_written = fwrite(inst->array[i], len, 1, cor);
-
-        // ERROR + EXIT
         if (bytes_written != 1) return EXIT_FAILURE;
         free(inst->array[i]);
         i++;

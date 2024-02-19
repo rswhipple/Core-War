@@ -32,8 +32,9 @@ int read_file(FILE *fp, t_header **header, t_array **inst) {
     ssize_t nread;
 
     while ((nread = getline(&line, &len, fp)) != -1) {
-        printf("Retrieved line of length %zd:\n", nread);
-        fwrite(line, nread, 1, stdout);
+        // printf("Retrieved line of length %zd:\n", nread);    // TESTING
+        // fwrite(line, nread, 1, stdout);
+
         if (my_strncmp(line, ".name", 5) == 0) { 
             my_strcpy((*header)->prog_name, line + 7);
             int copied_len = my_strlen((*header)->prog_name);
@@ -49,10 +50,8 @@ int read_file(FILE *fp, t_header **header, t_array **inst) {
             continue;
         } else {
             char *token = convert_inst(line);
-            // save line into t_array
             (*inst)->array[(*inst)->size] = init_str(my_strlen(token) + 1);    
             my_strcpy((*inst)->array[(*inst)->size++], token);
-            printf("(*inst)->size = %i\n", (*inst)->size);
         }
     }
     
@@ -67,20 +66,18 @@ FILE *create_cor_file(char *filename) {
 }
 
 char *replace_ext(char *filename) {
-    // TODO remove path if any
     int len = my_strlen(filename);
     char *new_ext = "cor";
     char *new_filename = init_str(len + 2);
     my_strncpy(new_filename, filename, len);
     my_strcat(new_filename, new_ext);
-    my_putstr(new_filename);    // TESTING
+    // my_putstr(new_filename);    // TESTING
 
     return new_filename;
 }
 
 void print_usage()
 {
-    // print usage instructions
     char *message = "USAGE\n\t./asm file_name[.s]\n";
     my_putstr(message);
 }

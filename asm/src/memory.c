@@ -30,7 +30,3 @@ char* init_str(int size)
 
     return str;
 }
-
-// void free_t_array(t_array *arr);
-
-// void free_header(t_header *header);
