@@ -2,6 +2,11 @@
 #include "../include/helper.h"
 
 // convert instruction to machine code
+char *convert_inst(char *src) {
+    return src;
+}
+
+// write binary into file
 int write_header(FILE *cor, t_header *header) 
 {
     // Header
@@ -33,4 +38,14 @@ int write_inst(FILE *cor, t_array *inst)
     free(inst);
 
     return EXIT_SUCCESS;
+}
+
+void write_int_big_end(FILE *cor, int num) {
+    u_int8_t bytes[4];
+    bytes[0] = (num >> 24) & 0xFF;
+    bytes[1] = (num >> 16) & 0xFF;
+    bytes[2] = (num >> 8) & 0xFF;
+    bytes[3] = num & 0xFF;
+
+    fwrite(bytes, sizeof(bytes), 1, cor);
 }
