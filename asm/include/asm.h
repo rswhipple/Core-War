@@ -9,6 +9,7 @@
 #define PROG_NAME_LENGTH 128
 #define COMMENT_LENGTH 2048
 #define COREWAR_EXEC_MAGIC 0xea83f3
+#define MAX_INSTRUCTIONS 40
 
 // structs
 typedef struct s_header {
@@ -24,7 +25,9 @@ typedef struct s_string_array {
 } t_array;
 
 // function prototypes
+char *convert_inst(char *src);
 int write_header(FILE *cor, t_header *header);
 int write_inst(FILE *cor, t_array *inst);
+void write_int_big_end(FILE *cor, int num);
 
 #endif
