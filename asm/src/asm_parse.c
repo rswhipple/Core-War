@@ -8,7 +8,7 @@ int execute_asm(char *filename) {
 
     // create header and instruction storage
     t_header *header = init_header();
-    t_array *inst = init_t_array();
+    t_array *inst = init_t_array(MAX_INSTRUCTIONS);
 
     // open, read and transform .S file
     const char *read = "r";
@@ -47,10 +47,11 @@ int read_file(FILE *fp, t_header **header, t_array **inst) {
             continue;
         }
         else {
-            // read line
-            // send line through assembler
+            char *token = convert_inst(line);
             // save line into t_array
-            // increment t_array size 
+            (*inst)->array[(*inst)->size] = init_str(my_strlen(token) + 1);    
+            my_strcpy((*inst)->array[(*inst)->size++], token);
+            printf("(*inst)->size = %i", (*inst)->size);
         }
     }
     
@@ -58,8 +59,9 @@ int read_file(FILE *fp, t_header **header, t_array **inst) {
 }
 
 FILE *create_cor_file(char *filename) {
+    char *name = replace_ext(filename);
     const char *write = "wb";
-    FILE *cor= fopen(filename, write);
+    FILE *cor= fopen(name, write);
     return cor;
 }
 
@@ -68,8 +70,9 @@ char *replace_ext(char *filename) {
     int len = my_strlen(filename);
     char *new_ext = "cor";
     char *new_filename = init_str(len + 2);
-    my_strncpy(new_filename, filename, len - 1);
+    my_strncpy(new_filename, filename, len);
     my_strcat(new_filename, new_ext);
+    my_putstr(new_filename);    // TESTING
 
     return new_filename;
 }
