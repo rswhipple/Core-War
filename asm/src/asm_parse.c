@@ -38,20 +38,21 @@ int read_file(FILE *fp, t_header **header, t_array **inst) {
             my_strcpy((*header)->prog_name, line + 7);
             int copied_len = my_strlen((*header)->prog_name);
             (*header)->prog_name[copied_len - 2] = '\0';
+            (*header)->prog_name[copied_len - 1] = '\0';
         }
         else if (my_strncmp(line, ".comment", 8) == 0) { 
             my_strcpy((*header)->comment, line + 10);
             int copied_len = my_strlen((*header)->comment);
-             (*header)->comment[copied_len - 2] = '\0';
-        } else if (my_strncmp(line, "/n", 1) == 0) {
+            (*header)->comment[copied_len - 2] = '\0';
+            (*header)->comment[copied_len - 1] = '\0';
+        } else if (nread == 1 || my_strncmp(line, "/n", 1) == 0) {
             continue;
-        }
-        else {
+        } else {
             char *token = convert_inst(line);
             // save line into t_array
             (*inst)->array[(*inst)->size] = init_str(my_strlen(token) + 1);    
             my_strcpy((*inst)->array[(*inst)->size++], token);
-            printf("(*inst)->size = %i", (*inst)->size);
+            printf("(*inst)->size = %i\n", (*inst)->size);
         }
     }
     
