@@ -58,7 +58,7 @@ typedef struct s_string_array {
 } t_array;
 
 typedef struct s_arg {
-    int type;
+    u_int8_t type;
     char *arg;
 } t_arg;
 
@@ -71,9 +71,16 @@ typedef struct s_arg_node {
     struct s_arg_node *next;
 } t_node;
 
+typedef struct {
+    char token[25];
+    u_int8_t command;
+} command_map;
+
 // function prototypes
 int write_header(FILE *cor, t_header *header);
 int write_inst(FILE *cor, t_node *head);
+u_int8_t get_command(FILE *cor, char *command);
+u_int8_t *get_values(t_node *inst);
 void write_int_big_end(FILE *cor, int num);
 void print_usage();
 

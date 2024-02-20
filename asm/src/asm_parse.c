@@ -124,12 +124,12 @@ t_node *string_to_node(char *src) {
             args->count++;
         }
         else if (tokens->array[i][0] == DIRECT_CHAR) {
-            token_to_arg(&args, tokens->array[i], 10);
+            token_to_arg(&args, tokens->array[i], 2);
             args->num_bytes += 4;
             args->count++;
         }
         else {
-            token_to_arg(&args, tokens->array[i], 11);
+            token_to_arg(&args, tokens->array[i], 3);
             args->num_bytes += 2;
             args->count++;
         }
