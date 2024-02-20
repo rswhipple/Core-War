@@ -16,7 +16,8 @@ int main(int argc, char **argv)
         }
         else {
             if (!(execute_asm(argv[i]))) {
-                print_usage();
+                char *error = "execution was not completed.\n";
+                my_puterror(error);
                 return EXIT_FAILURE;
             }
         }
