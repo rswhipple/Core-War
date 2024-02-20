@@ -26,30 +26,29 @@ int write_inst(FILE *cor, t_node *inst)
 
     while (tmp) {
         next = tmp->next;   // save link to next node
+
         uint32_t little_end_hex = 0;
-        uint32_t little_end_hex_32 = 0;
+        if ((byte_1 = get_command(cor, tmp->command)) <= 0) return EXIT_FAILURE;
 
         u_int8_t *bytes = get_values(tmp);
         if (!bytes) return EXIT_FAILURE;
 
-        if ((byte_1 = get_command(cor, tmp->command)) <= 0) return EXIT_FAILURE;
-        
-        if (tmp->num_bytes <= 4) {
-            little_end_hex = byte_1 | (bytes[0] << 8) | (bytes[1] << 16) | (bytes[2] << 24);
-        } else {
-            little_end_hex = byte_1 | (bytes[0] << 8) | (bytes[1] << 16) | (bytes[2] << 24) |
-                        (bytes[3] << 32) | (bytes[4] << 40) | (bytes[5] << 48) | (bytes[6] << 56);
-        } 
-        fwrite(little_end_hex, sizeof(little_end_hex), 1, cor);
+        little_end_hex = byte_1 | (bytes[0] << 8) | (bytes[1] << 16) | (bytes[2] << 24);
+        fwrite(&little_end_hex, sizeof(little_end_hex), 1, cor);
 
+        if (tmp->num_bytes > 4) {
+            little_end_hex = bytes[3] | (bytes[4] << 8) | (bytes[5] << 16) | (bytes[6] << 24); 
+            fwrite(&little_end_hex, sizeof(little_end_hex), 1, cor);
+        } 
+        
         if (tmp->num_bytes > 8) {
-            little_end_hex_32 = bytes[7] | (bytes[8] << 8) | (bytes[9] << 16) | (bytes[10] << 24);
-            fwrite(little_end_hex_32, sizeof(little_end_hex_32), 1, cor);
+            little_end_hex = bytes[7] | (bytes[8] << 8) | (bytes[9] << 16) | (bytes[10] << 24);
+            fwrite(&little_end_hex, sizeof(little_end_hex), 1, cor);
         }
         if (tmp->num_bytes > 12) {
             int i = 11;
             while (i < tmp->num_bytes - 2) {
-                fwrite(bytes[i], sizeof(bytes[i]), 1, cor);
+                fwrite(&bytes[i], sizeof(bytes[i]), 1, cor);
                 i++;
             }
         }
@@ -117,16 +116,23 @@ u_int8_t *get_values(t_node *inst) {
             array[0] <<= 2; // shifting to make room for next 2 bits
             array[0] |= inst->array[i]->type & 0x03;
             if (inst->array[i]->type == 1) {
-                // set byte array[tmp_counter]
-                // increment tmp_counter by 1
+                array[tmp_counter] = my_atoi(inst->array[i]->arg);  // set byte array[tmp_counter]
+                tmp_counter++;  // increment tmp_counter by 1
             }
             if (inst->array[i]->type == 2) {
-                // set byte array[tmp_counter]
-                // increment tmp_counter by 4
+                // handle direct labels
+                u_int32_t num = my_atoi(inst->array[i]->arg);
+                array[tmp_counter] = num & 0xFF; 
+                array[tmp_counter + 1] = (num >> 8) & 0xFF;
+                array[tmp_counter + 2] = (num >> 16) & 0xFF;
+                array[tmp_counter + 3] = (num >> 24) & 0xFF;
+                tmp_counter += 4;   // increment tmp_counter by 4
             }
             if (inst->array[i]->type == 3) {
-                // set byte array[tmp_counter]
-                // increment tmp_counter by 2
+                u_int16_t num = my_atoi(inst->array[i]->arg);
+                array[tmp_counter] = num & 0xFF; 
+                array[tmp_counter + 1] = (num >> 8) & 0xFF;
+                tmp_counter += 2;   // increment tmp_counter by 2
             }
             i++;
         }
@@ -134,6 +140,7 @@ u_int8_t *get_values(t_node *inst) {
         i++;
     }
     if (tmp_counter != inst->num_bytes - 1) {
+        printf("tmp_counter = %i\n", tmp_counter);
         my_puterror("Parsing Error: in get_values(), fewer bytes than expected\n");
         return NULL;
     }
