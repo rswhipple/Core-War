@@ -68,7 +68,7 @@ typedef struct s_arg_node {
     char *label;
     char *command;
     t_arg **array;
-    t_node *next;
+    struct s_arg_node *next;
 } t_node;
 
 // function prototypes
