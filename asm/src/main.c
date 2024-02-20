@@ -26,3 +26,9 @@ int main(int argc, char **argv)
 
     return EXIT_SUCCESS;
 }
+
+void print_usage()
+{
+    char *message = "USAGE\n\t./asm file_name[.s]\nDESCRIPTION\n\tfile_name file in assembly language to be converted into file_name.cor, an executable in the Virtual Machine.\n";
+    my_putstr(message);
+}
