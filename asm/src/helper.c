@@ -73,6 +73,20 @@ char* my_strcat(char *dst, char *src)
     return original_dst;
 }
 
+char* my_strchr(char* str_1, char char_1)
+{
+    int i;
+    int len = strlen(str_1);
+
+    for (i = 0; i <= len; i++) {
+        if (str_1[i] == char_1) {
+            return &str_1[i];
+        }
+    }
+
+    return NULL;
+}
+
 int my_strncmp(char* str_1, char* str_2, int index)
 {
     int i = 0;
@@ -114,3 +128,35 @@ void my_putstr(char *str)
 {
     write(STDOUT_FILENO, str, my_strlen(str));
 }
+
+void my_puterror(char *str) 
+{
+    write(STDERR_FILENO, str, my_strlen(str));
+}
+
+// char *find_word(char* pointer, t_array* dictionary) {
+//     char *result = NULL;
+//     int i = 0;
+
+//     // Loop through each word in dictionary
+//     while (i < dictionary->size) {
+//         int j = 0;
+//         // Check if letters in word match pointer
+//         while (dictionary->array[i][j]) {
+//             if (dictionary->array[i][j] != pointer[j]) {
+// 				j = 0;
+// 				break;
+//             }
+// 			j++;
+//         }
+//         // Set result if a matching word was found and had a space after it
+// 		if (j && pointer[j] == ' ') {
+// 			result = init_str(my_strlen(dictionary->array[i]) + 1);
+//             my_strcpy(result, dictionary->array[i]);
+//             break;
+// 		}
+//         i++;
+//     }
+
+//     return result;
+// }
