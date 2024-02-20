@@ -30,23 +30,16 @@ int read_file(FILE *fp, t_header **header, t_array **inst) {
     char *line = NULL;
     size_t len = 0;
     ssize_t nread;
+    // t_array *dict = init();  // I don't think I need this
 
     while ((nread = getline(&line, &len, fp)) != -1) {
-        // printf("Retrieved line of length %zd:\n", nread);    // TESTING
-        // fwrite(line, nread, 1, stdout);
-
-        if (my_strncmp(line, ".name", 5) == 0) { 
-            my_strcpy((*header)->prog_name, line + 7);
-            int copied_len = my_strlen((*header)->prog_name);
-            (*header)->prog_name[copied_len - 2] = '\0';
-            (*header)->prog_name[copied_len - 1] = '\0';
+        if (my_strncmp(line, NAME_CMD_STRING, 5) == 0) { 
+            remove_line_title(header, line, 7);
         }
-        else if (my_strncmp(line, ".comment", 8) == 0) { 
-            my_strcpy((*header)->comment, line + 10);
-            int copied_len = my_strlen((*header)->comment);
-            (*header)->comment[copied_len - 2] = '\0';
-            (*header)->comment[copied_len - 1] = '\0';
-        } else if (nread == 1 || my_strncmp(line, "/n", 1) == 0) {
+        else if (my_strncmp(line, COMMENT_CMD_STRING, 8) == 0) { 
+            remove_line_title(header, line, 10);
+        } 
+        else if (nread == 1 || my_strncmp(line, "/n", 1) == 0) {
             continue;
         } else {
             char *token = convert_inst(line);
@@ -54,6 +47,8 @@ int read_file(FILE *fp, t_header **header, t_array **inst) {
             my_strcpy((*inst)->array[(*inst)->size++], token);
         }
     }
+
+    // free_dict(dict);
     
     return EXIT_SUCCESS;
 }
@@ -76,8 +71,15 @@ char *replace_ext(char *filename) {
     return new_filename;
 }
 
+void remove_line_title(t_header **header, char *line, int size) {
+    my_strcpy((*header)->prog_name, line + size); 
+    int copied_len = my_strlen((*header)->prog_name);
+    (*header)->prog_name[copied_len - 2] = '\0';
+    (*header)->prog_name[copied_len - 1] = '\0';
+}
+
 void print_usage()
 {
-    char *message = "USAGE\n\t./asm file_name[.s]\n";
+    char *message = "USAGE\n\t./asm file_name[.s]\nDESCRIPTION\n\tfile_name file in assembly language to be converted into file_name.cor, an executable in the Virtual Machine.\n";
     my_putstr(message);
 }
