@@ -62,16 +62,19 @@ typedef struct s_arg {
     char *arg;
 } t_arg;
 
-typedef struct s_arg_array {
+typedef struct s_arg_node {
     int count;
+    int num_bytes;
+    char *label;
+    char *command;
     t_arg **array;
-} t_arg_array;
+    t_node *next;
+} t_node;
 
 // function prototypes
-char *convert_inst(char *src);
 int write_header(FILE *cor, t_header *header);
-int write_inst(FILE *cor, t_array *inst);
+int write_inst(FILE *cor, t_node *head);
 void write_int_big_end(FILE *cor, int num);
-void token_to_arg(t_arg_array **args, char *tok, int type);
+void print_usage();
 
 #endif
