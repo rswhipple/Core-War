@@ -7,7 +7,8 @@ t_header *init_header(void) {
     header->magic = 15369203;
     my_memset(header->prog_name, 0, PROG_NAME_LENGTH + 2); 
     header->prog_size = 0;
-    my_memset(header->comment, 0, COMMENT_LENGTH + 2);     
+    my_memset(header->comment, 0, COMMENT_LENGTH + 2);    
+     
     return header;
 }
 
@@ -30,12 +31,16 @@ t_node *init_node(int size) {
     new->command = NULL;
     new->array = malloc(sizeof(t_arg *) * size);
     new->next = NULL;
+
+    return new;
 }
 
 t_arg *init_arg(void) {
     t_arg *new = malloc(sizeof(t_arg));
     new->arg = NULL;
     new->type = 0;
+
+    return new;
 }
 
 t_array *init_dict(void) {
@@ -100,7 +105,7 @@ void free_nodes(t_node *head) {
             free_t_arg(tmp->array[i]);
             i += 1;
         }
-        
+
         free(tmp->array);
         free(tmp);
         tmp = next;

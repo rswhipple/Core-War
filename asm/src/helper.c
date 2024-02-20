@@ -134,29 +134,4 @@ void my_puterror(char *str)
     write(STDERR_FILENO, str, my_strlen(str));
 }
 
-// char *find_word(char* pointer, t_array* dictionary) {
-//     char *result = NULL;
-//     int i = 0;
 
-//     // Loop through each word in dictionary
-//     while (i < dictionary->size) {
-//         int j = 0;
-//         // Check if letters in word match pointer
-//         while (dictionary->array[i][j]) {
-//             if (dictionary->array[i][j] != pointer[j]) {
-// 				j = 0;
-// 				break;
-//             }
-// 			j++;
-//         }
-//         // Set result if a matching word was found and had a space after it
-// 		if (j && pointer[j] == ' ') {
-// 			result = init_str(my_strlen(dictionary->array[i]) + 1);
-//             my_strcpy(result, dictionary->array[i]);
-//             break;
-// 		}
-//         i++;
-//     }
-
-//     return result;
-// }

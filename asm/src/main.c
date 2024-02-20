@@ -1,9 +1,9 @@
 #include "../include/asm.h"
 #include "../include/asm_parse.h"
+#include "../include/helper.h"
 
 int main(int argc, char **argv)
 {
-    // parse arguments
     if (argc < 2) {
         print_usage();
         return EXIT_FAILURE;  
@@ -11,11 +11,11 @@ int main(int argc, char **argv)
 
     int i = 1;
     while (i < argc) {
-        if (argv[i][0] == '-' && argv[i][1] == 'h') {
+        if (argv[i][0] == '-' && argv[i][1] == 'h') {   // flag
             print_usage();
         }
         else {
-            if (!(execute_asm(argv[i]))) {
+            if ((execute_asm(argv[i]))) {      // assemble file
                 char *error = "execution was not completed.\n";
                 my_puterror(error);
                 return EXIT_FAILURE;
