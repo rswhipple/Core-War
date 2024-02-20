@@ -22,10 +22,14 @@ t_array *init_t_array(int size) {
     return new;
 }
 
-t_arg_array *init_arg_array(int size) {
-    t_arg_array *new = malloc(sizeof(t_arg_array));
+t_node *init_node(int size) {
+    t_node *new = malloc(sizeof(t_node));
     new->count = 0;
+    new->num_bytes = 2;
+    new->label = NULL;
+    new->command = NULL;
     new->array = malloc(sizeof(t_arg *) * size);
+    new->next = NULL;
 }
 
 t_arg *init_arg(void) {
@@ -34,30 +38,30 @@ t_arg *init_arg(void) {
     new->type = 0;
 }
 
-// t_array *init_dict(void) {
-//     t_array *dict = malloc(sizeof(t_array));
-//     dict->size = 16;
-//     dict->array[16] = malloc(sizeof(char *));
+t_array *init_dict(void) {
+    t_array *dict = malloc(sizeof(t_array));
+    dict->size = 16;
+    dict->array[16] = malloc(sizeof(char *));
 
-//     dict->array[0] = "live";
-//     dict->array[1] = "ld";
-//     dict->array[2] = "st";
-//     dict->array[3] = "add"; 
-//     dict->array[4] = "sub";  
-//     dict->array[5] = "and"; 
-//     dict->array[6] = "or"; 
-//     dict->array[7] = "xor"; 
-//     dict->array[8] = "zjmp"; 
-//     dict->array[9] = "ldi"; 
-//     dict->array[10] = "sti";
-//     dict->array[11] = "fork"; 
-//     dict->array[12] = "lld"; 
-//     dict->array[13] = "lldi"; 
-//     dict->array[14] = "lfork";
-//     dict->array[15] = "aff"; 
+    dict->array[0] = "live";
+    dict->array[1] = "ld";
+    dict->array[2] = "st";
+    dict->array[3] = "add"; 
+    dict->array[4] = "sub";  
+    dict->array[5] = "and"; 
+    dict->array[6] = "or"; 
+    dict->array[7] = "xor"; 
+    dict->array[8] = "zjmp"; 
+    dict->array[9] = "ldi"; 
+    dict->array[10] = "sti";
+    dict->array[11] = "fork"; 
+    dict->array[12] = "lld"; 
+    dict->array[13] = "lldi"; 
+    dict->array[14] = "lfork";
+    dict->array[15] = "aff"; 
 
-//     return dict;
-// }
+    return dict;
+}
 
 char* init_str(int size)  
 {
@@ -83,12 +87,27 @@ void free_t_array(t_array *tokens) {
     free(tokens);
 }
 
-void free_arg_array(t_arg_array *args) {
-    int i = 0;
-    while (i < args->count) {
-        free(args->array[i]);
-        i += 1;
+void free_nodes(t_node *head) {
+    t_node *tmp = head;
+    t_node *next;
+    while (tmp) {
+        next = tmp->next;
+        free(tmp->label);
+        free(tmp->command);
+
+        int i = 0;
+        while (i < tmp->count) {
+            free_t_arg(tmp->array[i]);
+            i += 1;
+        }
+        
+        free(tmp->array);
+        free(tmp);
+        tmp = next;
     }
-    free(args->array);
-    free(args);
+}
+
+void free_t_arg(t_arg *arg) {
+    free(arg->arg);
+    free(arg);
 }
