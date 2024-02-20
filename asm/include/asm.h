@@ -11,6 +11,39 @@
 #define COREWAR_EXEC_MAGIC 0xea83f3
 #define MAX_INSTRUCTIONS 40
 
+#define COMMENT_CHAR '#'
+#define LABEL_CHAR ':'
+#define DIRECT_CHAR '%'
+#define SEPARATOR_CHAR ','
+#define SEPARATOR_SET ", \t"
+
+#define LABEL_CHARS "abcdefghijklmnopqrstuvwxyz_0123456789"
+
+/* size (in bytes) */
+#define IND_SIZE 2
+#define DIR_SIZE 4
+
+#define NAME_CMD_STRING ".name"
+#define COMMENT_CMD_STRING ".comment"
+
+// define commands
+#define live 0x01
+#define ld 0x02
+#define st 0x03 
+#define add 0x04
+#define sub 0x05
+#define and 0x06
+#define or 0x07
+#define xor 0x08
+#define zjmp 0x09
+#define ldi 0x0a
+#define sti 0x0b
+#define fork 0x0c
+#define lld 0x0d
+#define lldi 0x0e
+#define lfork 0x0f
+#define aff 0x10
+
 // structs
 typedef struct s_header {
   int magic;
@@ -24,10 +57,21 @@ typedef struct s_string_array {
     char **array;
 } t_array;
 
+typedef struct s_arg {
+    int type;
+    char *arg;
+} t_arg;
+
+typedef struct s_arg_array {
+    int count;
+    t_arg **array;
+} t_arg_array;
+
 // function prototypes
 char *convert_inst(char *src);
 int write_header(FILE *cor, t_header *header);
 int write_inst(FILE *cor, t_array *inst);
 void write_int_big_end(FILE *cor, int num);
+void token_to_arg(t_arg_array **args, char *tok, int type);
 
 #endif
