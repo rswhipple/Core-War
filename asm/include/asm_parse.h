@@ -4,10 +4,11 @@
 
 // function prototypes
 int execute_asm(char *filename);
+t_node *read_file(FILE *fp, t_header **header);
 FILE *create_cor_file(char *filename);
 char *replace_ext(char *filename);
 void remove_line_title(t_header **header, char *line, int size);
-int read_file(FILE *fp, t_header **header, t_array **inst) ;
-void print_usage();
+t_node *string_to_node(char *src);
+void token_to_arg(t_node **args, char *tok, int type);
 
 #endif
