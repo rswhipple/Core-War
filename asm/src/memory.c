@@ -8,7 +8,7 @@ t_header *init_header(void) {
     my_memset(header->prog_name, 0, PROG_NAME_LENGTH + 2); 
     header->prog_size = 0;
     my_memset(header->comment, 0, COMMENT_LENGTH + 2);    
-     
+
     return header;
 }
 
@@ -21,6 +21,13 @@ t_array *init_t_array(int size) {
     for (int i = 0; i < size; i++) { new->array[i] = NULL; }
 
     return new;
+}
+
+u_int8_t *init_int(int size) { 
+    u_int8_t *array = malloc((size) * sizeof(u_int8_t));
+    for (int i = 0; i < size; i++) array[i] = 0;
+
+    return array;
 }
 
 t_node *init_node(int size) {

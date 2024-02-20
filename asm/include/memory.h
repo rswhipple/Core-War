@@ -5,6 +5,7 @@
 // function prototypes
 t_header *init_header(void);
 t_array *init_t_array(int size);
+u_int8_t *init_int(int size);
 t_node *init_node(int size);
 t_arg *init_arg(void);
 t_array *init_dict(void);
