@@ -98,7 +98,6 @@ t_node *string_to_node(char *src) {
     int i = 0;
     
     // check for label
-    printf("tokens->array[%i] = %s\n", i, tokens->array[i]);
     int tok_len = my_strlen(tokens->array[0]);
     if (tokens->array[0][tok_len - 1] == LABEL_CHAR) {
         args->label = init_str(tok_len + 1);
@@ -107,7 +106,6 @@ t_node *string_to_node(char *src) {
     }
 
     // find the command
-    printf("tokens->array[%i] = %s\n", i, tokens->array[i]);
     tok_len = my_strlen(tokens->array[i]);
     args->command = init_str(tok_len + 1);
     my_strcpy(args->command, tokens->array[i]);
@@ -115,16 +113,14 @@ t_node *string_to_node(char *src) {
 
     // parse values into t_args
     while (tokens->array[i]) {   
-        printf("tokens->array[%i] = |%s|\n", i, tokens->array[i]);  // TESTING
-
         if (tokens->array[i][0] == COMMENT_CHAR) continue;
         else if (tokens->array[i][0] == 'r') {
-            token_to_arg(&args, tokens->array[i], 1);
+            ttoa_remove_char(&args, tokens->array[i], 1);
             args->num_bytes++;
             args->count++;
         }
         else if (tokens->array[i][0] == DIRECT_CHAR) {
-            token_to_arg(&args, tokens->array[i], 2);
+            ttoa_remove_char(&args, tokens->array[i], 2);
             args->num_bytes += 4;
             args->count++;
         }
@@ -149,4 +145,17 @@ void token_to_arg(t_node **args, char *tok, int type)
     tmp->arg = init_str(my_strlen(tok) + 1);
     my_strcpy(tmp->arg, tok);
     tmp->type = type;
+    printf("(*args)->array[%i]->arg = |%s|, type is %i\n", (*args)->count, tmp->arg, tmp->type);  // TESTING
+
+}
+
+void ttoa_remove_char(t_node **args, char *tok, int type) 
+{
+    (*args)->array[(*args)->count] = init_arg();
+    t_arg *tmp = (*args)->array[(*args)->count];
+    tmp->arg = init_str(my_strlen(tok));
+    my_strcpy(tmp->arg, tok + 1);
+    tmp->type = type;
+    printf("(*args)->array[%i]->arg = |%s|, type is %i\n", (*args)->count, tmp->arg, tmp->type);  // TESTING
+
 }
