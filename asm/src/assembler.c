@@ -19,16 +19,14 @@ int write_header(FILE *cor, t_header *header)
 
 int write_inst(FILE *cor, t_node *inst) 
 {
-    // int i = 0;
-    // while (i < inst->size) {
-    //     int len = my_strlen(inst->array[i]);
-    //     size_t bytes_written = fwrite(inst->array[i], len, 1, cor);
-    //     if (bytes_written != 1) return EXIT_FAILURE;
-    //     free(inst->array[i]);
-    //     i++;
-    // }
-
-    // free(inst);
+    t_node *tmp = inst;
+    t_node *next = NULL;
+    while (tmp) {
+        next = tmp->next;
+        // write inst
+        printf("tmp->command = %s\n", tmp->command);
+        tmp = next;
+    }
 
     return EXIT_SUCCESS;
 }
