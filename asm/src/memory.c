@@ -22,6 +22,43 @@ t_array *init_t_array(int size) {
     return new;
 }
 
+t_arg_array *init_arg_array(int size) {
+    t_arg_array *new = malloc(sizeof(t_arg_array));
+    new->count = 0;
+    new->array = malloc(sizeof(t_arg *) * size);
+}
+
+t_arg *init_arg(void) {
+    t_arg *new = malloc(sizeof(t_arg));
+    new->arg = NULL;
+    new->type = 0;
+}
+
+// t_array *init_dict(void) {
+//     t_array *dict = malloc(sizeof(t_array));
+//     dict->size = 16;
+//     dict->array[16] = malloc(sizeof(char *));
+
+//     dict->array[0] = "live";
+//     dict->array[1] = "ld";
+//     dict->array[2] = "st";
+//     dict->array[3] = "add"; 
+//     dict->array[4] = "sub";  
+//     dict->array[5] = "and"; 
+//     dict->array[6] = "or"; 
+//     dict->array[7] = "xor"; 
+//     dict->array[8] = "zjmp"; 
+//     dict->array[9] = "ldi"; 
+//     dict->array[10] = "sti";
+//     dict->array[11] = "fork"; 
+//     dict->array[12] = "lld"; 
+//     dict->array[13] = "lldi"; 
+//     dict->array[14] = "lfork";
+//     dict->array[15] = "aff"; 
+
+//     return dict;
+// }
+
 char* init_str(int size)  
 {
     char* str = malloc(sizeof(char) * size + 1);
@@ -29,4 +66,29 @@ char* init_str(int size)
     for (int i = 0; i < size + 1; i++) { str[i] = '\0'; }
 
     return str;
+}
+
+void free_dict(t_array *dict) {
+    free(dict->array);
+    free(dict);
+}
+
+void free_t_array(t_array *tokens) {
+    int i = 0;
+    while (i < tokens->size) {
+        free(tokens->array[i]);
+        i += 1;
+    }
+    free(tokens->array);
+    free(tokens);
+}
+
+void free_arg_array(t_arg_array *args) {
+    int i = 0;
+    while (i < args->count) {
+        free(args->array[i]);
+        i += 1;
+    }
+    free(args->array);
+    free(args);
 }
