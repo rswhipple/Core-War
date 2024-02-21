@@ -27,30 +27,17 @@ int write_inst(FILE *cor, t_node *inst)
     while (tmp) {
         next = tmp->next;   // save link to next node
 
-        uint32_t little_end_hex = 0;
         if ((byte_1 = get_command(cor, tmp->command)) <= 0) return EXIT_FAILURE;
+        fwrite(&byte_1, sizeof(byte_1), 1, cor);
+        printf("command = %i\n", byte_1);
 
         u_int8_t *bytes = get_values(tmp);
         if (!bytes) return EXIT_FAILURE;
-
-        little_end_hex = byte_1 | (bytes[0] << 8) | (bytes[1] << 16) | (bytes[2] << 24);
-        fwrite(&little_end_hex, sizeof(little_end_hex), 1, cor);
-
-        if (tmp->num_bytes > 4) {
-            little_end_hex = bytes[3] | (bytes[4] << 8) | (bytes[5] << 16) | (bytes[6] << 24); 
-            fwrite(&little_end_hex, sizeof(little_end_hex), 1, cor);
-        } 
         
-        if (tmp->num_bytes > 8) {
-            little_end_hex = bytes[7] | (bytes[8] << 8) | (bytes[9] << 16) | (bytes[10] << 24);
-            fwrite(&little_end_hex, sizeof(little_end_hex), 1, cor);
-        }
-        if (tmp->num_bytes > 12) {
-            int i = 11;
-            while (i < tmp->num_bytes - 2) {
-                fwrite(&bytes[i], sizeof(bytes[i]), 1, cor);
-                i++;
-            }
+        int i = 0;
+        while (i < tmp->num_bytes - 2) {
+            fwrite(&bytes[i], sizeof(bytes[i]), 1, cor);
+            i++;
         }
 
         printf("tmp->command = %s\n", tmp->command);    // TESTING
@@ -108,7 +95,7 @@ u_int8_t get_command(FILE *cor, char *command)
 
 u_int8_t *get_values(t_node *inst) {
     int tmp_counter = 1;
-    u_int8_t *array = init_int(inst->num_bytes - 1);
+    u_int8_t *array = init_int(14);
     int i = 0;
 
     while (i < 4) {
@@ -120,8 +107,12 @@ u_int8_t *get_values(t_node *inst) {
                 tmp_counter++;  // increment tmp_counter by 1
             }
             if (inst->array[i]->type == 2) {
-                // handle direct labels
                 u_int32_t num = my_atoi(inst->array[i]->arg);
+
+                // handle direct labels
+                if (inst->array[i]->arg[0] == ':') num = 0;
+                printf("direct num = %i\n", num);
+
                 array[tmp_counter] = num & 0xFF; 
                 array[tmp_counter + 1] = (num >> 8) & 0xFF;
                 array[tmp_counter + 2] = (num >> 16) & 0xFF;
@@ -130,6 +121,7 @@ u_int8_t *get_values(t_node *inst) {
             }
             if (inst->array[i]->type == 3) {
                 u_int16_t num = my_atoi(inst->array[i]->arg);
+                printf("indirect num = %i\n", num);
                 array[tmp_counter] = num & 0xFF; 
                 array[tmp_counter + 1] = (num >> 8) & 0xFF;
                 tmp_counter += 2;   // increment tmp_counter by 2
