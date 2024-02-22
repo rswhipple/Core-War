@@ -39,8 +39,6 @@ int write_inst(FILE *cor, t_node *inst)
             fwrite(&bytes[i], sizeof(bytes[i]), 1, cor);
             i++;
         }
-
-        printf("tmp->command = %s\n", tmp->command);    // TESTING
         tmp = next;
     }
 
