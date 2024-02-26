@@ -2,9 +2,9 @@
 #include "core.h" 
 #include "memory.h"
 #include "op.h"
+#include "inst_ex.h"
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
   // parse arguments
   if (argc < 2) {
     print_usage();
@@ -15,7 +15,7 @@ int main(int argc, char **argv)
   champion_t* head = parse_args(argc, argv, &flags);
 
   // init core, load champs, run core
-  core_t *core = init_core(head, flags); 
+  core_t *core = init_core(head, flags);
 
   // print winner
 
