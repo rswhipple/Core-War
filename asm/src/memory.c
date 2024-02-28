@@ -32,7 +32,8 @@ u_int8_t *init_int(int size) {
 
 t_node *init_node(int size) {
     t_node *new = malloc(sizeof(t_node));
-    new->count = 0;
+    new->id = 0;
+    new->param_count = 0;
     new->num_bytes = 2;
     new->label = NULL;
     new->command = NULL;
@@ -108,7 +109,7 @@ void free_nodes(t_node *head) {
         free(tmp->command);
 
         int i = 0;
-        while (i < tmp->count) {
+        while (i < tmp->param_count) {
             free_t_arg(tmp->array[i]);
             i += 1;
         }
