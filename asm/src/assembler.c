@@ -17,21 +17,18 @@ int write_header(FILE *cor, t_header *header)
 }
 
 
-int write_inst(FILE *cor, t_node *inst) 
+int write_inst(FILE *cor, t_node *head, int total) 
 {
     size_t result;
-    t_node *tmp = inst;
-    t_node *next = NULL;
+    t_node *tmp = head;
     u_int8_t byte_1 = 0;
 
     while (tmp) {
-        next = tmp->next;   // save link to next node
-
         if ((byte_1 = get_command(cor, tmp->command)) <= 0) return EXIT_FAILURE;
         fwrite(&byte_1, sizeof(byte_1), 1, cor);
         printf("command = %i\n", byte_1);
 
-        u_int8_t *bytes = get_values(tmp);
+        u_int8_t *bytes = get_values(head, tmp, total);
         if (!bytes) return EXIT_FAILURE;
         
         int i = 0;
@@ -39,7 +36,7 @@ int write_inst(FILE *cor, t_node *inst)
             fwrite(&bytes[i], sizeof(bytes[i]), 1, cor);
             i++;
         }
-        tmp = next;
+        tmp = tmp->next;
     }
 
     return EXIT_SUCCESS;
@@ -91,13 +88,13 @@ u_int8_t get_command(FILE *cor, char *command)
     return -1;
 }
 
-u_int8_t *get_values(t_node *inst) {
+u_int8_t *get_values(t_node *head, t_node *inst, int total) {
     int tmp_counter = 1;
     u_int8_t *array = init_int(14);
     int i = 0;
 
     while (i < 4) {
-        while (i < inst->count) {
+        while (i < inst->param_count) {
             array[0] <<= 2; // shifting to make room for next 2 bits
             array[0] |= inst->array[i]->type & 0x03;
             if (inst->array[i]->type == 1) {
@@ -105,11 +102,17 @@ u_int8_t *get_values(t_node *inst) {
                 tmp_counter++;  // increment tmp_counter by 1
             }
             if (inst->array[i]->type == 2) {
-                u_int32_t num = my_atoi(inst->array[i]->arg);
+                u_int32_t num;
 
                 // handle direct labels
-                if (inst->array[i]->arg[0] == ':') num = 0;
-                printf("direct num = %i\n", num);
+                if (inst->array[i]->arg[0] == ':') {
+                    char *label = inst->array[i]->arg + 1;
+                    num = calculate_jump(head, inst->id, label, total);
+                    printf("label offset = %i\n", num);
+                } else {
+                    num = my_atoi(inst->array[i]->arg);
+                    printf("direct num = %i\n", num);
+                }
 
                 array[tmp_counter] = num & 0xFF; 
                 array[tmp_counter + 1] = (num >> 8) & 0xFF;
@@ -138,3 +141,25 @@ u_int8_t *get_values(t_node *inst) {
     return array;
 }
 
+u_int32_t calculate_jump(t_node *head, int id, char *label, int total) {
+    // declare result & tmp variables
+    u_int32_t result = 0;
+    t_node *tmp = head;
+
+    // iterate through nodes from head (tmp)
+    while (tmp) {
+        // if label == tmp->label
+        if (tmp->label && (my_strcmp(label, tmp->label)) == 0) {
+            if (tmp->id - id > 0) {
+                result = (u_int32_t)(tmp->id - id);
+            } else {
+                result = (u_int32_t)(total - id + tmp->id);
+            }
+            return result;
+        }
+        tmp = tmp->next;
+    }
+
+    // this would be an error/ no matching label found
+    return result;
+}
