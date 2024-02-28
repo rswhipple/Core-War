@@ -112,7 +112,7 @@ typedef struct champion
     int id;                       // id of champ
     int address;                  // address of champ
     int num_inst;                 // number of instructions
-    unsigned long long *inst;     // instruction array
+    int *inst_array[5];           // instruction array
     int reg[REG_NUMBER];          // address of registers
     int ac;                       // program counter
     int carry;                    // carry flag
