@@ -11,7 +11,7 @@ int main(int argc, char **argv)
 
     int i = 1;
     while (i < argc) {
-        if (argv[i][0] == '-' && argv[i][1] == 'h') {   // flag
+        if (argv[i][0] == '-' && argv[i][1] == 'h') {   // handle flag
             print_usage();
         }
         else {
