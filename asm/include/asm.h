@@ -63,7 +63,8 @@ typedef struct s_arg {
 } t_arg;
 
 typedef struct s_arg_node {
-    int count;
+    int id;
+    int param_count;
     int num_bytes;
     char *label;
     char *command;
@@ -78,10 +79,11 @@ typedef struct {
 
 // function prototypes
 int write_header(FILE *cor, t_header *header);
-int write_inst(FILE *cor, t_node *head);
+int write_inst(FILE *cor, t_node *head, int total);
 u_int8_t get_command(FILE *cor, char *command);
-u_int8_t *get_values(t_node *inst);
+u_int8_t *get_values(t_node *head, t_node *inst, int total);
 void write_int_big_end(FILE *cor, int num);
+u_int32_t calculate_jump(t_node *head, int id, char *label, int total);
 void print_usage();
 
 #endif
