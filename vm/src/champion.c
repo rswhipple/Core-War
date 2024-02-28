@@ -51,25 +51,46 @@ champion_t *create_champion(flag_t *flags, char *filename) {
 
 // create champion 
 int read_file(champion_t **champ, int fd) {
+    // read header
     ssize_t bytes;
     u_int8_t byte;
-    bytes = read(fd, (*champ)->champ_header, sizeof(header_t));
-    // TODO: add error check
-    print_header((*champ)->champ_header);
+    bytes = read(fd, (*champ)->champ_header, sizeof(header_t)); // TODO: add error check
+    print_header((*champ)->champ_header);   // TESTING print header
 
-    size_t prog_size = (size_t)((*champ)->champ_header->prog_size); // cast int to size_t
-    size_t buf[BUF_SIZE];
+    // read instruction data
+    size_t prog_size = (size_t)(*champ)->champ_header->prog_size;
+    u_int8_t buf[prog_size];
+    memset(buf, 0, prog_size);
     bytes = read(fd, &buf, prog_size);
-    
+    print_inst_buf((*champ)->champ_header, buf, prog_size); // TESTING Print contents of buf
+
+    // Convert instruction data to inst_array
+    convert_to_inst(buf, prog_size);
+
+    return EXIT_SUCCESS;
+}
+
+int convert_to_inst(u_int8_t *buf, size_t prog_size) {
+
     return EXIT_SUCCESS;
 }
 
 // Print the contents of the 16 general purpose, ac, and carry flag registers
 void print_header(header_t *header) {
-	printf("-----Printing champion %s header contents-----\n", header->prog_name);
+	printf("-----Printing champion \"%s\" header contents-----\n", header->prog_name);
 	printf("magic: %i\n", header->magic);
-    printf("prog_size: %i\n", header->magic);
+    printf("prog_size: %i\n", header->prog_size);
 	printf("comment: %s\n", header->comment);
+}
+
+// Print the inst buf hex by hex
+void print_inst_buf(header_t *header, u_int8_t *buf, size_t size) {
+	printf("-----Printing champion \"%s\" instruction raw data-----\n", header->prog_name);
+
+    // Print the contents of the buffer
+    for(u_int8_t i = 0; i < size; i++) {
+        printf("buf[%hhu] = %02x\n", i, buf[i]);
+    }
 }
 
 // Print the contents of the 16 general purpose, ac, and carry flag registers
@@ -88,7 +109,6 @@ void print_champions(champion_t *head) {
     while (curr) {
         // print
         printf("\nChamp id number %i is named %s\n", curr->id, curr->champ_header->prog_name);
-        printf("Comment: %s\n", curr->champ_header->comment);
         curr = curr->next;
     }
 }
