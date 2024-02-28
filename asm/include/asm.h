@@ -84,7 +84,7 @@ typedef struct {
 
 // function prototypes
 int write_header(FILE *cor, t_header *header);
-int write_inst(FILE *cor, t_node *head, int total);
+int write_inst(FILE *cor, t_node *head, int num_inst);
 u_int8_t get_command(FILE *cor, char *command);
 u_int8_t *get_values(t_node *head, t_node *inst, int total);
 void write_int_big_end(FILE *cor, int num);
