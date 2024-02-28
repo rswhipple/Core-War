@@ -6,11 +6,7 @@
 int write_header(FILE *cor, t_header *header) 
 {
     // Header
-    write_int_big_end(cor, header->magic);
-    size_t result = fwrite(header->prog_name, sizeof(header->prog_name), 1, cor);
-    if (result != 1) return EXIT_FAILURE; 
-    write_int_big_end(cor, header->prog_size);
-    result = fwrite(header->comment, sizeof(header->comment), 1, cor);
+    size_t result = fwrite(header, sizeof(t_header), 1, cor);
     if (result != 1) return EXIT_FAILURE; 
 
     return EXIT_SUCCESS;
@@ -39,16 +35,6 @@ int write_inst(FILE *cor, t_node *head, int total)
     }
 
     return EXIT_SUCCESS;
-}
-
-void write_int_big_end(FILE *cor, int num) {
-    u_int8_t bytes[4];
-    bytes[0] = (num >> 24) & 0xFF;
-    bytes[1] = (num >> 16) & 0xFF;
-    bytes[2] = (num >> 8) & 0xFF;
-    bytes[3] = num & 0xFF;
-
-    fwrite(bytes, sizeof(bytes), 1, cor);
 }
 
 
@@ -158,4 +144,15 @@ u_int32_t calculate_jump(t_node *head, int id, char *label, int total) {
 
     // this would be an error/ no matching label found
     return result;
+}
+
+// not using anymore
+void write_int_big_end(FILE *cor, int num) {
+    u_int8_t bytes[4];
+    bytes[0] = (num >> 24) & 0xFF;
+    bytes[1] = (num >> 16) & 0xFF;
+    bytes[2] = (num >> 8) & 0xFF;
+    bytes[3] = num & 0xFF;
+
+    fwrite(bytes, sizeof(bytes), 1, cor);
 }
