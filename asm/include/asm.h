@@ -52,6 +52,11 @@ typedef struct s_header {
   char comment[COMMENT_LENGTH + 1];
 } t_header;
 
+typedef struct s_prog_size {
+    int num_inst;
+    int total_bytes;
+} t_prog_size;
+
 typedef struct s_string_array {
     int size;
     char **array;
