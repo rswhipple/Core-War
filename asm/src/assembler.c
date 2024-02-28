@@ -26,7 +26,6 @@ int write_inst(FILE *cor, t_node *head, int total)
     while (tmp) {
         if ((byte_1 = get_command(cor, tmp->command)) <= 0) return EXIT_FAILURE;
         fwrite(&byte_1, sizeof(byte_1), 1, cor);
-        printf("command = %i\n", byte_1);
 
         u_int8_t *bytes = get_values(head, tmp, total);
         if (!bytes) return EXIT_FAILURE;
@@ -108,10 +107,8 @@ u_int8_t *get_values(t_node *head, t_node *inst, int total) {
                 if (inst->array[i]->arg[0] == ':') {
                     char *label = inst->array[i]->arg + 1;
                     num = calculate_jump(head, inst->id, label, total);
-                    printf("label offset = %i\n", num);
                 } else {
                     num = my_atoi(inst->array[i]->arg);
-                    printf("direct num = %i\n", num);
                 }
 
                 array[tmp_counter] = num & 0xFF; 
@@ -122,7 +119,6 @@ u_int8_t *get_values(t_node *head, t_node *inst, int total) {
             }
             if (inst->array[i]->type == 3) {
                 u_int16_t num = my_atoi(inst->array[i]->arg);
-                printf("indirect num = %i\n", num);
                 array[tmp_counter] = num & 0xFF; 
                 array[tmp_counter + 1] = (num >> 8) & 0xFF;
                 tmp_counter += 2;   // increment tmp_counter by 2
