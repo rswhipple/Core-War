@@ -149,8 +149,6 @@ void token_to_arg(t_node **args, char *tok, int type)
     tmp->arg = init_str(my_strlen(tok) + 1);
     my_strcpy(tmp->arg, tok);
     tmp->type = type;
-    printf("(*args)->array[%i]->arg = |%s|, type is %i\n", (*args)->param_count, tmp->arg, tmp->type);  // TESTING
-
 }
 
 void ttoa_remove_char(t_node **args, char *tok, int type) 
@@ -160,6 +158,4 @@ void ttoa_remove_char(t_node **args, char *tok, int type)
     tmp->arg = init_str(my_strlen(tok));
     my_strcpy(tmp->arg, tok + 1);
     tmp->type = type;
-    printf("(*args)->array[%i]->arg = |%s|, type is %i\n", (*args)->param_count, tmp->arg, tmp->type);  // TESTING
-
 }
