@@ -3,6 +3,8 @@
 #include "op.h"
 #include "vm_parse.h"
 
+#define BUF_SIZE 512
+
 // function prototypes
 champion_t *init_champion(flag_t *flags);                       // initializes an empty champion
 champion_t *create_champion(flag_t *flags, char *filename);     // calls init_champion and read_file
