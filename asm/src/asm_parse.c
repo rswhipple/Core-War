@@ -10,20 +10,24 @@ int execute_asm(char *filename) {
     // create header and instruction line storage
     t_header *header = init_header();
     t_node *inst_head = NULL;
-    int total_num_inst = 0;
+    t_prog_size size = {
+        .num_inst = 0,
+        .total_bytes = 0
+    };
 
     // open, read and parse .S file
     const char *read = "r";
     FILE *fp = fopen(filename, read);
     if (!fp) return EXIT_FAILURE;
-    inst_head = read_file(fp, &header, &total_num_inst);
+    inst_head = read_file(fp, &header, &size);
+    header->prog_size = size.total_bytes;
     fclose(fp);
 
     // write header
     if (write_header(cor, header)) return EXIT_FAILURE;
 
     // write instructions
-    if (write_inst(cor, inst_head, total_num_inst)) return EXIT_FAILURE;
+    if (write_inst(cor, inst_head, size.num_inst)) return EXIT_FAILURE;
 
     // cleanup
     free_nodes(inst_head);
@@ -33,7 +37,7 @@ int execute_asm(char *filename) {
     return EXIT_SUCCESS;
 }
 
-t_node *read_file(FILE *fp, t_header **header, int *total) {
+t_node *read_file(FILE *fp, t_header **header, t_prog_size *size) {
     char *line = NULL;
     size_t len = 0;
     ssize_t nread;
@@ -50,17 +54,17 @@ t_node *read_file(FILE *fp, t_header **header, int *total) {
             continue;
         } 
         else {
-            (*total)++;
+            size->num_inst++;
             if (line[nread - 1] == '\n') line[nread - 1] = '\0';
 
             if (!head) {
-                head = string_to_node(line);
-                head->id = (*total);
+                head = string_to_node(line, size);
+                head->id = size->num_inst;
             } else {
                 t_node *tmp = head;
                 while (tmp->next) tmp = tmp->next;
-                tmp->next = string_to_node(line);
-                tmp->next->id = (*total);
+                tmp->next = string_to_node(line, size);
+                tmp->next->id = size->num_inst;
             }
         }
     }
@@ -93,7 +97,7 @@ void remove_line_title(char *dest, char *line, int size) {
 }
 
 // convert instructions into tokens
-t_node *string_to_node(char *src) {
+t_node *string_to_node(char *src, t_prog_size *size) {
     // create tokens from string
     t_array *tokens = tokenizer(src, SEPARATOR_SET);
 
@@ -136,6 +140,9 @@ t_node *string_to_node(char *src) {
         i++;
     }
     
+    // update size->total_bytes
+    size->total_bytes += (args->num_bytes - 1);
+    printf("inst #%i, total_bytes = %i\n", args->id, size->total_bytes);
     // free token array
     free_t_array(tokens);
 
