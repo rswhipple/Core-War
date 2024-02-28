@@ -23,7 +23,7 @@ champion_t *init_champion(flag_t *flags) {
     else { champ->address = 0; }
 
     champ->num_inst = 0;
-    champ->inst = NULL;
+    // champ->inst_array = NULL;  // TODO work on this 
     for (int i = 0; i < 16; i++) {
         champ->reg[i] = 0;
     }
@@ -52,15 +52,24 @@ champion_t *create_champion(flag_t *flags, char *filename) {
 // create champion 
 int read_file(champion_t **champ, int fd) {
     ssize_t bytes;
-    // Read header 
+    u_int8_t byte;
     bytes = read(fd, (*champ)->champ_header, sizeof(header_t));
+    // TODO: add error check
+    print_header((*champ)->champ_header);
 
-    while (bytes > 0) 
-    {
-        // TODO: Read instructions
-    }
+    size_t prog_size = (size_t)((*champ)->champ_header->prog_size); // cast int to size_t
+    size_t buf[BUF_SIZE];
+    bytes = read(fd, &buf, prog_size);
     
     return EXIT_SUCCESS;
+}
+
+// Print the contents of the 16 general purpose, ac, and carry flag registers
+void print_header(header_t *header) {
+	printf("-----Printing champion %s header contents-----\n", header->prog_name);
+	printf("magic: %i\n", header->magic);
+    printf("prog_size: %i\n", header->magic);
+	printf("comment: %s\n", header->comment);
 }
 
 // Print the contents of the 16 general purpose, ac, and carry flag registers
