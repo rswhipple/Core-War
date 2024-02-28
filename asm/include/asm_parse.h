@@ -4,7 +4,7 @@
 
 // function prototypes
 int execute_asm(char *filename);
-t_node *read_file(FILE *fp, t_header **header);
+t_node *read_file(FILE *fp, t_header **header, int *total);
 FILE *create_cor_file(char *filename);
 char *replace_ext(char *filename);
 void remove_line_title(char *dest, char *line, int size);
