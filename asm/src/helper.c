@@ -14,15 +14,6 @@ int my_atoi(char *num) {
   return output;
 }
 
-char* init_str(int size)  
-{
-    char* str = malloc(sizeof(char) * size + 1);
-
-    for (int i = 0; i < size + 1; i++) { str[i] = '\0'; }
-
-    return str;
-}
-
 int my_strlen(char* str) 
 {
     int i = 0;
@@ -64,7 +55,6 @@ char* my_strncpy(char* dst, char* src, int n)
 
 char* my_strcat(char *dst, char *src) 
 { 
-    // Save original destination pointer
     char *original_dst = dst; 
     
     // Move destination pointer to the end of the first string
@@ -78,11 +68,46 @@ char* my_strcat(char *dst, char *src)
         dst += 1;
         src += 1;
     }
-
-    // Null-terminate 
     *dst = '\0';
 
     return original_dst;
+}
+
+char* my_strchr(char* str_1, char char_1)
+{
+    int i;
+    int len = strlen(str_1);
+
+    for (i = 0; i <= len; i++) {
+        if (str_1[i] == char_1) {
+            return &str_1[i];
+        }
+    }
+
+    return NULL;
+}
+
+int my_strcmp(char* str_1, char* str_2)
+{
+    int i;
+    int str_to_int_1 = 0;
+    int str_to_int_2 = 0;
+
+    for (i = 0; str_1[i] != '\0'; i++) {
+        str_to_int_1 += str_1[i];
+    } 
+
+    for (i = 0; str_2[i] != '\0'; i++) {
+        str_to_int_2 += str_2[i];
+    } 
+    
+    if (str_to_int_1 == str_to_int_2) {
+        return 0;
+    } else if (str_to_int_1 > str_to_int_2) {
+        return -1;
+    } else {
+        return 1;
+    }
 }
 
 int my_strncmp(char* str_1, char* str_2, int index)
@@ -111,3 +136,25 @@ int my_strncmp(char* str_1, char* str_2, int index)
     }
 
 }
+
+void *my_memset(void *s, int c, size_t n) {
+    char *p = s;
+
+    while (n--) {
+        *p++ = (char)c;
+    }
+
+    return s;
+}
+
+void my_putstr(char *str) 
+{
+    write(STDOUT_FILENO, str, my_strlen(str));
+}
+
+void my_puterror(char *str) 
+{
+    write(STDERR_FILENO, str, my_strlen(str));
+}
+
+
