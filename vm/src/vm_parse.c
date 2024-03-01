@@ -21,10 +21,10 @@ modulo
 
 */
 
-#include "../include/op.h"
-#include "../include/helper.h"
-#include "../include/champion.h"
-#include "../include/vm_parse.h"
+#include "op.h"
+#include "helper.h"
+#include "champion.h"
+#include "vm_parse.h"
 
 flag_t *init_flag() {
     flag_t *flags = malloc(sizeof(flag_t));
