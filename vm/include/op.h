@@ -64,6 +64,19 @@ struct op_s {
   int (*inst)(champion_t *, core_t *, code_t, int *);
 };
 
+typedef struct inst_s {
+  int opcode;
+  int param_desc;
+  int value_1;
+  int value_2;
+  int value_3;
+} inst_t;
+
+typedef struct inst_array_s {
+  int size;
+  inst_t **array;
+} inst_array_t;
+
 enum op_types {
   OP_LIVE = 1,
   OP_LD,
@@ -112,7 +125,7 @@ typedef struct champion
     int id;                       // id of champ
     int address;                  // address of champ
     int num_inst;                 // number of instructions
-    int *inst_array[5];           // instruction array
+    inst_array_t *inst;           // instruction array
     int reg[REG_NUMBER];          // address of registers
     int ac;                       // program counter
     int carry;                    // carry flag
