@@ -6,6 +6,21 @@
 #include <sys/fcntl.h>
 
 
+champion_t *create_champion(flag_t *flags, char *filename) {
+    int fd = open(filename, O_RDONLY, 0644);
+    if (!fd) {
+        return NULL;
+    }
+
+    champion_t *champ = init_champion(flags);
+
+    read_file(&champ, fd);
+
+    close(fd);
+
+    return champ;
+}
+
 // initialize champion
 champion_t *init_champion(flag_t *flags) {
     champion_t *champ = malloc(sizeof(champion_t));
@@ -22,8 +37,7 @@ champion_t *init_champion(flag_t *flags) {
     if (flags->address) { champ->address = flags->address; }
     else { champ->address = 0; }
 
-    champ->num_inst = 0;
-    // champ->inst_array = NULL;  // TODO work on this 
+    champ->inst = NULL;  // TODO work on this 
     for (int i = 0; i < 16; i++) {
         champ->reg[i] = 0;
     }
@@ -34,22 +48,7 @@ champion_t *init_champion(flag_t *flags) {
     return champ;
 }
 
-champion_t *create_champion(flag_t *flags, char *filename) {
-    int fd = open(filename, O_RDONLY, 0644);
-    if (!fd) {
-        return NULL;
-    }
-
-    champion_t *champ = init_champion(flags);
-
-    read_file(&champ, fd);
-
-    close(fd);
-
-    return champ;
-}
-
-// create champion 
+// parse champion data
 int read_file(champion_t **champ, int fd) {
     // read header
     ssize_t bytes;
