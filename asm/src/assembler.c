@@ -25,9 +25,14 @@ int write_inst(FILE *cor, t_node *head, int total)
 
         u_int8_t *bytes = get_values(head, tmp, total);
         if (!bytes) return EXIT_FAILURE;
-        
+
         int i = 0;
-        while (i < tmp->num_bytes - 2) {
+        if (byte_1 == 0x01 || byte_1 == 0x09 || byte_1 == 0x0c || byte_1 == 0x0f) {
+            printf("command is live, zjmp or fork/lfork\n");
+            i += 1;
+        }
+        
+        while (i <= tmp->num_bytes - 2) {
             fwrite(&bytes[i], sizeof(bytes[i]), 1, cor);
             i++;
         }
@@ -97,16 +102,17 @@ u_int8_t *get_values(t_node *head, t_node *inst, int total) {
                     num = my_atoi(inst->array[i]->arg);
                 }
 
-                array[tmp_counter] = num & 0xFF; 
-                array[tmp_counter + 1] = (num >> 8) & 0xFF;
-                array[tmp_counter + 2] = (num >> 16) & 0xFF;
-                array[tmp_counter + 3] = (num >> 24) & 0xFF;
+                // Reverse the order of byte writing
+                array[tmp_counter + 3] = num & 0xFF;
+                array[tmp_counter + 2] = (num >> 8) & 0xFF;
+                array[tmp_counter + 1] = (num >> 16) & 0xFF;
+                array[tmp_counter] = (num >> 24) & 0xFF;
                 tmp_counter += 4;   // increment tmp_counter by 4
             }
             if (inst->array[i]->type == 3) {
                 u_int16_t num = my_atoi(inst->array[i]->arg);
-                array[tmp_counter] = num & 0xFF; 
-                array[tmp_counter + 1] = (num >> 8) & 0xFF;
+                array[tmp_counter + 1] = num & 0xFF; 
+                array[tmp_counter] = (num >> 8) & 0xFF;
                 tmp_counter += 2;   // increment tmp_counter by 2
             }
             i++;
@@ -114,10 +120,19 @@ u_int8_t *get_values(t_node *head, t_node *inst, int total) {
         array[0] <<= 2;
         i++;
     }
+
     if (tmp_counter != inst->num_bytes - 1) {
         printf("tmp_counter = %i\n", tmp_counter);
         my_puterror("Parsing Error: in get_values(), fewer bytes than expected\n");
         return NULL;
+    }
+
+    // TESTING print array
+    printf("--------------- Instruction #%i ---------------\n", inst->id);
+    i = 0;
+    while (i < tmp_counter) {
+        printf("byte index %i in the instruction byte array = %i\n", i, array[i]);
+        i++;
     }
 
     return array;
@@ -146,7 +161,6 @@ u_int32_t calculate_jump(t_node *head, int id, char *label, int total) {
     return result;
 }
 
-// not using anymore
 void write_int_big_end(FILE *cor, int num) {
     u_int8_t bytes[4];
     bytes[0] = (num >> 24) & 0xFF;
