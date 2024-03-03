@@ -69,6 +69,7 @@ t_node *read_file(FILE *fp, t_header **header, t_prog_size *size) {
         }
     }
     
+    print_nodes(head);  // TESTING
     return head;
 }
 
@@ -142,7 +143,8 @@ t_node *string_to_node(char *src, t_prog_size *size) {
     
     // update size->total_bytes
     size->total_bytes += (args->num_bytes - 1);
-    printf("inst #%i, total_bytes = %i\n", args->id, size->total_bytes);
+    // printf("inst #%i, total_bytes = %i\n", args->id, size->total_bytes);
+    
     // free token array
     free_t_array(tokens);
 
