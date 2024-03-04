@@ -131,7 +131,7 @@ typedef struct core_s {
   void (*load_champion)(struct core_s *core, champion_t *champ);
 } core_t;
 
-int inst_live(champion_t *champ, core_t *core, code_t code, int *inst);
+int inst_live(champion_t *champ, core_t *core, code_t code, int *args);
 int inst_ld(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_st(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_add(champion_t *champ, core_t *core, code_t code, int *args);
