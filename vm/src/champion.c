@@ -61,7 +61,6 @@ int read_file(champion_t **champ, int fd) {
     u_int8_t buf[prog_size];
     memset(buf, 0, prog_size);
     bytes = read(fd, &buf, prog_size);
-    print_inst_buf((*champ)->champ_header, buf, prog_size); // TESTING Print contents of buf
 
     // Convert instruction data to inst_array
     convert_to_inst(buf, prog_size);
@@ -70,6 +69,15 @@ int read_file(champion_t **champ, int fd) {
 }
 
 int convert_to_inst(u_int8_t *buf, size_t prog_size) {
+    int max_inst = (int)prog_size / 6;
+    inst_t **instructions = init_inst_array(max_inst);
+    u_int8_t byte_count = 0;
+
+    printf("-----Printing champion instruction raw data-----\n");
+    for(int i = 0; i < max_inst; i++) {
+
+        printf("buf[%hhu] = %02x\n", i, buf[i]);
+    }
 
     return EXIT_SUCCESS;
 }
@@ -87,7 +95,7 @@ void print_inst_buf(header_t *header, u_int8_t *buf, size_t size) {
 	printf("-----Printing champion \"%s\" instruction raw data-----\n", header->prog_name);
 
     // Print the contents of the buffer
-    for(u_int8_t i = 0; i < size; i++) {
+    for(u_int8_t i = 0; i <= size; i++) {
         printf("buf[%hhu] = %02x\n", i, buf[i]);
     }
 }
