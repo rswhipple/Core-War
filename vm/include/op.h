@@ -72,11 +72,6 @@ typedef struct inst_s {
   int value_3;
 } inst_t;
 
-typedef struct inst_array_s {
-  int size;
-  inst_t **array;
-} inst_array_t;
-
 enum op_types {
   OP_LIVE = 1,
   OP_LD,
@@ -125,7 +120,7 @@ typedef struct champion
     int id;                       // id of champ
     int address;                  // address of champ
     int num_inst;                 // number of instructions
-    inst_array_t *inst;           // instruction array
+    inst_t **inst;                // instruction pointer array
     int reg[REG_NUMBER];          // address of registers
     int ac;                       // program counter
     int carry;                    // carry flag
