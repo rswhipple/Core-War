@@ -142,7 +142,7 @@ t_node *string_to_node(char *src, t_prog_size *size) {
     }
     
     // update size->total_bytes
-    size->total_bytes += (args->num_bytes - 1);
+    size->total_bytes += (args->num_bytes);
     
     // free token array
     free_t_array(tokens);
