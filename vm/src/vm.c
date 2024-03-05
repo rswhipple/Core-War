@@ -22,7 +22,7 @@ int main(int argc, char **argv)
     game_loop(core);
 
     // memory cleanup
-    cleanup(head, core);
+    cleanup(core);
 
     return 0;
 }
