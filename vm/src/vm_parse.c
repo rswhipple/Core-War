@@ -1,26 +1,3 @@
-/*
-USAGE
-./corewar [-dump nbr_cycle] [[-n prog_number] [-a load_address]
-[prog_name] ...
-
-DESCRIPTION
--dump nbr_cycle
-dumps the memory after the nbr_cycle execution (if the round isn’t
-already over) with the following format: 32 bytes/line in
-hexadecimal (A0BCDEFE1DD3...)
-
--n prog_number
-sets the next program’s number. By default, the first free number
-in the parameter order
-
--a load_address
-sets the next program’s loading address. When no address is
-specified, optimize the addresses so that the processes are as
-far away from each other as possible. The addresses are MEM_SIZE
-modulo
-
-*/
-
 #include "../include/op.h"
 #include "../include/helper.h"
 #include "../include/champion.h"
@@ -64,13 +41,13 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
             // create champion, adjust flags
                 // TODO: add error handling if champion isn't created
             if (head == NULL) {
-                head = create_champion(*flags, argv[i]);
+                head = create_champ(*flags, argv[i]);
             } else {
                 champion_t *temp = head; 
                 while (temp->next) {
                     temp = temp->next;
                 }
-                temp->next = create_champion(*flags, argv[i]);
+                temp->next = create_champ(*flags, argv[i]);
             }
             (*flags)->id = 0;
             (*flags)->address = 0;
