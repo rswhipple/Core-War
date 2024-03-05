@@ -5,7 +5,7 @@
 #include "helper.h"
 
 // function prototypes
-void cleanup(champion_t *head, core_t *core);       // frees all data
+void cleanup(core_t *core);       // frees all data
 void free_champions(champion_t *champ);             // frees champions
 char *init_str(int size);
 char *init_and_strncpy(char *src);
