@@ -30,11 +30,6 @@
 /* size (in bytes) */
 #define IND_SIZE 2
 #define DIR_SIZE 4
-#define REG_SIZE DIR_SIZE
-
-#define REG_CODE 1
-#define DIR_CODE 2
-#define IND_CODE 3
 
 #define NAME_CMD_STRING ".name"
 #define COMMENT_CMD_STRING ".comment"
