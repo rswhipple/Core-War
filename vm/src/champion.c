@@ -28,8 +28,13 @@ champion_t *init_champion(flag_t *flags)  {
     champ->name = NULL;
     champ->comment = NULL;
     champ->string = NULL;
-    champ->id = 0;
+
+    if (flags->id) champ->id = flags->id;  
+    else champ->id = flags->num_champions + 1;
+
     champ->cursor = init_cursor(flags);
+    champ->cursor->id = champ->id;
+
     champ->next = NULL;
 
     return champ;
@@ -40,19 +45,22 @@ cursor_t *init_cursor(flag_t *flags) {
     cursor_t *cursor = malloc(sizeof(cursor_t));
     if (cursor == NULL) { return NULL; }
 
-    // set id 
-    if (flags->id) { cursor->id = flags->id; } 
-    else { cursor->id = flags->num_champions + 1; }
+    cursor->next = NULL;
+    cursor->dead = false;
+    cursor->id = 0;
+    cursor->carry = 0;
 
-    if (flags->address) { cursor->index_start = flags->address; }
-    else { cursor->index_start = 0; }
+    if (flags->address) cursor->index_start = flags->address;
+    else cursor->index_start = 0;
+
+    cursor->ac = 0;
+    cursor->num_inst = 0;
+    cursor->num_inst = 0;
+    cursor->cycle = 0;
 
     for (int i = 0; i < 16; i++) {
         cursor->reg[i] = 0;
     }
-    cursor->ac = 0;
-    cursor->carry = 0;
-    cursor->next = NULL;
 
     return cursor;
 }
