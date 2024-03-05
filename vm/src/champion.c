@@ -3,6 +3,7 @@
 #include "../include/champion.h"
 #include "../include/vm_parse.h"
 #include "../include/memory.h"
+#include "../include/print_tests.h"
 #include <sys/fcntl.h>
 
 
@@ -28,6 +29,7 @@ champion_t *init_champion(flag_t *flags)  {
     champ->name = NULL;
     champ->comment = NULL;
     champ->string = NULL;
+    champ->string_len = 0;
 
     if (flags->id) champ->id = flags->id;  
     else champ->id = flags->num_champions + 1;
@@ -75,17 +77,17 @@ int read_file(champion_t **champ, int fd) {
 
     (*champ)->name = init_and_strncpy(header->prog_name);
     (*champ)->comment = init_and_strncpy(header->comment);
-    int prog_size = header->prog_size;
+    (*champ)->string_len = header->prog_size;
 
-    print_header(header);   // TESTING print header
+    // print_header(header);   // TESTING print header
 
     // read instruction data
-    char buf[prog_size];
-    memset(buf, 0, prog_size);
-    bytes = read(fd, &buf, sizeof(char) * prog_size);
+    char buf[(*champ)->string_len];
+    memset(buf, 0, (*champ)->string_len);
+    bytes = read(fd, &buf, sizeof(char) * (*champ)->string_len);
     (*champ)->string = buf;
 
-    print_inst_buf(header, buf, prog_size);   // TESTING print buf
+    // print_inst_buf(header, buf, (*champ)->string_len);   // TESTING print buf
 
     free(header);
 
