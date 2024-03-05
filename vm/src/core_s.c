@@ -21,6 +21,8 @@ core_t *init_core(champion_t *head, flag_t *flags) {
 
     load_champions(core, head);
 
+    print_champions(head);
+
 
     // TODO figure out op_tab
 
