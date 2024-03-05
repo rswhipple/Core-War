@@ -3,8 +3,8 @@
 
 
 // free everything
-void cleanup(champion_t *head, core_t *core) {
-    free_champions(head);
+void cleanup(core_t *core) {
+    free_champions(core->champions);
     free(core);
 }
 
