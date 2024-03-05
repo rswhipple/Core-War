@@ -133,8 +133,9 @@ typedef struct cursor_s
   int     id;                       // id of champ
   int     carry;                    // carry flag
   int     index_start;              // starting core index
-  int     ac;                       // counter
+  int     ac;                       // counter (cursor)
   int     num_inst;                 // number of instructions
+  int     current_inst;
   int     cycle;
   int     reg[REG_NUMBER];          // registers
 
@@ -152,9 +153,9 @@ struct champion_s
 
 struct core_s
 {
-  char memory[MEM_SIZE];            // for storing champions
-  champion_t *champions;            // head of champion linked list
-  cursor_t *cursors;                // head of counter linked list
+  char memory[MEM_SIZE];            // the arena
+  champion_t *champions;
+  cursor_t *cursors;
   int     num_champions;            // number of champions
   int     cycle_to_die;             // number of cycles before being declared dead
   int     cycle_delta;              // number of cycles to decrement cycle_to_die by
@@ -162,8 +163,6 @@ struct core_s
   int     dump;                     // number of cycles before dumping memory
   int     cycle;                    // current cycle
   op_t op_tab[17];
-
-  void (*load_champion)(struct core_s *core, champion_t *champ);
 };
 
 
