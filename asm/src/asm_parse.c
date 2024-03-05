@@ -12,7 +12,8 @@ int execute_asm(char *filename) {
     t_node *inst_head = NULL;
     t_prog_size size = {
         .num_inst = 0,
-        .total_bytes = 0
+        .total_bytes = 0,
+        .curr_byte = 0
     };
 
     // open, read and parse .S file
@@ -27,7 +28,7 @@ int execute_asm(char *filename) {
     if (write_header(cor, header)) return EXIT_FAILURE;
 
     // write instructions
-    if (write_inst(cor, inst_head, size.num_inst)) return EXIT_FAILURE;
+    if (write_inst(cor, inst_head, &size)) return EXIT_FAILURE;
 
     // cleanup
     free_nodes(inst_head);
@@ -65,6 +66,13 @@ t_node *read_file(FILE *fp, t_header **header, t_prog_size *size) {
                 while (tmp->next) tmp = tmp->next;
                 tmp->next = string_to_node(line, size);
                 tmp->next->id = size->num_inst;
+
+                // calculate offset
+                if (tmp->next->id == 2) {
+                    tmp->next->offset += tmp->num_bytes;
+                } else {
+                    tmp->next->offset += tmp->num_bytes + tmp->offset;
+                }
             }
         }
     }
@@ -120,6 +128,9 @@ t_node *string_to_node(char *src, t_prog_size *size) {
     my_strcpy(args->command, tokens->array[i]);
     i++;
 
+    // check for special commands and adjust total num_bytes
+    if (is_special_command(args->command)) args->num_bytes -= 1;
+
     // parse values into t_args
     while (tokens->array[i]) {   
         if (tokens->array[i][0] == COMMENT_CHAR) continue;
@@ -166,4 +177,13 @@ void ttoa_remove_char(t_node **args, char *tok, int type)
     tmp->arg = init_str(my_strlen(tok));
     my_strcpy(tmp->arg, tok + 1);
     tmp->type = type;
+}
+
+bool is_special_command(char *command) {
+    if (my_strcmp(command, "live") == 0) return true;
+    if (my_strcmp(command, "zjmp") == 0) return true;
+    if (my_strcmp(command, "fork") == 0) return true;
+    if (my_strcmp(command, "lfork") == 0) return true;
+
+    return false;
 }
