@@ -4,7 +4,6 @@
 
 // function prototypes
 int my_atoi(char *num);
-char *init_str(int size);
 int my_strlen(char* str);
 char* my_strncpy(char* dst, char* src, int n);
 char* my_strcpy(char* dst, char* src);
