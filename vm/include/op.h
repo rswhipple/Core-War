@@ -4,12 +4,27 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <stdbool.h>
 
 #define MEM_SIZE (6 * 1024)
-/*modulo of the index*/
 #define IDX_MOD 512
-/*this may not be changed 2^*IND_SIZE*/
 #define MAX_ARGS_NUMBER 4
+
+#define MODA(x)	(x % MEM_SIZE < 0 ? x % MEM_SIZE + MEM_SIZE : x % MEM_SIZE)
+#define MODAI(x)	(x % MEM_SIZE)
+#define MODX(x)	(x % IDX_MOD)
+#define MASKFF(x)	(x & 0xFF)
+#define ABS(value)  (value > 0 ? value : -value)
+
+#define RRR 0b01010100
+#define RIR 0b01110100
+#define RDR 0b01100100
+#define IRR 0b11010100
+#define IIR 0b11110100
+#define IDR 0b11100100
+#define DRR 0b10010100
+#define DIR 0b10110100
+#define DDR 0b10100100
 
 #define COMMENT_CHAR '#'
 #define LABEL_CHAR ':'
@@ -27,7 +42,6 @@
 /* live */
 
 #define MAX_CHAMPIONS 4
-/* number of cycles before being decleared dead */
 #define CYCLE_TO_DIE 1536
 #define CYCLE_DELTA 5
 #define NBR_LIVE 40
@@ -37,14 +51,13 @@
 
 typedef char args_type_t;
 typedef unsigned char code_t;
-typedef struct champion champion_t;
+typedef struct champion_s champion_t;
 typedef struct core_s core_t;
 
 enum parameter_types {
   T_REG = 1,
   T_DIR = 2,
   T_IND = 4,
-  T_LAB = 8
 };
 
 enum inst_elems {
@@ -55,22 +68,22 @@ enum inst_elems {
   VALUE_3,
 };
 
-struct op_s {
+// typedef struct inst_s {
+//   int opcode;
+//   int param_desc;
+//   int value_1;
+//   int value_2;
+//   int value_3;
+// } inst_t;
+
+typedef struct op_s {
   char *mnemonique;
   char nbr_args;
   args_type_t type[MAX_ARGS_NUMBER];
   char code;
   int nbr_cycles;
   int (*inst)(champion_t *, core_t *, code_t, int *);
-};
-
-typedef struct inst_s {
-  int opcode;
-  int param_desc;
-  int value_1;
-  int value_2;
-  int value_3;
-} inst_t;
+} op_t;
 
 enum op_types {
   OP_LIVE = 1,
@@ -92,7 +105,6 @@ enum op_types {
   OP_NOTHING,
   OP_NB,
 };
-typedef struct op_s op_t;
 
 /* size (in bytes) */
 #define IND_SIZE 2
@@ -108,38 +120,51 @@ extern const op_t op_tab[];
 #define COREWAR_EXEC_MAGIC 0xea83f3
 
 typedef struct header_s {
-  int magic;
-  char prog_name[PROG_NAME_LENGTH + 1];
-  int prog_size;
-  char comment[COMMENT_LENGTH + 1];
+  int     magic;
+  char  prog_name[PROG_NAME_LENGTH + 1];
+  int     prog_size;
+  char  comment[COMMENT_LENGTH + 1];
 } header_t;
 
-typedef struct champion
+typedef struct cursor_s
 {
-    header_t *champ_header;       // header
-    int id;                       // id of champ
-    int address;                  // address of champ
-    int num_inst;                 // number of instructions
-    inst_t **inst;                // instruction pointer array
-    int reg[REG_NUMBER];          // address of registers
-    int ac;                       // program counter
-    int carry;                    // carry flag
-    struct champion *next;        // next champion
-} champion_t;
+  struct cursor_s *next;
+  bool        dead;                 // life status
+  int     id;                       // id of champ
+  int     carry;                    // carry flag
+  int     index_start;              // starting core index
+  int     ac;                       // counter
+  int     num_inst;                 // number of instructions
+  int     cycle;
+  int     reg[REG_NUMBER];          // registers
 
-typedef struct core_s
+} cursor_t;
+
+struct champion_s
 {
-    size_t memory[MEM_SIZE];       // for storing champions
-    champion_t *champions;         // head of champion linked list
-    int num_champions;             // number of champions
-    int cycle_to_die;              // number of cycles before being declared dead
-    int cycle_delta;               // number of cycles to decrement cycle_to_die by
-    int nbr_live;                  // number of live instructions before cycle_to_die is decremented by cycle_delta
-    int dump;                      // number of cycles before dumping memory
-    int cycle;                     // current cycle
+  char  *name;
+  char  *comment;
+  int     id;                       // id of champ
+  cursor_t *cursor;
+  struct champion_s *next;            // next champion
+};
 
-    void (*load_champion)(struct core_s *core, champion_t *champ);
-} core_t;
+struct core_s
+{
+  char memory[MEM_SIZE];            // for storing champions
+  champion_t *champions;            // head of champion linked list
+  cursor_t *cursors;                // head of counter linked list
+  int     num_champions;            // number of champions
+  int     cycle_to_die;             // number of cycles before being declared dead
+  int     cycle_delta;              // number of cycles to decrement cycle_to_die by
+  int     nbr_live;                 // number of live instructions before cycle_to_die is decremented by cycle_delta
+  int     dump;                     // number of cycles before dumping memory
+  int     cycle;                    // current cycle
+  op_t op_tab[17];
+
+  void (*load_champion)(struct core_s *core, champion_t *champ);
+};
+
 
 int inst_live(champion_t *champ, core_t *core, code_t code, int *inst);
 int inst_ld(champion_t *champ, core_t *core, code_t code, int *inst);
