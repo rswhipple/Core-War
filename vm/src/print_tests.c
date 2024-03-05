@@ -1,5 +1,5 @@
 #include "../include/print_tests.h"
-
+#include "../include/helper.h"
 
 // Print the contents of the 16 general purpose, ac, and carry flag registers
 void print_header(header_t *header) {
@@ -10,7 +10,7 @@ void print_header(header_t *header) {
 }
 
 // Print the inst buf hex by hex
-void print_inst_buf(header_t *header, u_int8_t *buf, size_t size) {
+void print_inst_buf(header_t *header, char *buf, size_t size) {
 	printf("-----Printing champion \"%s\" instruction raw data-----\n", header->prog_name);
 
     // Print the contents of the buffer
@@ -34,7 +34,13 @@ void print_champions(champion_t *head) {
     champion_t *curr = head;
     while (curr) {
         // print
-        printf("\nChamp is named %s\n", curr->name);
+        printf("\n~~~~~~~~~~~~~~~~~Champ \"%s\", id #%i \"%s\"~~~~~~~~~~~~~~~~~~\n", curr->name, curr->id, curr->comment);;
+        printf("string of instructions: \n");
+        for(int i = 0; i < curr->string_len; i++) {
+            printf("\t\tstring[%i] = %02hhx\n", i, curr->string[i]);
+        }
+        printf("\tindex_start = %i\n", curr->cursor->index_start);
+
         curr = curr->next;
     }
 }
