@@ -1,7 +1,8 @@
+#include "op.h"
 #include "vm_parse.h"
 #include "core.h" 
+#include "vm_execute.h"
 #include "memory.h"
-#include "op.h"
 
 int main(int argc, char **argv)
 {
@@ -17,7 +18,8 @@ int main(int argc, char **argv)
     // init core, load champs, run core
     core_t *core = init_core(head, flags); 
 
-    // print winner
+    // run game
+    game_loop(core);
 
     // memory cleanup
     cleanup(head, core);
