@@ -102,3 +102,13 @@ int my_strncmp(char* str_1, char* str_2, int index)
     }
 
 }
+
+void my_putstr(char *str) 
+{
+    write(STDOUT_FILENO, str, my_strlen(str));
+}
+
+void my_puterror(char *str) 
+{
+    write(STDERR_FILENO, str, my_strlen(str));
+}
