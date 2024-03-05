@@ -5,11 +5,19 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <fcntl.h>
+#include <stdbool.h>
+
+
+#define MEM_SIZE (6 * 1024)
+#define IDX_MOD 512     // modulo of the index
+#define CHAMP_MAX_SIZE (MEM_SIZE / 10)
+#define MAX_INSTRUCTIONS 40
+// TODO add CHAMP_MAX_SIZE check and remove MAX_INSTRUCTIONS
 
 #define PROG_NAME_LENGTH 128
 #define COMMENT_LENGTH 2048
 #define COREWAR_EXEC_MAGIC 0xea83f3
-#define MAX_INSTRUCTIONS 40
+
 
 #define COMMENT_CHAR '#'
 #define LABEL_CHAR ':'
@@ -22,6 +30,11 @@
 /* size (in bytes) */
 #define IND_SIZE 2
 #define DIR_SIZE 4
+#define REG_SIZE DIR_SIZE
+
+#define REG_CODE 1
+#define DIR_CODE 2
+#define IND_CODE 3
 
 #define NAME_CMD_STRING ".name"
 #define COMMENT_CMD_STRING ".comment"
@@ -53,6 +66,7 @@ typedef struct s_header {
 } t_header;
 
 typedef struct s_prog_size {
+    int curr_byte;
     int num_inst;
     int total_bytes;
 } t_prog_size;
@@ -71,6 +85,7 @@ typedef struct s_arg_node {
     int id;
     int param_count;
     int num_bytes;
+    int offset;
     char *label;
     char *command;
     t_arg **array;
@@ -84,11 +99,11 @@ typedef struct {
 
 // function prototypes
 int write_header(FILE *cor, t_header *header);
-int write_inst(FILE *cor, t_node *head, int num_inst);
+int write_inst(FILE *cor, t_node *head, t_prog_size *size);
 u_int8_t get_command(FILE *cor, char *command);
-u_int8_t *get_values(t_node *head, t_node *inst, int total);
+u_int8_t *get_values(t_node *head, t_node *inst, t_prog_size *size);
 void write_int_big_end(FILE *cor, int num);
-u_int32_t calculate_jump(t_node *head, int id, char *label, int total);
+u_int32_t calculate_jump(t_node *head, t_node *inst, char *label, t_prog_size *size);
 void print_usage();
 
 #endif
