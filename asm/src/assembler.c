@@ -13,7 +13,7 @@ int write_header(FILE *cor, t_header *header)
 }
 
 
-int write_inst(FILE *cor, t_node *head, int total) 
+int write_inst(FILE *cor, t_node *head, t_prog_size *size) 
 {
     size_t result;
     t_node *tmp = head;
@@ -22,20 +22,27 @@ int write_inst(FILE *cor, t_node *head, int total)
     while (tmp) {
         if ((byte_1 = get_command(cor, tmp->command)) <= 0) return EXIT_FAILURE;
         fwrite(&byte_1, sizeof(byte_1), 1, cor);
+        size->curr_byte += 1;
 
-        u_int8_t *bytes = get_values(head, tmp, total);
-        if (!bytes) return EXIT_FAILURE;
+        u_int8_t *curr_inst = get_values(head, tmp, size);
+        if (!curr_inst) return EXIT_FAILURE;
 
+        // check if command is type "special"
         int i = 0;
         if (byte_1 == 0x01 || byte_1 == 0x09 || byte_1 == 0x0c || byte_1 == 0x0f) {
-            printf("command is live, zjmp or fork/lfork\n");
+            // printf("command is live, zjmp or fork/lfork\n"); // TESTING
             i += 1;
+            while (i < tmp->num_bytes) {
+                fwrite(&curr_inst[i], sizeof(curr_inst[i]), 1, cor);
+                i++;
+            }
+        } else {
+            while (i < tmp->num_bytes - 1) {
+                fwrite(&curr_inst[i], sizeof(curr_inst[i]), 1, cor);
+                i++;
+            }
         }
         
-        while (i <= tmp->num_bytes - 2) {
-            fwrite(&bytes[i], sizeof(bytes[i]), 1, cor);
-            i++;
-        }
         tmp = tmp->next;
     }
 
@@ -78,9 +85,9 @@ u_int8_t get_command(FILE *cor, char *command)
     return -1;
 }
 
-u_int8_t *get_values(t_node *head, t_node *inst, int total) {
+u_int8_t *get_values(t_node *head, t_node *inst, t_prog_size *size) {
     int tmp_counter = 1;
-    u_int8_t *array = init_int(14);
+    u_int8_t *array = init_int(inst->num_bytes);
     int i = 0;
 
     while (i < 4) {
@@ -90,6 +97,7 @@ u_int8_t *get_values(t_node *head, t_node *inst, int total) {
             if (inst->array[i]->type == 1) {
                 array[tmp_counter] = my_atoi(inst->array[i]->arg);  // set byte array[tmp_counter]
                 tmp_counter++;  // increment tmp_counter by 1
+                size->curr_byte++;
             }
             if (inst->array[i]->type == 2) {
                 u_int32_t num;
@@ -97,23 +105,26 @@ u_int8_t *get_values(t_node *head, t_node *inst, int total) {
                 // handle direct labels
                 if (inst->array[i]->arg[0] == ':') {
                     char *label = inst->array[i]->arg + 1;
-                    num = calculate_jump(head, inst->id, label, total);
+                    num = calculate_jump(head, inst, label, size);
+                    array[tmp_counter] = 0xFF;
                 } else {
                     num = my_atoi(inst->array[i]->arg);
+                    array[tmp_counter] = (num >> 24) & 0xFF;
                 }
 
                 // Reverse the order of byte writing
                 array[tmp_counter + 3] = num & 0xFF;
                 array[tmp_counter + 2] = (num >> 8) & 0xFF;
                 array[tmp_counter + 1] = (num >> 16) & 0xFF;
-                array[tmp_counter] = (num >> 24) & 0xFF;
                 tmp_counter += 4;   // increment tmp_counter by 4
+                size->curr_byte += 4;
             }
             if (inst->array[i]->type == 3) {
                 u_int16_t num = my_atoi(inst->array[i]->arg);
                 array[tmp_counter + 1] = num & 0xFF; 
                 array[tmp_counter] = (num >> 8) & 0xFF;
                 tmp_counter += 2;   // increment tmp_counter by 2
+                size->curr_byte += 2;
             }
             i++;
         }
@@ -121,36 +132,33 @@ u_int8_t *get_values(t_node *head, t_node *inst, int total) {
         i++;
     }
 
-    if (tmp_counter != inst->num_bytes - 1) {
-        printf("tmp_counter = %i\n", tmp_counter);
-        my_puterror("Parsing Error: in get_values(), fewer bytes than expected\n");
-        return NULL;
-    }
-
     // TESTING print array
     printf("--------------- Instruction #%i ---------------\n", inst->id);
+    // if (tmp_counter != inst->num_bytes - 1) {
+    //     printf("tmp_counter == %i, != %i\n", tmp_counter, inst->num_bytes - 1);
+    //     printf("Double check : in get_values(), fewer bytes than expected\n");
+    // }
     i = 0;
     while (i < tmp_counter) {
-        printf("byte index %i in the instruction byte array = %i\n", i, array[i]);
+        printf("byte index %i in the instruction byte array = %02x\n", i, array[i]);
         i++;
     }
 
     return array;
 }
 
-u_int32_t calculate_jump(t_node *head, int id, char *label, int total) {
+u_int32_t calculate_jump(t_node *head, t_node *inst, char *label, t_prog_size *size) {
     // declare result & tmp variables
     u_int32_t result = 0;
     t_node *tmp = head;
 
     // iterate through nodes from head (tmp)
     while (tmp) {
-        // if label == tmp->label
         if (tmp->label && (my_strcmp(label, tmp->label)) == 0) {
-            if (tmp->id - id > 0) {
-                result = (u_int32_t)(tmp->id - id);
+            if (tmp->id - inst->id > 0) {
+                result = tmp->offset - size->curr_byte + 1;
             } else {
-                result = (u_int32_t)(total - id + tmp->id);
+                result = (u_int32_t)(MEM_SIZE - (size->curr_byte - tmp->offset) + 1);   // TODO double check +1 is correct
             }
             return result;
         }
