@@ -40,7 +40,7 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
             i += 2;     // increment i by 2
         } else {
             // create champion, adjust flags
-            // TODO: add error handling if champion isn't created
+            // TODO: add error check for file type etc.
             if (head == NULL) {
                 head = create_champ(*flags, argv[i]);
             } else {
@@ -57,7 +57,7 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
         i++;
     }
 
-    print_champions(head);
+    // print_champions(head);       // TESTING
     return head;    // return head of champion linked list
 }
 
