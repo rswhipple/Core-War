@@ -27,6 +27,7 @@ champion_t *init_champion(flag_t *flags)  {
 
     champ->name = NULL;
     champ->comment = NULL;
+    champ->string = NULL;
     champ->id = 0;
     champ->cursor = init_cursor(flags);
     champ->next = NULL;
@@ -74,34 +75,11 @@ int read_file(champion_t **champ, int fd) {
     char buf[prog_size];
     memset(buf, 0, prog_size);
     bytes = read(fd, &buf, sizeof(char) * prog_size);
-
-    // Convert instruction data to inst_array
-    convert_to_inst(buf, prog_size);
+    (*champ)->string = buf;
 
     print_inst_buf(header, buf, prog_size);   // TESTING print buf
 
     free(header);
-
-    return EXIT_SUCCESS;
-}
-
-int convert_to_inst(char *buf, size_t prog_size) {
-    // int max_inst = (int)prog_size / 6;
-    // inst_t **instructions = init_inst_array(max_inst);
-    // u_int8_t byte_count = 0;
-
-    // printf("-----Parsing champion instruction raw data-----\n");
-    // for(int i = 0; i < max_inst; i++) {
-    //     instructions[i]->opcode = (int)buf[byte_count];
-    //     int tmp = instructions[i]->opcode;
-    //     byte_count++;
-    //     if (tmp == 0x01 || tmp == 0x09 || tmp == 0x0c || tmp == 0x0f) {
-    //         instructions[i]->param_desc = 0;
-    //     } else {
-    //         instructions[i]->param_desc = (int)buf[byte_count];
-    //     }
-    //     // printf("buf[%hhu] = %02x\n", i, buf[i]);
-    // }
 
     return EXIT_SUCCESS;
 }

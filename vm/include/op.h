@@ -144,6 +144,7 @@ struct champion_s
 {
   char  *name;
   char  *comment;
+  char  *string;
   int     id;                       // id of champ
   cursor_t *cursor;
   struct champion_s *next;            // next champion
