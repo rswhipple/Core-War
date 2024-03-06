@@ -53,6 +53,7 @@
 
 typedef char args_type_t;
 typedef unsigned char code_t;
+typedef struct cursor_s cursor_t;
 typedef struct champion_s champion_t;
 typedef struct core_s core_t;
 
@@ -70,25 +71,17 @@ enum inst_elems {
   VALUE_3,
 };
 
-// typedef struct inst_s {
-//   int opcode;
-//   int param_desc;
-//   int value_1;
-//   int value_2;
-//   int value_3;
-// } inst_t;
-
 typedef struct op_s {
   char *mnemonique;
   char nbr_args;
   args_type_t type[MAX_ARGS_NUMBER];
   char code;
   int nbr_cycles;
-  int (*inst)(champion_t *, core_t *, code_t, int *);
+  int (*inst)(core_t *, cursor_t *);
 } op_t;
 
 enum op_types {
-  OP_LIVE = 1,
+  OP_LIVE,
   OP_LD,
   OP_ST,
   OP_ADD,
@@ -128,12 +121,14 @@ typedef struct header_s {
   char  comment[COMMENT_LENGTH + 1];
 } header_t;
 
-typedef struct cursor_s
+
+
+struct cursor_s
 {
-  struct cursor_s *next;
+  cursor_t *next;
+  champion_t *parent;
   bool        dead;                 // life status
   bool        flag;                 // if true check for winner
-  int     id;                       // id of champ
   int     carry;                    // carry flag
   int     index_start;              // starting core index
   int     ac;                       // counter (cursor)
@@ -142,7 +137,7 @@ typedef struct cursor_s
   int     cycle;
   int     reg[REG_NUMBER];          // registers
 
-} cursor_t;
+};
 
 struct champion_s
 {
@@ -160,7 +155,8 @@ struct core_s
   char memory[MEM_SIZE];            // the arena
   champion_t *champions;
   cursor_t *cursors;
-  int     num_champions;            // number of champions
+  int     total_champs;            // number of champions
+  int     live_champs;
   int     cycle_to_die;             // number of cycles before being declared dead
   int     cycle_delta;              // number of cycles to decrement cycle_to_die by
   int     nbr_live;                 // number of live instructions before cycle_to_die is decremented by cycle_delta
@@ -170,22 +166,22 @@ struct core_s
 };
 
 
-int inst_live(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_ld(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_st(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_add(champion_t *champ, core_t *core, code_t code, int *args);
-int inst_sub(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_and(champion_t *champ, core_t *core, code_t code, int *args);
-int inst_or(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_xor(champion_t *champ, core_t *core, code_t code, int *args);
-int inst_zjmp(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_ldi(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_sti(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_fork(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_lld(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_lldi(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_lfork(champion_t *champ, core_t *core, code_t code, int *inst);
-int inst_aff(champion_t *champ, core_t *core, code_t code, int *inst);
-void update_carry(champion_t *champ, int dest_reg);
+int inst_live(core_t *core, cursor_t *cursor);
+int inst_ld(core_t *core, cursor_t *cursor);
+int inst_st(core_t *core, cursor_t *cursor);
+int inst_add(core_t *core, cursor_t *cursor);
+int inst_sub(core_t *core, cursor_t *cursor);
+int inst_and(core_t *core, cursor_t *cursor);
+int inst_or(core_t *core, cursor_t *cursor);
+int inst_xor(core_t *core, cursor_t *cursor);
+int inst_zjmp(core_t *core, cursor_t *cursor);
+int inst_ldi(core_t *core, cursor_t *cursor);
+int inst_sti(core_t *core, cursor_t *cursor);
+int inst_fork(core_t *core, cursor_t *cursor);
+int inst_lld(core_t *core, cursor_t *cursor);
+int inst_lldi(core_t *core, cursor_t *cursor);
+int inst_lfork(core_t *core, cursor_t *cursor);
+int inst_aff(core_t *core, cursor_t *cursor);
+void update_carry(cursor_t *cursor, int dest_reg);
 
 #endif
