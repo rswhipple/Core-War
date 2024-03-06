@@ -25,6 +25,8 @@
 #define DRR 0b10010100
 #define DIR 0b10110100
 #define DDR 0b10100100
+#define IR 0b11010000
+#define DR 0b10010000
 
 #define COMMENT_CHAR '#'
 #define LABEL_CHAR ':'
