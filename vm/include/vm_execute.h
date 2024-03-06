@@ -5,7 +5,8 @@
 // function prototypes
 int game_loop(core_t *core);
 void print_winner(core_t *core);
-bool check_for_winner(champion_t *head, bool no_winner);
+void check_for_winner(core_t **core, cursor_t **cursor, bool *no_winner);
 int execute_inst(core_t *core, cursor_t *cursor);
+int	command_to_opcode(core_t *core, cursor_t *cursor);
 
 #endif
