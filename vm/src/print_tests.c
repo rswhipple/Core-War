@@ -34,13 +34,14 @@ void print_champions(champion_t *head) {
     champion_t *curr = head;
     while (curr) {
         // print
-        printf("\n~~~~~~~~~~~~~~~~~Champ \"%s\", id #%i \"%s\"~~~~~~~~~~~~~~~~~~\n", curr->name, curr->id, curr->comment);;
-        printf("string of instructions: \n");
-        for(int i = 0; i < curr->string_len; i++) {
-            printf("\t\tstring[%i] = %02hhx\n", i, curr->string[i]);
-        }
+        printf("\n~~~~~~~~~~~~~~~~~Champ \"%s\", id #%i \"%s\"~~~~~~~~~~~~~~~~~~\n", curr->name, curr->id, curr->comment);
+        printf("\tstring_len = %i\n", curr->string_len);
         printf("\tindex_start = %i\n", curr->cursor->index_start);
+        // printf("string of instructions: \n");
 
+        // for(int i = 0; i < curr->string_len; i++) {
+        //     printf("\t\tstring[%i] = %02hhx\n", i, curr->string[i]);
+        // }
         curr = curr->next;
     }
 }
