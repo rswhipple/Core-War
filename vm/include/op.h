@@ -130,6 +130,7 @@ typedef struct cursor_s
 {
   struct cursor_s *next;
   bool        dead;                 // life status
+  bool        flag;                 // if true check for winner
   int     id;                       // id of champ
   int     carry;                    // carry flag
   int     index_start;              // starting core index
