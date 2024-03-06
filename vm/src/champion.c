@@ -49,6 +49,7 @@ cursor_t *init_cursor(flag_t *flags) {
 
     cursor->next = NULL;
     cursor->dead = false;
+    cursor->flag = false;
     cursor->id = 0;
     cursor->carry = 0;
 
@@ -57,7 +58,7 @@ cursor_t *init_cursor(flag_t *flags) {
 
     cursor->ac = 0;
     cursor->num_inst = 0;
-    cursor->num_inst = 0;
+    cursor->current_inst = 0;
     cursor->cycle = 0;
 
     for (int i = 0; i < 16; i++) {
