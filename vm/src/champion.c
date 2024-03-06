@@ -35,7 +35,7 @@ champion_t *init_champion(flag_t *flags)  {
     else champ->id = flags->num_champions + 1;
 
     champ->cursor = init_cursor(flags);
-    champ->cursor->id = champ->id;
+    champ->cursor->parent = champ;
 
     champ->next = NULL;
 
@@ -48,9 +48,9 @@ cursor_t *init_cursor(flag_t *flags) {
     if (cursor == NULL) { return NULL; }
 
     cursor->next = NULL;
+    cursor->parent = NULL;
     cursor->dead = false;
     cursor->flag = false;
-    cursor->id = 0;
     cursor->carry = 0;
 
     if (flags->address) cursor->index_start = flags->address;
