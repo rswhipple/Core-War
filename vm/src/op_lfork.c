@@ -1,5 +1,7 @@
 #include "../include/op.h"
 
+/* Same as fork without the %IDX_MOD. */
+
 int inst_lfork(core_t *core, cursor_t* cursor) 
 {
     //check if the index is valid

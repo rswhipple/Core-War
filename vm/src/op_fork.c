@@ -1,5 +1,8 @@
 #include "../include/op.h"
 
+/* Takes 1 parameter, an index. Creates a new program, inheriting states
+from the parent, and starting execution at Counter + parameter % IDX_MOD */
+
 int inst_fork(core_t *core, cursor_t* cursor) 
 {
     // Placeholder value holding the value of *inst

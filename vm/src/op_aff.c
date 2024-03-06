@@ -1,6 +1,11 @@
 #include "../include/op.h"
 #include <unistd.h>
 
+/* Takes 1 parameter, a register. Displays to stdout the character
+corresponding to the ASCII code of the content of the register (in base
+10). A 256 modulo is applied to this ASCII code.
+Ex; aff r3 -> outputs '*' if r3 contains 42. */
+
 int inst_aff(core_t *core, cursor_t* cursor)
 {
     // char c;

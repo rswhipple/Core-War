@@ -1,7 +1,8 @@
 #include "../include/op.h"
 
-// Adds the value stored in the first register to the second register's value and
-// stores the result to the third register.
+/* Takes 3 parameters: 3 registers. Add the first to the second, and store
+the result to the third. Modifies the carry. */
+
 int inst_add(core_t *core, cursor_t* cursor) {
   int r1 = (int)core->memory[cursor->ac++];
   int r2 = (int)core->memory[cursor->ac++];
