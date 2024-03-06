@@ -1,5 +1,5 @@
 #include "../include/op.h"
 
-int inst_lldi(champion_t *champ, core_t *core, code_t code, int *inst) {
+int inst_lldi(core_t *core, cursor_t* cursor) {
   return 0;
 }

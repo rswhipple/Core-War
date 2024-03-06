@@ -21,7 +21,7 @@ void print_inst_buf(header_t *header, char *buf, size_t size) {
 
 // Print the contents of the 16 general purpose, ac, and carry flag registers
 void print_cursor(cursor_t *cursor) {
-	printf("-----Printing champion %d register contents-----\n", cursor->id);
+	printf("-----Printing champion %d register contents-----\n", cursor->parent->id);
 	for (int i = 0; i < REG_NUMBER; i++) {
 		printf("register %d: %d\n", i + 1, cursor->reg[i]);
 	}
@@ -37,8 +37,8 @@ void print_champions(champion_t *head) {
         printf("\n~~~~~~~~~~~~~~~~~Champ \"%s\", id #%i \"%s\"~~~~~~~~~~~~~~~~~~\n", curr->name, curr->id, curr->comment);
         printf("\tstring_len = %i\n", curr->string_len);
         printf("\tindex_start = %i\n", curr->cursor->index_start);
+        printf("\tac = %i\n", curr->cursor->ac);
         // printf("string of instructions: \n");
-
         // for(int i = 0; i < curr->string_len; i++) {
         //     printf("\t\tstring[%i] = %02hhx\n", i, curr->string[i]);
         // }

@@ -21,8 +21,8 @@ const op_t op_tab[] = {
 };
 
 // update the champion's carry flag if the previous operation returns 0
-void update_carry(champion_t *champ, int dest_reg) {
-  if (champ->cursor->reg[dest_reg] == 0) {
-    champ->cursor->carry = 1;
+void update_carry(cursor_t *cursor, int dest_reg) {
+  if (cursor->reg[dest_reg] == 0) {
+    cursor->carry = 1;
   }
 }

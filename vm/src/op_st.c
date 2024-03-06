@@ -1,5 +1,5 @@
 #include "../include/op.h"
 
-int inst_st(champion_t *champ, core_t *core, code_t code, int *inst) {
+int inst_st(core_t *core, cursor_t* cursor) {
   return 0;
 }
