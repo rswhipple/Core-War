@@ -10,11 +10,8 @@
 #define IDX_MOD 512
 #define MAX_ARGS_NUMBER 4
 
-#define MODA(x)	(x % MEM_SIZE < 0 ? x % MEM_SIZE + MEM_SIZE : x % MEM_SIZE)
-#define MODAI(x)	(x % MEM_SIZE)
-#define MODX(x)	(x % IDX_MOD)
-#define MASKFF(x)	(x & 0xFF)
-#define ABS(value)  (value > 0 ? value : -value)
+#define MOD(x)	(x % IDX_MOD)
+#define MASK_FF(x)	(x & 0xFF)
 
 #define RRR 0b01010100
 #define RIR 0b01110100
@@ -42,7 +39,6 @@
 #define REG_NUMBER 16
 
 /* live */
-
 #define MAX_CHAMPIONS 4
 #define CYCLE_TO_DIE 1536
 #define CYCLE_DELTA 5
@@ -182,6 +178,5 @@ int inst_lld(core_t *core, cursor_t *cursor);
 int inst_lldi(core_t *core, cursor_t *cursor);
 int inst_lfork(core_t *core, cursor_t *cursor);
 int inst_aff(core_t *core, cursor_t *cursor);
-void update_carry(cursor_t *cursor, int dest_reg);
 
 #endif
