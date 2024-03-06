@@ -27,7 +27,7 @@
 /* live */
 
 #define MAX_CHAMPIONS 4
-/* number of cycles before being decleared dead */
+/* number of cycles before being declared dead */
 #define CYCLE_TO_DIE 1536
 #define CYCLE_DELTA 5
 #define NBR_LIVE 40
