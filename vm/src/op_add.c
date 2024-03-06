@@ -4,9 +4,9 @@
 the result to the third. Modifies the carry. */
 
 int inst_add(core_t *core, cursor_t* cursor) {
-  int r1 = (int)core->memory[cursor->ac++];
-  int r2 = (int)core->memory[cursor->ac++];
-  int r3 = (int)core->memory[cursor->ac++];
+  int r1 = (int)core->memory[cursor->ac + 2];
+  int r2 = (int)core->memory[cursor->ac + 3];
+  int r3 = (int)core->memory[cursor->ac + 4];
 
   cursor->reg[r3] = cursor->reg[r1] + cursor->reg[r2];
   update_carry(cursor->parent, r3);
