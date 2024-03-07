@@ -1,4 +1,4 @@
-#include "../include/vm_execute.h"
+#include "../include/game_loop.h"
 
 
 int game_loop(core_t *core) {
@@ -9,12 +9,17 @@ int game_loop(core_t *core) {
     cursor = core->cursors;
     printf("~~~###/// THE CORE WARS COMMENCE ///###~~~\n");
     while (no_winner) {
+        if (core->counter == core->total_champs) add_cycle(&core);
         if (cursor->flag) check_for_winner(&core, &cursor, &no_winner);
         if (!cursor->dead) {
+            if (cursor->running) {
+                
+            }
             printf("champion %s #%i\n", cursor->parent->name, cursor->parent->id);
             execute_inst(core, cursor);
         }
         cursor = cursor->next;
+        core->counter += 1;
         no_winner = false;
     }
 
@@ -52,6 +57,13 @@ int execute_inst(core_t *core, cursor_t *cursor) {
 }
 
 
+void add_cycle(core_t **core)
+{
+	(*core)->counter = 0;
+    (*core)->cycle += 1;
+}
+
+
 int	command_to_opcode(core_t *core, cursor_t *cursor) {
 	unsigned char i;
     int opcode;
@@ -65,16 +77,3 @@ int	command_to_opcode(core_t *core, cursor_t *cursor) {
     else
         return 0;
 }
-
-
-// void	ft_add_cycle(t_env *e, t_cursor *cursor)
-// {
-// 	if (ft_check_if_an_operation(e, cursor))
-// 	{
-// 		cursor->cycle += e->op_tab[e->a[cursor->index].hex & 0xFF].cycles - 2;
-// 		cursor->running = 1;
-// 	}
-// 	else
-// 		ft_update_cursor(e, cursor, 1);
-// }
-

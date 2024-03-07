@@ -1,5 +1,5 @@
-#ifndef _VM_EXECUTE_H_
-#define _VM_EXECUTE_H_
+#ifndef _GAME_LOOP_H_
+#define _GAME_LOOP_H_
 #include "op.h"
 
 // function prototypes
