@@ -42,7 +42,6 @@ champion_t *init_champion(flag_t *flags)  {
     return champ;
 }
 
-// initialize champion
 cursor_t *init_cursor(flag_t *flags) {
     cursor_t *cursor = malloc(sizeof(cursor_t));
     if (cursor == NULL) { return NULL; }
@@ -50,15 +49,18 @@ cursor_t *init_cursor(flag_t *flags) {
     cursor->next = NULL;
     cursor->parent = NULL;
     cursor->dead = false;
+    cursor->live = false;
     cursor->flag = false;
     cursor->carry = 0;
 
     if (flags->address) cursor->index_start = flags->address;
     else cursor->index_start = 0;
 
-    cursor->ac = 0;
+    cursor->ac = cursor->index_start;
     cursor->num_inst = 0;
     cursor->current_inst = 1;
+    cursor->opcode = -1;
+    cursor->running = 0;
     cursor->cycle = 0;
 
     for (int i = 0; i < 16; i++) {
