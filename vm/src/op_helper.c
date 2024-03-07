@@ -2,12 +2,13 @@
 
 
 void update_cursor(core_t *core, cursor_t *cursor, int i) {
-    
-}
-
-
-void update_cycles(core_t *core, cursor_t *cursor) {
-
+	cursor->current_inst += 1;
+	if (cursor->current_inst == cursor->num_inst) {
+		cursor->ac = cursor->index_start;
+		cursor->current_inst = 1;
+	} else {
+		cursor->ac += i;
+	}
 }
 
 
