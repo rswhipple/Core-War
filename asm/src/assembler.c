@@ -2,10 +2,8 @@
 #include "../include/memory.h"
 #include "../include/tokenize.h"
 
-// write binary into file
 int write_header(FILE *cor, t_header *header) 
 {
-    // Header
     size_t result = fwrite(header, sizeof(t_header), 1, cor);
     if (result != 1) return EXIT_FAILURE; 
 
@@ -27,10 +25,9 @@ int write_inst(FILE *cor, t_node *head, t_prog_size *size)
         u_int8_t *curr_inst = get_values(head, tmp, size);
         if (!curr_inst) return EXIT_FAILURE;
 
-        // check if command is type "special"
         int i = 0;
-        if (byte_1 == 0x01 || byte_1 == 0x09 || byte_1 == 0x0c || byte_1 == 0x0f) {
-            // printf("command is live, zjmp or fork/lfork\n"); // TESTING
+        if (byte_1 == 0x01 || byte_1 == 0x09 || byte_1 == 0x0c || 
+                    byte_1 == 0x0f || byte_1 == 0x10) {                  // check if command is type "special"
             i += 1;
             while (i < tmp->num_bytes) {
                 fwrite(&curr_inst[i], sizeof(curr_inst[i]), 1, cor);
@@ -95,7 +92,7 @@ u_int8_t *get_values(t_node *head, t_node *inst, t_prog_size *size) {
             array[0] <<= 2; // shifting to make room for next 2 bits
             array[0] |= inst->array[i]->type & 0x03;
             if (inst->array[i]->type == 1) {
-                array[tmp_counter] = my_atoi(inst->array[i]->arg);  // set byte array[tmp_counter]
+                array[tmp_counter] = my_atoi(inst->array[i]->arg); 
                 tmp_counter++;  // increment tmp_counter by 1
                 size->curr_byte++;
             }
@@ -133,26 +130,24 @@ u_int8_t *get_values(t_node *head, t_node *inst, t_prog_size *size) {
     }
 
     // TESTING print array
-    printf("--------------- Instruction #%i ---------------\n", inst->id);
-    // if (tmp_counter != inst->num_bytes - 1) {
-    //     printf("tmp_counter == %i, != %i\n", tmp_counter, inst->num_bytes - 1);
-    //     printf("Double check : in get_values(), fewer bytes than expected\n");
+    // printf("--------------- Instruction #%i ---------------\n", inst->id);
+    // // if (tmp_counter != inst->num_bytes - 1) {
+    // //     printf("tmp_counter == %i, != %i\n", tmp_counter, inst->num_bytes - 1);
+    // //     printf("Double check : in get_values(), fewer bytes than expected\n");
+    // // }
+    // i = 0;
+    // while (i < tmp_counter) {
+    //     printf("byte index %i in the instruction byte array = %02x\n", i, array[i]);
+    //     i++;
     // }
-    i = 0;
-    while (i < tmp_counter) {
-        printf("byte index %i in the instruction byte array = %02x\n", i, array[i]);
-        i++;
-    }
 
     return array;
 }
 
 u_int32_t calculate_jump(t_node *head, t_node *inst, char *label, t_prog_size *size) {
-    // declare result & tmp variables
     u_int32_t result = 0;
     t_node *tmp = head;
 
-    // iterate through nodes from head (tmp)
     while (tmp) {
         if (tmp->label && (my_strcmp(label, tmp->label)) == 0) {
             if (tmp->id - inst->id > 0) {
@@ -165,7 +160,6 @@ u_int32_t calculate_jump(t_node *head, t_node *inst, char *label, t_prog_size *s
         tmp = tmp->next;
     }
 
-    // this would be an error/ no matching label found
     return result;
 }
 
