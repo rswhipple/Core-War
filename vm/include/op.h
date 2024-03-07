@@ -128,7 +128,6 @@ struct cursor_s
   champion_t *parent;
   bool        dead;                 // life status
   bool        live;                 // was live called?
-  bool        flag;                 // if true check for winner
   int     carry;                    // carry flag
   int     index_start;              // starting core index
   int     ac;                       // counter (cursor)
@@ -158,7 +157,6 @@ struct core_s
   champion_t *champions;
   cursor_t *cursors;
   int     total_champs;            // number of champions
-  int     live_champs;
   int     cycle_to_die;             // number of cycles before being declared dead
   int     cycle_delta;              // number of cycles to decrement cycle_to_die by
   int     nbr_live;                 // number of live instructions before cycle_to_die is decremented by cycle_delta
