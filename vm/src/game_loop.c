@@ -26,23 +26,6 @@ int game_loop(core_t *core) {
     return EXIT_SUCCESS;
 }
 
-void check_for_winner(core_t **core, cursor_t **cursor, bool *no_winner) {
-    (*cursor)->flag = false;
-    (*core)->live_champs -= 1;
-    if ((*core)->live_champs == 1) {
-        *no_winner = false;
-    }
-}
-
-void print_winner(core_t *core) {
-    printf("--------------------------------------------\n");
-    printf("\n\tA winner has been declared\n\n\n");
-    printf("\nThe winner of the war over the cores is...\n\n\n");
-    printf("\n\t%s\n\n", core->champions->name);
-    printf("--------------------------------------------\n\n");
-    printf("~~~###/// THE CORE WARS ARE OVER ///###~~~\n\n");
-}
-
 
 int execute_inst(core_t *core, cursor_t *cursor) {
     int opcode = command_to_opcode(core, cursor);

@@ -1,4 +1,4 @@
-#include "../include/op_helper.h"
+#include "../include/game_ops.h"
 
 /* Takes 1 parameter, that must be an index. Jumps to this index if carry is
 1. Else, does nothing, but still consume time.

@@ -1,4 +1,4 @@
-#include "../include/op_helper.h"
+#include "../include/game_ops.h"
 
 /* Same as and, but performing an OR. */
 

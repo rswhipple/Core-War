@@ -1,4 +1,4 @@
-#include "../include/op_helper.h"
+#include "../include/game_ops.h"
 
 /* Takes 1 parameter, an index. Creates a new program, inheriting states
 from the parent, and starting execution at Counter + parameter % IDX_MOD */

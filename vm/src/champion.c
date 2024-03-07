@@ -50,7 +50,6 @@ cursor_t *init_cursor(flag_t *flags) {
     cursor->parent = NULL;
     cursor->dead = false;
     cursor->live = false;
-    cursor->flag = false;
     cursor->carry = 0;
 
     if (flags->address) cursor->index_start = flags->address;

@@ -1,4 +1,4 @@
-#include "../include/op_helper.h"
+#include "../include/game_ops.h"
 
 /* Takes 3 parameters. First two are indexes and the third one is a register
 Ex: ldi 3, %4, r1 -> reads IND_SIZ bytes from address Counter + 3 %

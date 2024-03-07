@@ -1,4 +1,4 @@
-#include "../include/op_helper.h"
+#include "../include/game_ops.h"
 
 /* Takes 1 parameter: 4 bytes that represent the player's number.
 Indicates the player is alive. */

@@ -1,4 +1,4 @@
-#include "../include/op_helper.h"
+#include "../include/game_ops.h"
 
 
 void update_cursor(core_t *core, cursor_t *cursor, int i) {
@@ -20,14 +20,13 @@ int update_cycles(core_t **core) {
 		if ((*core)->live_count == (*core)->nbr_live) {
 			(*core)->live_count = 0;
 		}
-		is_alive(*core);
-		print_stats(*core);
-		if ((*core)->total_cycles == (*core)->dump) {
+		if (is_alive(*core) || (*core)->total_cycles == (*core)->dump) {
+			print_stats(*core);
 			game_over(*core);
 			return 1;
 		}
 	}
-
+	print_stats(*core);
 	return 0;
 }
 
@@ -118,8 +117,28 @@ void add_cycle(int opcode, cursor_t *cursor) {
 	}
 }
 
-void is_alive(core_t *core) {}
+int is_alive(core_t *core) {
+	champion_t *tmp = core->champions;
+	int nbr_living = 0;
+	while (tmp) {
+		if (tmp->cursor->live) nbr_living++;
+		tmp = tmp->next;
+	}
+
+	if (nbr_living <= 1) return 1;
+
+	return 0;
+}
+
+void game_over(core_t *core) {}
 
 void print_stats(core_t *core) {}
 
-void game_over(core_t *core) {}
+void print_winner(core_t *core) {
+    printf("--------------------------------------------\n");
+    printf("\n\tA winner has been declared\n\n\n");
+    printf("\nThe winner of the war over the cores is...\n\n\n");
+    printf("\n\t%s\n\n", core->champions->name);
+    printf("--------------------------------------------\n\n");
+    printf("~~~###/// THE CORE WARS ARE OVER ///###~~~\n\n");
+}

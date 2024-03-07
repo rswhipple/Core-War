@@ -1,4 +1,4 @@
-#include "../include/op_helper.h"
+#include "../include/game_ops.h"
 
 /* Takes 1 parameter, a register. Displays to stdout the character
 corresponding to the ASCII code of the content of the register (in base

@@ -1,4 +1,4 @@
-#include "../include/op_helper.h"
+#include "../include/game_ops.h"
 
 /* Same as add, but Subtracting. Modifies the carry. */
 
