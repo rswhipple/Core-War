@@ -4,10 +4,7 @@
 #include "../include/tokenize.h"
 
 int execute_asm(char *filename) {
-    // init .cor file
     FILE *cor = create_cor_file(filename);
-
-    // create header and instruction line storage
     t_header *header = init_header();
     t_node *inst_head = NULL;
     t_prog_size size = {
@@ -16,7 +13,6 @@ int execute_asm(char *filename) {
         .curr_byte = 0
     };
 
-    // open, read and parse .S file
     const char *read = "r";
     FILE *fp = fopen(filename, read);
     if (!fp) return EXIT_FAILURE;
@@ -24,13 +20,9 @@ int execute_asm(char *filename) {
     header->prog_size = size.total_bytes;
     fclose(fp);
 
-    // write header
     if (write_header(cor, header)) return EXIT_FAILURE;
-
-    // write instructions
     if (write_inst(cor, inst_head, &size)) return EXIT_FAILURE;
 
-    // cleanup
     free_nodes(inst_head);
     free(header);
     fclose(cor);
@@ -105,16 +97,12 @@ void remove_line_title(char *dest, char *line, int size) {
     dest[copied_len - 1] = '\0';
 }
 
-// convert instructions into tokens
 t_node *string_to_node(char *src, t_prog_size *size) {
-    // create tokens from string
     t_array *tokens = tokenizer(src, SEPARATOR_SET);
 
-    // init variables
     t_node *args = init_node(4);
     int i = 0;
     
-    // check for label
     int tok_len = my_strlen(tokens->array[0]);
     if (tokens->array[0][tok_len - 1] == LABEL_CHAR) {
         args->label = tokens->array[0];
@@ -122,16 +110,13 @@ t_node *string_to_node(char *src, t_prog_size *size) {
         i++;
     }
 
-    // find the command
     tok_len = my_strlen(tokens->array[i]);
     args->command = init_str(tok_len + 1);
     my_strcpy(args->command, tokens->array[i]);
     i++;
 
-    // check for special commands and adjust total num_bytes
     if (is_special_command(args->command)) args->num_bytes -= 1;
 
-    // parse values into t_args
     while (tokens->array[i]) {   
         if (tokens->array[i][0] == COMMENT_CHAR) continue;
         else if (tokens->array[i][0] == 'r') {
@@ -152,10 +137,7 @@ t_node *string_to_node(char *src, t_prog_size *size) {
         i++;
     }
     
-    // update size->total_bytes
     size->total_bytes += (args->num_bytes);
-    
-    // free token array
     free_t_array(tokens);
 
     return args;
@@ -184,6 +166,7 @@ bool is_special_command(char *command) {
     if (my_strcmp(command, "zjmp") == 0) return true;
     if (my_strcmp(command, "fork") == 0) return true;
     if (my_strcmp(command, "lfork") == 0) return true;
+    if (my_strcmp(command, "aff") == 0) return true;
 
     return false;
 }
