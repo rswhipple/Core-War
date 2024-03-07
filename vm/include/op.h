@@ -105,6 +105,14 @@ extern const op_t op_tab[];
 #define COMMENT_LENGTH 2048
 #define COREWAR_EXEC_MAGIC 0xea83f3
 
+typedef struct flag_s 
+{
+    int num_champions;
+    int dump;
+    int id;
+    int address;
+} flag_t;
+
 typedef struct header_s 
 {
   int     magic;
@@ -112,6 +120,7 @@ typedef struct header_s
   int     prog_size;
   char  comment[COMMENT_LENGTH + 1];
 } header_t;
+
 
 struct cursor_s
 {

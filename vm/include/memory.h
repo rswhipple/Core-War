@@ -1,8 +1,6 @@
 #ifndef _MEMORY_H_
 #define _MEMORY_H_
 #include "op.h"
-// #include "vm_parse.h"
-#include "helper.h"
 
 // function prototypes
 void cleanup(core_t *core);                         // frees all data
