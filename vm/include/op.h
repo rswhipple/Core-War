@@ -53,21 +53,15 @@ typedef struct cursor_s cursor_t;
 typedef struct champion_s champion_t;
 typedef struct core_s core_t;
 
-enum parameter_types {
+enum parameter_types 
+{
   T_REG = 1,
   T_DIR = 2,
   T_IND = 4,
 };
 
-enum inst_elems {
-  OPCODE,
-  PARAM_DESC,
-  VALUE_1,
-  VALUE_2,
-  VALUE_3,
-};
-
-typedef struct op_s {
+typedef struct op_s 
+{
   char *mnemonique;
   char nbr_args;
   args_type_t type[MAX_ARGS_NUMBER];
@@ -76,7 +70,8 @@ typedef struct op_s {
   int (*inst)(core_t *, cursor_t *);
 } op_t;
 
-enum op_types {
+enum op_types 
+{
   OP_LIVE,
   OP_LD,
   OP_ST,
@@ -110,20 +105,20 @@ extern const op_t op_tab[];
 #define COMMENT_LENGTH 2048
 #define COREWAR_EXEC_MAGIC 0xea83f3
 
-typedef struct header_s {
+typedef struct header_s 
+{
   int     magic;
   char  prog_name[PROG_NAME_LENGTH + 1];
   int     prog_size;
   char  comment[COMMENT_LENGTH + 1];
 } header_t;
 
-
-
 struct cursor_s
 {
   cursor_t *next;
   champion_t *parent;
   bool        dead;                 // life status
+  bool        live;                 // was live called?
   bool        flag;                 // if true check for winner
   int     carry;                    // carry flag
   int     index_start;              // starting core index
@@ -159,8 +154,10 @@ struct core_s
   int     cycle_delta;              // number of cycles to decrement cycle_to_die by
   int     nbr_live;                 // number of live instructions before cycle_to_die is decremented by cycle_delta
   int     dump;                     // number of cycles before dumping memory
-  int     cycle;                    // current cycle
-  int     counter;                  // to keep track of cycles
+  int     cycle_count;              // current cycle in cycle to die
+  int     live_count;               // number of cycle_to_die cycles
+  unsigned int total_cycles;
+
   op_t op_tab[17];
 };
 
