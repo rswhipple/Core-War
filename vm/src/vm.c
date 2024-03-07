@@ -19,7 +19,7 @@ int main(int argc, char **argv)
     core_t *core = init_core(head, flags); 
 
     // run game
-    // game_loop(core);
+    game_loop(core);
 
     // memory cleanup
     cleanup(core);
