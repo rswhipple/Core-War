@@ -7,9 +7,9 @@ int game_loop(core_t *core) {
 
     no_winner = true;
     cursor = core->cursors;
-    printf("~~~###/// THE CORE WARS COMMENCE ///###~~~\n");
+    printf("\n\n\n~~~###/// THE CORE WARS COMMENCE ///###~~~\n");
     while (no_winner) {
-        if (core->counter == core->total_champs) add_cycle(&core);
+        if (cursor == core->cursors) update_cycles(&core);
         if (cursor->flag) check_for_winner(&core, &cursor, &no_winner);
         if (!cursor->dead) {
             if (cursor->running) {
@@ -19,7 +19,6 @@ int game_loop(core_t *core) {
             execute_inst(core, cursor);
         }
         cursor = cursor->next;
-        core->counter += 1;
         no_winner = false;
     }
 
@@ -56,14 +55,6 @@ int execute_inst(core_t *core, cursor_t *cursor) {
     return 1;
 }
 
-
-void add_cycle(core_t **core)
-{
-	(*core)->counter = 0;
-    (*core)->cycle += 1;
-}
-
-
 int	command_to_opcode(core_t *core, cursor_t *cursor) {
 	unsigned char i;
     int opcode;
@@ -77,3 +68,4 @@ int	command_to_opcode(core_t *core, cursor_t *cursor) {
     else
         return 0;
 }
+
