@@ -11,7 +11,7 @@ void update_cursor(core_t *core, cursor_t *cursor, int i) {
 	}
 }
 
-void update_cycles(core_t **core) {
+int update_cycles(core_t **core) {
 	(*core)->cycle_count += 1;
 	(*core)->total_cycles += 1;
 	if ((*core)->cycle_count == (*core)->cycle_to_die) {
@@ -22,7 +22,13 @@ void update_cycles(core_t **core) {
 		}
 		is_alive(*core);
 		print_stats(*core);
+		if ((*core)->total_cycles == (*core)->dump) {
+			game_over(*core);
+			return 1;
+		}
 	}
+
+	return 0;
 }
 
 
@@ -72,8 +78,10 @@ int	get_ind(core_t *core, cursor_t *cursor, int i)
 	return (int)result;
 }
 
+void add_cycle(cursor_t *cursor) {}
+
 void is_alive(core_t *core) {}
 
 void print_stats(core_t *core) {}
 
-void add_cycle(cursor_t *cursor) {}
+void game_over(core_t *core) {}

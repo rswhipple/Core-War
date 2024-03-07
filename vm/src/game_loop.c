@@ -2,27 +2,26 @@
 
 
 int game_loop(core_t *core) {
-    bool no_winner;
-    cursor_t *cursor;
+    bool no_winner = true;
+    cursor_t *cursor = core->cursors;
 
-    no_winner = true;
-    cursor = core->cursors;
     printf("\n\n\n~~~###/// THE CORE WARS COMMENCE ///###~~~\n");
     while (no_winner) {
-        if (cursor == core->cursors) update_cycles(&core);
-        if (cursor->flag) check_for_winner(&core, &cursor, &no_winner);
+        if (cursor == core->cursors) {
+            if (update_cycles(&core)) {
+                no_winner = false;
+                break;
+            }
+        }
         if (!cursor->dead) {
             if (cursor->running) {
-                
+                // TODO add logic
             }
             printf("champion %s #%i\n", cursor->parent->name, cursor->parent->id);
             execute_inst(core, cursor);
         }
         cursor = cursor->next;
-        no_winner = false;
     }
-
-    print_winner(core);
 
     return EXIT_SUCCESS;
 }
