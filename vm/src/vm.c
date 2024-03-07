@@ -1,7 +1,7 @@
 #include "op.h"
 #include "vm_parse.h"
 #include "core.h" 
-#include "vm_execute.h"
+#include "game_loop.h"
 #include "memory.h"
 
 int main(int argc, char **argv)
