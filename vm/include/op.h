@@ -130,6 +130,8 @@ struct cursor_s
   int     ac;                       // counter (cursor)
   int     num_inst;                 // number of instructions
   int     current_inst;
+  int     opcode;
+  int     running;                  // keeps track of nbr cycles for current op   
   int     cycle;
   int     reg[REG_NUMBER];          // registers
 
@@ -158,6 +160,7 @@ struct core_s
   int     nbr_live;                 // number of live instructions before cycle_to_die is decremented by cycle_delta
   int     dump;                     // number of cycles before dumping memory
   int     cycle;                    // current cycle
+  int     counter;                  // to keep track of cycles
   op_t op_tab[17];
 };
 
