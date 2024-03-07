@@ -20,16 +20,13 @@ core_t *init_core(champion_t *head, flag_t *flags) {
     core->nbr_live = NBR_LIVE;
     core->dump = flags->dump;
     core->cycle = 0;
+    core->counter = 0;
 
     calc_cursor_indices(&core, head);
     print_champions(core->champions);      // TESTING
     load_champions(core);
 
-    // TODO figure out op_tab
-
-    // TODO make champion_t list and cursor_t list circular
-
-    free(flags);    // all information from flag_t has been recorded
+    free(flags);    // free flag_t
 
     return core;
 }
