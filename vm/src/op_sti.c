@@ -1,4 +1,4 @@
-#include "../include/op.h"
+#include "../include/op_helper.h"
 
 /* Takes 3 parameters. The first one is a register. The other two can either
 be indexes or registers. Ex: sti r2, %4, %5 -> copies the content for r2
