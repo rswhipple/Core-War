@@ -6,7 +6,6 @@
 
 int main(int argc, char **argv)
 {
-    // parse arguments
     if (argc < 2) {
         print_usage();
         return EXIT_FAILURE;   
@@ -14,14 +13,8 @@ int main(int argc, char **argv)
     
     flag_t *flags = init_flag();
     champion_t* head = parse_args(argc, argv, &flags);
-
-    // init core, load champs, run core
     core_t *core = init_core(head, flags); 
-
-    // run game
     game_loop(core);
-
-    // memory cleanup
     cleanup(core);
 
     return 0;
