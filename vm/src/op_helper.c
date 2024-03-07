@@ -31,8 +31,6 @@ int update_cycles(core_t **core) {
 	return 0;
 }
 
-
-// update the champion's carry flag if the previous operation returns 0
 void update_carry(cursor_t *cursor, int dest_reg) {
   if (cursor->reg[dest_reg] == 0) {
     cursor->carry = 1;
@@ -48,10 +46,10 @@ int get_dir(core_t *core, cursor_t *cursor, int i)
 {
 	unsigned int result;
 
-	result = (MASK_FF(core->memory[MOD(cursor->ac + i)]) << 24) |
-				(MASK_FF(core->memory[MOD(cursor->ac + i + 1)]) << 16) |
-				(MASK_FF(core->memory[MOD(cursor->ac + i + 2)]) << 8) |
-				MASK_FF(core->memory[MOD(cursor->ac + i + 3)]);
+	result = (MASK_FF(core->memory[(cursor->ac + i)]) << 24) |
+				(MASK_FF(core->memory[(cursor->ac + i + 1)]) << 16) |
+				(MASK_FF(core->memory[(cursor->ac + i + 2)]) << 8) |
+				MASK_FF(core->memory[(cursor->ac + i + 3)]);
 
 	return (int)result;
 }
@@ -61,9 +59,9 @@ int get_label(core_t *core, cursor_t *cursor, int i)
 	unsigned int result;
 
 	result = (0x00 << 24) |
-            	(MASK_FF(core->memory[MOD(cursor->ac + i + 1)]) << 16) |
-                (MASK_FF(core->memory[MOD(cursor->ac + i + 2)]) << 8) |
-                MASK_FF(core->memory[MOD(cursor->ac + i + 3)]);
+            	(MASK_FF(core->memory[(cursor->ac + i + 1)]) << 16) |
+                (MASK_FF(core->memory[(cursor->ac + i + 2)]) << 8) |
+                MASK_FF(core->memory[(cursor->ac + i + 3)]);
 
 	return (int)result;
 }
@@ -73,12 +71,52 @@ int	get_ind(core_t *core, cursor_t *cursor, int i)
 	unsigned short result;
 
 	i += cursor->ac;
-	result = ((MASK_FF(core->memory[MOD(i)]) << 8) | MASK_FF(core->memory[MOD(i + 1)]));
+	result = ((MASK_FF(core->memory[(i)]) << 8) | MASK_FF(core->memory[(i + 1)]));
 
 	return (int)result;
 }
 
-void add_cycle(cursor_t *cursor) {}
+void add_cycle(int opcode, cursor_t *cursor) {
+	cursor->cycle += 1;
+	switch (opcode) {
+		case 1:
+			break;
+		case 2:
+			break;
+		case 3:
+			break;
+		case 4:
+			break;
+		case 5:
+			break;
+		case 6:
+			break;
+		case 7:
+			break;
+		case 8:
+			break;
+		case 9:
+			break;
+		case 10:
+			break;
+		case 11:
+			break;
+		case 12:
+			break;
+		case 13:
+			break;
+		case 14:
+			break;
+		case 15:
+			break;
+		case 16:
+			break;
+		case 17:
+			break;
+		default:
+			break;
+	}
+}
 
 void is_alive(core_t *core) {}
 
