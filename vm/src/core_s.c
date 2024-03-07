@@ -5,7 +5,6 @@
 
 // initialize core
 core_t *init_core(champion_t *head, flag_t *flags) {
-    // initialize core
     core_t *core = malloc(sizeof(core_t));
     if (core == NULL) {
         return NULL;

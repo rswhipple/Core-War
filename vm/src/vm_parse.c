@@ -18,8 +18,6 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
 {
     int i = 1;
     champion_t *head = NULL;
-
-    // read flags 
     
     while (i < argc ) {
         // TODO: the option handlier is still having segv issues, TEST AND DEBUG!!
@@ -57,8 +55,7 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
         i++;
     }
 
-    // print_champions(head);       // TESTING
-    return head;    // return head of champion linked list
+    return head;
 }
 
 void print_usage()

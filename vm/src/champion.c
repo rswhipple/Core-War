@@ -72,25 +72,22 @@ cursor_t *init_cursor(flag_t *flags) {
 
 // parse champion data
 int read_file(champion_t **champ, int fd) {
-    // read header
+    // header data
     ssize_t bytes;
     header_t *header = malloc(sizeof(header_t));
     bytes = read(fd, header, sizeof(header_t)); 
+
     /* TODO: add MAGIC check */ 
 
     (*champ)->name = init_and_strncpy(header->prog_name);
     (*champ)->comment = init_and_strncpy(header->comment);
     (*champ)->string_len = header->prog_size;
 
-    // print_header(header);   // TESTING print header
-
-    // read instruction data
+    // instruction data
     char buf[(*champ)->string_len];
     memset(buf, 0, (*champ)->string_len);
     bytes = read(fd, &buf, sizeof(char) * (*champ)->string_len);
     (*champ)->string = buf;
-
-    // print_inst_buf(header, buf, (*champ)->string_len);   // TESTING print buf
 
     free(header);
 
