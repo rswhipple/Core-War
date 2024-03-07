@@ -19,8 +19,9 @@ core_t *init_core(champion_t *head, flag_t *flags) {
     core->cycle_delta = CYCLE_DELTA;
     core->nbr_live = NBR_LIVE;
     core->dump = flags->dump;
-    core->cycle = 0;
-    core->counter = 0;
+    core->cycle_count = 0;
+    core->live_count = 0;
+    core->total_cycles = 0;
 
     calc_cursor_indices(&core, head);
     print_champions(core->champions);      // TESTING
@@ -33,6 +34,7 @@ core_t *init_core(champion_t *head, flag_t *flags) {
 
 void calc_cursor_indices(core_t **core, champion_t *head) {
     int offset = MEM_SIZE / (*core)->total_champs;
+    // TODO add -a flag handler
 
     champion_t *tmp = head;
     int i = 1;
@@ -61,10 +63,10 @@ int load_champions(core_t *core) {
         i = 0;
         index = tmp->index_start;
 
-        printf("/////////////////// loading champ %s, id #%i into memory ///////////////////////\n", tmp_champ->name, tmp_champ->id);
+        printf("/////////////// loading champ %s, id #%i into memory ///////////////\n\n", tmp_champ->name, tmp_champ->id);
         while (i < tmp_champ->string_len) {
             core->memory[index] = tmp_champ->string[i];
-            printf("core->memory[%i]= %02hhx\n", index, core->memory[index]);
+            // printf("core->memory[%i]= %02hhx\n", index, core->memory[index]); TESTING
             index++; 
             i++;
         }
