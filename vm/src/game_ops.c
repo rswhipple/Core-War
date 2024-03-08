@@ -42,7 +42,10 @@ void update_carry(cursor_t *cursor, int dest_reg) {
 }
 
 int get_reg(core_t *core, cursor_t *cursor, int i) {
-	return (int)core->memory[cursor->ac + i];
+	int r = (int)core->memory[cursor->ac + i];
+
+	if (r < 0 | r > 16) r = -1;
+	return r;
 }
 
 int get_dir(core_t *core, cursor_t *cursor, int i)
