@@ -1,4 +1,6 @@
 #include "../include/game_loop.h"
+#include "../include/game_ops.h"
+
 
 
 int game_loop(core_t *core) {

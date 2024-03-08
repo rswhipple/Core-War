@@ -13,7 +13,6 @@ core_t *init_core(champion_t *head, flag_t *flags) {
     core->champions = head;
     core->cursors = head->cursor;
     core->total_champs = flags->num_champions;
-    core->live_champs = flags->num_champions;
     core->cycle_to_die = CYCLE_TO_DIE;
     core->cycle_delta = CYCLE_DELTA;
     core->nbr_live = NBR_LIVE;
