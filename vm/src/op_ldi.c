@@ -6,5 +6,6 @@ IDX_MOD, add 4 to this value (SumResult). REG_SIZE byte are read
 from the Counter + SumResult % IDX_MOD and copies to r1. */
 
 int inst_ldi(core_t *core, cursor_t* cursor) {
+  update_cursor(core, cursor, 7);
   return 0;
 }

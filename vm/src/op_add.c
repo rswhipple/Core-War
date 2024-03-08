@@ -4,7 +4,6 @@
 the result to the third. Modifies the carry. */
 
 int inst_add(core_t *core, cursor_t* cursor) {
-
   // check args
 
   int r1 = (int)core->memory[cursor->ac + 2];

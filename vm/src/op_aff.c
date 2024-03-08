@@ -7,22 +7,16 @@ Ex; aff r3 -> outputs '*' if r3 contains 42. */
 
 int inst_aff(core_t *core, cursor_t* cursor)
 {
-    // char c;
+    char c;
+    int r = get_reg(core, cursor, 3);
 
-    // // Placeholder holding the value of num
-    // int reg = *inst;
+    if (r == -1) return EXIT_FAILURE;
+    int reg_value = cursor->reg[r];
 
-    // // check if the register is valid
-    // if (reg < 0 || reg >= REG_NUMBER)
-    // {
-    //     return 1;
-    // }
+    c = (char)(reg_value % 256);
+    write(STDOUT_FILENO, &c, 1);
 
-    // // get value from the register
-    // int register_value = champion->reg[reg];
+    update_cursor(core, cursor, 2);
 
-    // c = (char)(register_value % 256);
-    // write(STDOUT_FILENO, &c, 1);
-
-    return 0;
+    return EXIT_SUCCESS;
 }

@@ -6,5 +6,11 @@ r4 at the address of Counter + 34 % IDX_MOD; st r3, r8 copies r3 into
 r8. */
 
 int inst_st(core_t *core, cursor_t* cursor) {
+  update_cursor(core, cursor, 4);
+  return 0;
+}
+
+int inst_st_ind(core_t *core, cursor_t* cursor) {
+  update_cursor(core, cursor, 5);
   return 0;
 }
