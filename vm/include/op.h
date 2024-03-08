@@ -11,6 +11,7 @@
 #define MAX_ARGS_NUMBER 4
 
 #define MOD(x)	(x % IDX_MOD)
+#define MOD_AS(x)  (x % 256)
 #define MASK_FF(x)	(x & 0xFF)
 
 #define RRR 0b01010100
