@@ -147,6 +147,7 @@ struct champion_s
   char  *string;
   int     string_len;
   int     id;                       // id of champ
+  int     time_of_death;
   cursor_t *cursor;
   struct champion_s *next;            // next champion
 };

@@ -34,9 +34,9 @@ champion_t *init_champion(flag_t *flags)  {
     if (flags->id) champ->id = flags->id;  
     else champ->id = flags->num_champions + 1;
 
+    champ->time_of_death = 0;
     champ->cursor = init_cursor(flags);
     champ->cursor->parent = champ;
-
     champ->next = NULL;
 
     return champ;
