@@ -13,7 +13,9 @@ int	get_ind(core_t *core, cursor_t *cursor, int i);
 void add_cycle(int opcode, cursor_t *cursor);
 int is_alive(core_t *core);
 void game_over(core_t *core);
+void calc_tie(core_t *core);
 void print_stats(core_t *core);
-void print_winner(core_t *core);
+void print_winner(champion_t *core);
+void print_tie(champion_t *core);
 
 #endif

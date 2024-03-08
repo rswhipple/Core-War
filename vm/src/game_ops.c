@@ -40,15 +40,18 @@ int get_reg(core_t *core, cursor_t *cursor, int i) {
 	return (int)core->memory[cursor->ac + i];
 }
 
-
 int get_dir(core_t *core, cursor_t *cursor, int i)
 {
 	unsigned int result;
+	u_int8_t byte;
+	byte = (MASK_FF(core->memory[(cursor->ac + i)]) << 24);
+
+	if (byte == 0xFF) return get_label(core, cursor, i);
 
 	result = (MASK_FF(core->memory[(cursor->ac + i)]) << 24) |
 				(MASK_FF(core->memory[(cursor->ac + i + 1)]) << 16) |
 				(MASK_FF(core->memory[(cursor->ac + i + 2)]) << 8) |
-				MASK_FF(core->memory[(cursor->ac + i + 3)]);
+				(MASK_FF(core->memory[(cursor->ac + i + 3)]));
 
 	return (int)result;
 }
@@ -60,8 +63,7 @@ int get_label(core_t *core, cursor_t *cursor, int i)
 	result = (0x00 << 24) |
             	(MASK_FF(core->memory[(cursor->ac + i + 1)]) << 16) |
                 (MASK_FF(core->memory[(cursor->ac + i + 2)]) << 8) |
-                MASK_FF(core->memory[(cursor->ac + i + 3)]);
-
+                (MASK_FF(core->memory[(cursor->ac + i + 3)]));
 	return (int)result;
 }
 
@@ -122,6 +124,7 @@ int is_alive(core_t *core) {
 	int nbr_living = 0;
 	while (tmp) {
 		if (tmp->cursor->live) nbr_living++;
+		else tmp->cursor->dead = true;
 		tmp = tmp->next;
 	}
 
@@ -130,15 +133,37 @@ int is_alive(core_t *core) {
 	return 0;
 }
 
-void game_over(core_t *core) {}
+void game_over(core_t *core) {
+	champion_t *winner = NULL;
+	champion_t *tmp = core->champions;
+
+	while (tmp) {
+		if (tmp->cursor->live) winner = tmp;
+		tmp = tmp->next;
+	}
+
+	if (!winner) calc_tie(core);
+
+}
+
+void calc_tie(core_t *core) {}
 
 void print_stats(core_t *core) {}
 
-void print_winner(core_t *core) {
+void print_winner(champion_t *champion) {
     printf("--------------------------------------------\n");
     printf("\n\tA winner has been declared\n\n\n");
     printf("\nThe winner of the war over the cores is...\n\n\n");
-    printf("\n\t%s\n\n", core->champions->name);
+    printf("\n\t%s\n\n", champion->name);
+    printf("--------------------------------------------\n\n");
+    printf("~~~###/// THE CORE WARS ARE OVER ///###~~~\n\n");
+}
+
+void print_tie(champion_t *champion) {
+    printf("--------------------------------------------\n");
+    printf("\n\tA winner has been declared\n\n\n");
+    printf("\nThe winner of the war over the cores is...\n\n\n");
+    printf("\n\t%s\n\n", champion->name);
     printf("--------------------------------------------\n\n");
     printf("~~~###/// THE CORE WARS ARE OVER ///###~~~\n\n");
 }
