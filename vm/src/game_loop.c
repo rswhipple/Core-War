@@ -14,11 +14,10 @@ int game_loop(core_t *core) {
             }
         }
         if (!cursor->dead) {
-            if (cursor->running) {
-                // TODO add logic
-            }
-            printf("champion %s #%i\n", cursor->parent->name, cursor->parent->id);
-            execute_inst(core, cursor);
+            if (cursor->running)
+                add_run_cycle(cursor);
+            else 
+                execute_inst(core, cursor);
         }
         cursor = cursor->next;
     }
