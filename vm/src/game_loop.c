@@ -1,6 +1,6 @@
 #include "../include/game_loop.h"
 #include "../include/game_ops.h"
-
+#include "../include/print_tests.h"
 
 
 int game_loop(core_t *core) {
@@ -11,8 +11,7 @@ int game_loop(core_t *core) {
     while (no_winner) {
         if (cursor == core->cursors) {
             if (update_cycles(&core)) {
-                no_winner = false;
-                break;
+                return EXIT_SUCCESS;
             }
         }
         if (!cursor->dead) {
@@ -21,6 +20,7 @@ int game_loop(core_t *core) {
             else 
                 execute_inst(core, cursor);
         }
+        print_cursor(cursor);
         cursor = cursor->next;
     }
 
@@ -29,11 +29,15 @@ int game_loop(core_t *core) {
 
 
 int execute_inst(core_t *core, cursor_t *cursor) {
-    int opcode = command_to_opcode(core, cursor);
-    if (!opcode) return 0;  // TODO add error message
+    int opcode = -1;
+    opcode = command_to_opcode(core, cursor);
+    if (opcode < 0) return 0;  // TODO add error message
 
     const op_t *op = &op_tab[opcode]; 
     op->inst(core, cursor);
+
+    printf("Champion \"%s\", #%i executed instruction #%i\n", 
+                cursor->parent->name, cursor->parent->id, opcode + 1);
 
     return 1;
 }
@@ -45,7 +49,6 @@ int	command_to_opcode(core_t *core, cursor_t *cursor) {
     i = (unsigned char)core->memory[cursor->ac]; 
     if (i >= 0x01 && i <= 0x0F) {
         opcode = ((int)i) - 1;
-        printf("opcode = %i\n", opcode);
         return opcode;
     }
     else
