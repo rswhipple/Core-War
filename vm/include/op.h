@@ -10,7 +10,8 @@
 #define IDX_MOD 512
 #define MAX_ARGS_NUMBER 4
 
-#define MOD(x)	(x % IDX_MOD)
+#define MOD(x)	(x % MEM_SIZE)
+#define MOD_IDX(x)	(x % IDX_MOD)
 #define MOD_AS(x)  (x % 256)
 #define MASK_FF(x)	(x & 0xFF)
 
@@ -177,6 +178,9 @@ int inst_st(core_t *core, cursor_t *cursor);
 int inst_add(core_t *core, cursor_t *cursor);
 int inst_sub(core_t *core, cursor_t *cursor);
 int inst_and(core_t *core, cursor_t *cursor);
+int inst_and_rrr(core_t *core, cursor_t* cursor);
+int inst_and_rdr(core_t *core, cursor_t* cursor);
+int inst_and_rir(core_t *core, cursor_t* cursor);
 int inst_or(core_t *core, cursor_t *cursor);
 int inst_xor(core_t *core, cursor_t *cursor);
 int inst_zjmp(core_t *core, cursor_t *cursor);
