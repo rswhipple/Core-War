@@ -17,7 +17,7 @@ void announce_death(champion_t *champion);
 void game_over(core_t *core, bool dump_flag);
 void calc_tie(core_t *core);
 void print_stats(core_t *core);
-void print_winner(champion_t *core);
+void print_winner(core_t *core, champion_t *champion);
 void print_tie(champion_t *core);
 void print_draw(champion_t *champion);
 
