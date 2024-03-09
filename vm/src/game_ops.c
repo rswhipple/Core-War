@@ -1,8 +1,11 @@
 #include "../include/game_ops.h"
+#include "../include/print_tests.h"
+
 
 
 void update_cursor(core_t *core, cursor_t *cursor, int i) {
 	cursor->current_inst += 1;
+	printf("The current instruction number is %i\n", cursor->current_inst);
 	if (cursor->current_inst == cursor->num_inst) {
 		cursor->ac = cursor->index_start;
 		cursor->current_inst = 1;
@@ -14,31 +17,41 @@ void update_cursor(core_t *core, cursor_t *cursor, int i) {
 int update_cycles(core_t **core) {
 	(*core)->cycle_count += 1;
 	(*core)->total_cycles += 1;
-	if ((*core)->cycle_count == (*core)->cycle_to_die) {
+	printf("The cycle count is %i\n", (*core)->cycle_count);
+	printf("The live count is %i\n", (*core)->live_count);
+	if ((*core)->cycle_count >= (*core)->cycle_to_die) {
+		printf("The cycle_to_die is %i\n", (*core)->cycle_to_die);
 		(*core)->cycle_count = 0;
 		(*core)->live_count += 1;
+		// reset all of the cursor live flags!!!
 		if ((*core)->live_count == (*core)->nbr_live) {
 			(*core)->live_count = 0;
 			(*core)->cycle_to_die -= (*core)->cycle_delta;
+			printf("The cycle_to_die is now %i\n", (*core)->cycle_to_die);
+			printf("Total number of cycles = %i\n", (*core)->total_cycles);
 		}
 		if ((*core)->total_cycles == (*core)->dump) {
 			game_over(*core, true);
 			return 1;
-		}
-		if (is_alive(*core)) {
-			print_stats(*core);
+		} else if (is_alive(*core)) {
 			game_over(*core, false);
 			return 1;
 		}
+		champion_t *tmp = (*core)->champions;
+		while (tmp) {
+			tmp->cursor->live = false;
+			tmp = tmp->next;
+		}
 	}
-	print_stats(*core);
 	return 0;
 }
 
 void update_carry(cursor_t *cursor, int dest_reg) {
   if (cursor->reg[dest_reg] == 0) {
     cursor->carry = 1;
+	printf("Updating carry of %s, #%i to 1.\n", cursor->parent->name, cursor->parent->id);
   }
+
 }
 
 int get_reg(core_t *core, cursor_t *cursor, int i) {
@@ -87,14 +100,15 @@ int	get_ind(core_t *core, cursor_t *cursor, int i)
 
 void add_cycle(int opcode, cursor_t *cursor) {
 	cursor->cycle += 1;
+	cursor->current_inst += 1;
 	switch (opcode) {
-		case 1:
+		case 0:
 			cursor->running = 9;
 			break;
-		case 2:
+		case 1:
 			cursor->running = 4;
 			break;
-		case 3:
+		case 2:
 			cursor->running = 4;
 			break;
 		case 4:
@@ -146,7 +160,10 @@ void add_run_cycle(cursor_t *cursor) {
 	cursor->running -= 1;
 }
 
-void print_stats(core_t *core) {}
+void print_stats(core_t *core) {
+	printf("At the end of battle:\n\n\ttotal cycles = %i\n\n", core->total_cycles);
+	printf("\tcycle_to_die = %i\n", core->cycle_to_die);
+}
 
 int is_alive(core_t *core) {
 	champion_t *tmp = core->champions;
@@ -179,12 +196,14 @@ void game_over(core_t *core, bool dump_flag) {
 		printf("--------------------------------------------\n");
     	printf("\n\tMighty competitors live on!\n\n\n");
     	printf("\nThe war is a draw\n\n\n");
+		print_stats(core);
 		while (tmp) {
 			if (tmp->cursor->live) print_draw(tmp);
 			tmp = tmp->next;
 		}
 		printf("--------------------------------------------\n\n");
     	printf("~~~###/// THE CORE WARS ARE OVER ///###~~~\n\n");
+		return;
 	} else {
 		while (tmp) {
 			if (tmp->cursor->live) winner = tmp;
@@ -193,13 +212,14 @@ void game_over(core_t *core, bool dump_flag) {
 	}
 
 	if (!winner) calc_tie(core);
-	else print_winner(winner);
+	else print_winner(core, winner);
 
 }
 
 void calc_tie(core_t *core) {
 	printf("--------------------------------------------\n");
-    printf("\n\tThe war is over and all champions are dead\n\n\n");
+    printf("\nThe war is over and all champions are dead\n\n\n");
+	print_stats(core);
     printf("\nThe last men standing were ...\n\n\n");
 	champion_t *last_man_standing = core->champions;
 	while (last_man_standing) {
@@ -210,11 +230,12 @@ void calc_tie(core_t *core) {
     printf("~~~###/// THE CORE WARS ARE OVER ///###~~~\n\n");
 }
 
-void print_winner(champion_t *champion) {
+void print_winner(core_t *core, champion_t *champion) {
     printf("--------------------------------------------\n");
     printf("\n\tA winner has been declared\n\n\n");
-    printf("\nThe winner of the war over the cores is...\n\n\n");
+    printf("\nThe winner of the war over the cores is...\n\n");
     printf("\n\t%s\n\n", champion->name);
+	print_stats(core);
     printf("--------------------------------------------\n\n");
     printf("~~~###/// THE CORE WARS ARE OVER ///###~~~\n\n");
 }
@@ -224,5 +245,5 @@ void print_tie(champion_t *champion) {
 }
 
 void print_draw(champion_t *champion) {
-    printf("\n\t%s lives to fight another day.\n\n", champion->name);
+    printf("\n\t%s #%i lives to fight another day.\n\n", champion->name, champion->id);
 }
