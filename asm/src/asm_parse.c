@@ -17,7 +17,7 @@ int execute_asm(char *filename) {
     FILE *fp = fopen(filename, read);
     if (!fp) return EXIT_FAILURE;
     inst_head = read_file(fp, &header, &size);
-    header->prog_size = size.total_bytes;
+    header->prog_size = (size.total_bytes << 24) | size.num_inst;
     fclose(fp);
 
     if (write_header(cor, header)) return EXIT_FAILURE;
