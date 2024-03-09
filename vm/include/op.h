@@ -45,6 +45,7 @@
 #define CYCLE_TO_DIE 1536
 #define CYCLE_DELTA 5
 #define NBR_LIVE 40
+#define NBR_DUMP 40000
 
 /* buffer for getline */
 #define BUF_SIZE 512
