@@ -21,10 +21,10 @@ void print_inst_buf(header_t *header, char *buf, size_t size) {
 
 // Print the contents of the 16 general purpose, ac, and carry flag registers
 void print_cursor(cursor_t *cursor) {
-	printf("-----Printing champion %d register contents-----\n", cursor->parent->id);
-	for (int i = 0; i < REG_NUMBER; i++) {
-		printf("register %d: %d\n", i + 1, cursor->reg[i]);
-	}
+	printf("-----Printing champion %d stats-----\n", cursor->parent->id);
+	// for (int i = 0; i < REG_NUMBER; i++) {
+	// 	printf("register %d: %d\n", i + 1, cursor->reg[i]);
+	// }
 	printf("ac: %d\n", cursor->ac);
 	printf("carry: %d\n", cursor->carry);
 }
@@ -32,17 +32,13 @@ void print_cursor(cursor_t *cursor) {
 // print champion
 void print_champions(champion_t *head) {
     champion_t *curr = head;
-    printf("\nParsing Files:\n\n");
+    printf("The competitors were:\n\n");
     while (curr) {
         // print
-        printf("~~~~~~~~~~~~~~~~~Champ \"%s\", id #%i \"%s\"~~~~~~~~~~~~~~~~~~\n", curr->name, curr->id, curr->comment);
+        printf("~~~~~~~~~Champ \"%s\", id #%i \"%s\"~~~~~~~~~\n", curr->name, curr->id, curr->comment);
         printf("\tstring_len = %i\n", curr->string_len);
         printf("\tindex_start = %i\n", curr->cursor->index_start);
-        printf("\tac = %i\n\n", curr->cursor->ac);
-        // printf("string of instructions: \n");
-        // for(int i = 0; i < curr->string_len; i++) {
-        //     printf("\t\tstring[%i] = %02hhx\n", i, curr->string[i]);
-        // }
         curr = curr->next;
     }
+    printf("\n\n");
 }
