@@ -7,6 +7,8 @@ void update_cursor(core_t *core, cursor_t *cursor, int i);
 int update_cycles(core_t **core);
 void update_carry(cursor_t *cursor, int dest_reg);
 int get_reg(core_t *core, cursor_t *cursor, int i);
+int get_reg_value(core_t *core, cursor_t *cursor, int i);
+int get_bytes(core_t *core, cursor_t *cursor, int i);
 int get_dir(core_t *core, cursor_t *cursor, int i);
 int get_label(core_t *core, cursor_t *cursor, int i);
 int	get_ind(core_t *core, cursor_t *cursor, int i);

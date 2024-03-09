@@ -54,11 +54,34 @@ void update_carry(cursor_t *cursor, int dest_reg) {
 
 }
 
-int get_reg(core_t *core, cursor_t *cursor, int i) {
-	int r = (int)core->memory[cursor->ac + i];
 
-	if (r < 0 | r > 16) r = -1;
-	return r;
+int get_reg(core_t *core, cursor_t *cursor, int i) {
+	int byte = (int)core->memory[cursor->ac + i];
+
+	if (byte < 0 | byte > 16) byte = -1;
+	return byte;
+}
+
+int get_reg_value(core_t *core, cursor_t *cursor, int i) {
+	int r = (int)core->memory[cursor->ac + i];
+	if (r < 0 | r > 16) return 0;
+
+	int reg_value = cursor->reg[r];
+
+	return reg_value;
+}
+
+
+int get_bytes(core_t *core, cursor_t *cursor, int i)
+{
+	unsigned int result;
+
+	result = (MASK_FF(core->memory[(cursor->ac + i)]) << 24) |
+				(MASK_FF(core->memory[(cursor->ac + i + 1)]) << 16) |
+				(MASK_FF(core->memory[(cursor->ac + i + 2)]) << 8) |
+				(MASK_FF(core->memory[(cursor->ac + i + 3)]));
+
+	return (int)result;
 }
 
 int get_dir(core_t *core, cursor_t *cursor, int i)
