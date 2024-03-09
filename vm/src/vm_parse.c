@@ -51,8 +51,8 @@ champion_t *parse_args(int argc, char **argv, flag_t** flags)
             (*flags)->id = 0;
             (*flags)->address = 0;
             (*flags)->num_champions += 1;
+            i++;
         }
-        i++;
     }
 
     return head;
