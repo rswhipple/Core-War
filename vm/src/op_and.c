@@ -14,6 +14,7 @@ int inst_and_idr(core_t *core, cursor_t* cursor);
 
 int inst_and(core_t *core, cursor_t* cursor) {
   u_int8_t param_desc = (u_int8_t)core->memory[cursor->ac + 1];
+  printf("param_desc = %i\n", param_desc);
 
   switch (param_desc) {
     case RIR:
@@ -49,7 +50,7 @@ int inst_and_rrr(core_t *core, cursor_t* cursor) {
 
   cursor->reg[r3] = cursor->reg[r1] & cursor->reg[r2];
   update_carry(cursor, r3);
-  update_cursor(core, cursor, 5);
+  update_cursor(core, &cursor, 5);
 
   return EXIT_SUCCESS;
 }
@@ -61,7 +62,7 @@ int inst_and_rir(core_t *core, cursor_t* cursor) {
 
   cursor->reg[r3] = cursor->reg[r1] & cursor->reg[r2];
   update_carry(cursor, r3);
-  update_cursor(core, cursor, 6);
+  update_cursor(core, &cursor, 6);
 
   return EXIT_SUCCESS;
 }
@@ -74,7 +75,7 @@ int inst_and_rdr(core_t *core, cursor_t* cursor) {
 
   cursor->reg[r3] = cursor->reg[r1] & cursor->reg[r2];
   update_carry(cursor, r3);
-  update_cursor(core, cursor, 8);
+  update_cursor(core, &cursor, 8);
 
   return EXIT_SUCCESS;
 }
@@ -86,7 +87,7 @@ int inst_and_ddr(core_t *core, cursor_t* cursor) {
 
   cursor->reg[r3] = cursor->reg[r1] & cursor->reg[r2];
   update_carry(cursor, r3);
-  update_cursor(core, cursor, 11);
+  update_cursor(core, &cursor, 11);
 
   return EXIT_SUCCESS;
 }
@@ -98,7 +99,7 @@ int inst_and_dir(core_t *core, cursor_t* cursor) {
 
   cursor->reg[r3] = cursor->reg[r1] & cursor->reg[r2];
   update_carry(cursor, r3);
-  update_cursor(core, cursor, 9);
+  update_cursor(core, &cursor, 9);
 
   return EXIT_SUCCESS;
 }
@@ -110,7 +111,7 @@ int inst_and_iir(core_t *core, cursor_t* cursor) {
 
   cursor->reg[r3] = cursor->reg[r1] & cursor->reg[r2];
   update_carry(cursor, r3);
-  update_cursor(core, cursor, 7);
+  update_cursor(core, &cursor, 7);
 
   return EXIT_SUCCESS;
 }
@@ -122,7 +123,7 @@ int inst_and_idr(core_t *core, cursor_t* cursor) {
 
   cursor->reg[r3] = cursor->reg[r1] & cursor->reg[r2];
   update_carry(cursor, r3);
-  update_cursor(core, cursor, 9);
+  update_cursor(core, &cursor, 9);
 
   return EXIT_SUCCESS;
 }

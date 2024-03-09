@@ -13,7 +13,7 @@ core_t *init_core(champion_t *head, flag_t *flags) {
     core->champions = head;
     core->cursors = head->cursor;
     core->total_champs = flags->num_champions;
-    core->cycle_to_die = CYCLE_TO_DIE;
+    core->cycle_to_die = 1000; //CYCLE_TO_DIE;
     core->cycle_delta = CYCLE_DELTA;
     core->nbr_live = NBR_LIVE;
     core->dump = flags->dump;
@@ -68,6 +68,10 @@ int load_champions(core_t *core) {
             index++; 
             i++;
         }
+
+        printf("tmp->num_inst = %i\n", tmp->num_inst);
+        printf("tmp->str_len = %i\n\n", tmp_champ->string_len);
+        printf("tmp->index_start = %i\n\n", tmp->index_start);
 
         tmp = tmp->next;
         tmp_champ = tmp_champ->next;

@@ -57,7 +57,7 @@ cursor_t *init_cursor(flag_t *flags) {
 
     cursor->ac = cursor->index_start;
     cursor->num_inst = 0;
-    cursor->current_inst = 1;
+    cursor->current_inst = 0;
     cursor->opcode = -1;
     cursor->running = 0;
     cursor->cycle = 0;
@@ -80,7 +80,8 @@ int read_file(champion_t **champ, int fd) {
 
     (*champ)->name = init_and_strncpy(header->prog_name);
     (*champ)->comment = init_and_strncpy(header->comment);
-    (*champ)->string_len = header->prog_size;
+    (*champ)->string_len = (header->prog_size >> 24); 
+    (*champ)->cursor->num_inst = MASK_FF(header->prog_size);
 
     // instruction data
     char buf[(*champ)->string_len];

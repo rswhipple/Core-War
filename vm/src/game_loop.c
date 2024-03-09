@@ -20,7 +20,6 @@ int game_loop(core_t *core) {
             else 
                 execute_inst(core, cursor);
         }
-        print_cursor(cursor);
         cursor = cursor->next;
     }
 
@@ -31,13 +30,16 @@ int game_loop(core_t *core) {
 int execute_inst(core_t *core, cursor_t *cursor) {
     int opcode = -1;
     opcode = command_to_opcode(core, cursor);
+    cursor->current_inst += 1;
     if (opcode < 0) return 0; 
 
     const op_t *op = &op_tab[opcode]; 
     op->inst(core, cursor);
 
-    printf("Champion \"%s\", #%i executed instruction #%i\n", 
+    printf("Champion \"%s\", #%i began executing instruction #%i\n", 
                 cursor->parent->name, cursor->parent->id, opcode + 1);
+
+    add_cycle(opcode, cursor);
 
     return 1;
 }

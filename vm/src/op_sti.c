@@ -45,19 +45,22 @@ int inst_sti_rid(core_t *core, cursor_t* cursor) {
 
   core->memory[cursor->ac + MOD_IDX(i + d)] = r1;
   
-  update_cursor(core, cursor, 9);
+  update_cursor(core, &cursor, 9);
 
   return EXIT_SUCCESS;
 }
 
 int inst_sti_rdd(core_t *core, cursor_t* cursor) {
   int r1 = get_reg_value(core, cursor, 2);
-  int d1 = get_ind(core, cursor, 3);
+  int d1 = get_dir(core, cursor, 3);
   int d2 = get_dir(core, cursor, 7);
 
-  core->memory[cursor->ac + MOD_IDX(d1 + d2)] = r1;
+  // printf("Testing in inst_sti:\n");
+  // printf("r1 = %i, d1 = %i, d2 = %i\nMOD_IDX(d1 + d2) = %i\n",r1, d1, d2, MOD_IDX(d1 + d2));
+  // printf("cursor->ac = %i\n", cursor->ac);
+  core->memory[cursor->ac + MOD_IDX(d1 + d2)] = MASK_FF(r1 >> 24);
   
-  update_cursor(core, cursor, 11);
+  update_cursor(core, &cursor, 11);
 
   return EXIT_SUCCESS;
 }
@@ -69,7 +72,7 @@ int inst_sti_rir(core_t *core, cursor_t* cursor) {
 
   core->memory[cursor->ac + MOD_IDX(i + r2)] = r1;
   
-  update_cursor(core, cursor, 6);
+  update_cursor(core, &cursor, 6);
 
   return EXIT_SUCCESS;
 }
@@ -81,7 +84,7 @@ int inst_sti_rdr(core_t *core, cursor_t* cursor) {
 
   core->memory[cursor->ac + MOD_IDX(d + r2)] = r1;
   
-  update_cursor(core, cursor, 8);
+  update_cursor(core, &cursor, 8);
 
   return EXIT_SUCCESS;
 }
@@ -93,7 +96,7 @@ int inst_sti_rrd(core_t *core, cursor_t* cursor) {
 
   core->memory[cursor->ac + MOD_IDX(r2 + d)] = r1;
   
-  update_cursor(core, cursor, 8);
+  update_cursor(core, &cursor, 8);
 
   return EXIT_SUCCESS;
 }
@@ -105,7 +108,7 @@ int inst_sti_rrr(core_t *core, cursor_t* cursor) {
 
   core->memory[cursor->ac + MOD_IDX(r2 + r3)] = r1;
   
-  update_cursor(core, cursor, 5);
+  update_cursor(core, &cursor, 5);
 
   return EXIT_SUCCESS;
 }

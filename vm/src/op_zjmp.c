@@ -13,6 +13,6 @@ int inst_zjmp(core_t *core, cursor_t* cursor) {
   //   return EXIT_SUCCESS;
   // }
 
-  update_cursor(core, cursor, 5);
+  update_cursor(core, &cursor, 5);
   return EXIT_SUCCESS;
 }

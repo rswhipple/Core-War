@@ -21,12 +21,13 @@ void print_inst_buf(header_t *header, char *buf, size_t size) {
 
 // Print the contents of the 16 general purpose, ac, and carry flag registers
 void print_cursor(cursor_t *cursor) {
-	printf("-----Printing champion %d stats-----\n", cursor->parent->id);
+	// printf("-----Printing champion %d stats-----\n", cursor->parent->id);
 	// for (int i = 0; i < REG_NUMBER; i++) {
 	// 	printf("register %d: %d\n", i + 1, cursor->reg[i]);
 	// }
 	printf("ac: %d\n", cursor->ac);
-	printf("carry: %d\n", cursor->carry);
+    printf("current_inst: %i\n", cursor->current_inst);
+	printf("carry: %d\n\n", cursor->carry);
 }
 
 // print champion
