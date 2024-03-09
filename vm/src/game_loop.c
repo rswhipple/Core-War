@@ -31,7 +31,7 @@ int game_loop(core_t *core) {
 int execute_inst(core_t *core, cursor_t *cursor) {
     int opcode = -1;
     opcode = command_to_opcode(core, cursor);
-    if (opcode < 0) return 0;  // TODO add error message
+    if (opcode < 0) return 0; 
 
     const op_t *op = &op_tab[opcode]; 
     op->inst(core, cursor);

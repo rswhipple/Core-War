@@ -18,16 +18,15 @@ core_t *init_core(champion_t *head, flag_t *flags) {
     core->nbr_live = NBR_LIVE;
     core->dump = flags->dump;
     if (core->dump == 0) core->dump = NBR_DUMP;
-    
+
     core->cycle_count = 0;
     core->live_count = 0;
     core->total_cycles = 0;
 
     calc_cursor_indices(&core, core->champions);
-    // print_champions(core->champions);      // TESTING
     load_champions(core);
 
-    free(flags);    // free flag_t
+    free(flags);
 
     return core;
 }
@@ -63,7 +62,7 @@ int load_champions(core_t *core) {
         i = 0;
         index = tmp->index_start;
 
-        printf("/////////////// loading champ %s, id #%i into memory ///////////////\n\n", tmp_champ->name, tmp_champ->id);
+        printf("//// loading champ %s, id #%i into memory ////\n\n", tmp_champ->name, tmp_champ->id);
         while (i < tmp_champ->string_len) {
             core->memory[index] = tmp_champ->string[i];
             index++; 

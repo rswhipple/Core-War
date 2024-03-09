@@ -23,14 +23,13 @@ int update_cycles(core_t **core) {
 		printf("The cycle_to_die is %i\n", (*core)->cycle_to_die);
 		(*core)->cycle_count = 0;
 		(*core)->live_count += 1;
-		// reset all of the cursor live flags!!!
 		if ((*core)->live_count == (*core)->nbr_live) {
 			(*core)->live_count = 0;
 			(*core)->cycle_to_die -= (*core)->cycle_delta;
 			printf("The cycle_to_die is now %i\n", (*core)->cycle_to_die);
 			printf("Total number of cycles = %i\n", (*core)->total_cycles);
 		}
-		if ((*core)->total_cycles == (*core)->dump) {
+		if ((*core)->total_cycles >= (*core)->dump) {
 			game_over(*core, true);
 			return 1;
 		} else if (is_alive(*core)) {
@@ -50,8 +49,9 @@ void update_carry(cursor_t *cursor, int dest_reg) {
   if (cursor->reg[dest_reg] == 0) {
     cursor->carry = 1;
 	printf("Updating carry of %s, #%i to 1.\n", cursor->parent->name, cursor->parent->id);
+  } else {
+	cursor->carry = 0;
   }
-
 }
 
 
@@ -108,6 +108,8 @@ int get_label(core_t *core, cursor_t *cursor, int i)
             	(MASK_FF(core->memory[(cursor->ac + i + 1)]) << 16) |
                 (MASK_FF(core->memory[(cursor->ac + i + 2)]) << 8) |
                 (MASK_FF(core->memory[(cursor->ac + i + 3)]));
+	
+	// finish label logic
 	return (int)result;
 }
 
