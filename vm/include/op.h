@@ -24,8 +24,12 @@
 #define DRR 0b10010100
 #define DIR 0b10110100
 #define DDR 0b10100100
+#define RID 0b01111000
+#define RDD 0b01101000
+#define RRD 0b01011000
 #define IR 0b11010000
 #define DR 0b10010000
+#define RI 0b01110000
 
 #define COMMENT_CHAR '#'
 #define LABEL_CHAR ':'
