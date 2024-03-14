@@ -9,7 +9,7 @@ In the next iteration of this project we intend to:
 * experiment with a variety of player instruction sets. 
 
 # About
-Core Wars consists of programs that run in a virtual machine. Each program's objective is to execute a special instruction ("live"), within a specified number of cycles. These programs execute simultaneously in the virtual machine and in the same memory zone, which enables them to write over one another.
+Core Wars consists of programs that run in a virtual machine. Each program's objective is to execute a special instruction ("live"), within a specified number of cycles. These programs execute simultaneously in the virtual machine and in the same memory zone, enabling them to write over one another.
 The project is coded in C. 😎
 
 The project is divided into three separate parts:
