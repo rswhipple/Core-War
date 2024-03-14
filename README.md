@@ -1,6 +1,6 @@
 # Core Wars
 ### Project Status
-The project is at a minimal viable product stage as of our initail March 11th, 2024 deadline. The assembler is fully operational, and the virtual machine can execute multiple programs.
+The project is at a minimal viable product stage as of our initial March 11th, 2024 deadline. The assembler is fully operational, and the virtual machine can execute multiple programs.
 ### Next Steps
 In the next iteration of this project we intend to:
 * refactor the assembler to handle more edge cases 
@@ -9,8 +9,7 @@ In the next iteration of this project we intend to:
 * experiment with a variety of player instruction sets. 
 
 # About
-Core Wars consists of programs that run in a virtual machine. Each program's objective is to execute a special instruction ("live"), within a specified number of cycles. These programs simultaneously execute in the virtual machine and in the
-same memory zone, which enables them to write on one another.
+Core Wars consists of programs that run in a virtual machine. Each program's objective is to execute a special instruction ("live"), within a specified number of cycles. These programs execute simultaneously in the virtual machine and in the same memory zone, which enables them to write over one another.
 The project is coded in C. 😎
 
 The project is divided into three separate parts:
@@ -22,4 +21,4 @@ The project is divided into three separate parts:
 – At the heart of the system, the assembler defines syntax and rules for creating valid programs. Its role is to produce binary code that the Virtual Machine can execute.
 
 *Programs*
-– These are the entities that run within the Virtual Machine and interact with it. Written in the specific assembly language tailored for the Virtual Machine, programs must execute within the VM's confines.
+– These are the entities that run within the Virtual Machine and interact with it. Written in the specific assembly language designed for the Virtual Machine, programs must execute within the VM's confines.
