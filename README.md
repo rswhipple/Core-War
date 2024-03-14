@@ -1,6 +1,14 @@
 # Core Wars
+### Project Status
+The project is at a minimal viable product stage as of our initail March 11th, 2024 deadline. The assembler is fully operational, and the virtual machine can execute multiple programs.
+### Next Steps
+In the next iteration of this project we intend to:
+* refactor the assembler to handle more edge cases 
+* complete outstanding functions in the virtual machine (fork, lfork and zjmp)
+* create a visualizer 
+* experiment with a variety of player instruction sets. 
 
-# Introduction
+# About
 Core Wars consists of programs that run in a virtual machine. Each program's objective is to execute a special instruction ("live"), within a specified number of cycles. These programs simultaneously execute in the virtual machine and in the
 same memory zone, which enables them to write on one another.
 The project is coded in C. 😎
