@@ -9,6 +9,7 @@ int inst_xor_ddr(core_t *core, cursor_t* cursor);
 int inst_xor_iir(core_t *core, cursor_t* cursor);
 int inst_xor_idr(core_t *core, cursor_t* cursor);
 
+
 int inst_xor(core_t *core, cursor_t* cursor) {
   u_int8_t param_desc = (u_int8_t)core->memory[cursor->ac + 1];
 
@@ -123,3 +124,4 @@ int inst_xor_idr(core_t *core, cursor_t* cursor) {
 
   return EXIT_SUCCESS;
 }
+

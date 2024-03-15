@@ -4,6 +4,7 @@
 #include "game_loop.h"
 #include "memory.h"
 
+
 int main(int argc, char **argv)
 {
     if (argc < 2) {
@@ -17,5 +18,5 @@ int main(int argc, char **argv)
     game_loop(core);
     cleanup(core);
 
-    return 0;
+  return 0;
 }

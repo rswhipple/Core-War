@@ -1,5 +1,6 @@
 #include "../include/game_ops.h"
 
+
 /* Same as and, but performing an OR. */
 int inst_or_rrr(core_t *core, cursor_t* cursor);
 int inst_or_rdr(core_t *core, cursor_t* cursor);
@@ -123,3 +124,4 @@ int inst_or_idr(core_t *core, cursor_t* cursor) {
 
   return EXIT_SUCCESS;
 }
+

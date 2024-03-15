@@ -2,6 +2,7 @@
 
 /* Same as add, but Subtracting. Modifies the carry. */
 
+
 int inst_sub(core_t *core, cursor_t* cursor) {
   int r1 = (int)core->memory[cursor->ac + 2];
   int r2 = (int)core->memory[cursor->ac + 3];

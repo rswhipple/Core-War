@@ -3,6 +3,7 @@
 #include "../include/champion.h"
 #include "../include/vm_parse.h"
 
+
 flag_t *init_flag() {
     flag_t *flags = malloc(sizeof(flag_t));
     flags->num_champions = 0;
