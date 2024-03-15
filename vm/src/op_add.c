@@ -1,18 +1,19 @@
-#include "../include/op.h"
+#include "../include/game_ops.h"
 
-// Adds the value stored in the first register to the second register's value and
-// stores the result to the third register.
-int inst_add(champion_t *champ, core_t *core, code_t code, int *args) {
-  int operand_1_reg = args[VALUE_1];
-  int operand_2_reg = args[VALUE_2];
-  int dest_reg = args[VALUE_3];
+/* Takes 3 parameters: 3 registers. Add the first to the second, and store
+the result to the third. Modifies the carry. */
 
-  if (operand_1_reg == 0 || operand_2_reg == 0 || dest_reg == 0) {
-    return 1;
-  }
-  
-  champ->reg[dest_reg] = champ->reg[operand_1_reg] + champ->reg[operand_2_reg];
-  update_carry(champ, dest_reg);
+int inst_add(core_t *core, cursor_t* cursor) {
+  // check args
+
+  int r1 = get_reg(core, cursor, 2);
+  int r2 = get_reg(core, cursor, 3);
+  int r3 = get_reg(core, cursor, 4);
+
+  printf("Testing get_reg in inst_add:\n\tr1 = %i\nr2 = %i\nr3 = %i\n", r1, r2, r3);
+  cursor->reg[r3] = cursor->reg[r1] + cursor->reg[r2];
+  update_carry(cursor, r3);
+  update_cursor(core, &cursor, 5);
 
   return 0;
 }

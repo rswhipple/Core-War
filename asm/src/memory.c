@@ -35,6 +35,7 @@ t_node *init_node(int size) {
     new->id = 0;
     new->param_count = 0;
     new->num_bytes = 2;
+    new->offset = 0;
     new->label = NULL;
     new->command = NULL;
     new->array = malloc(sizeof(t_arg *) * size);
@@ -123,4 +124,21 @@ void free_nodes(t_node *head) {
 void free_t_arg(t_arg *arg) {
     free(arg->arg);
     free(arg);
+}
+
+void print_nodes(t_node *head) {
+    t_node *tmp = head;
+
+    while (tmp) {
+        printf("--------------- Instruction #%i ---------------\n", tmp->id);
+        if (tmp->label) printf("\tlabel: %s\n", tmp->label);
+        printf("\tcommand: %s\n", tmp->command);
+        for (int i = 0; i < tmp->param_count; i++) {
+            printf("\targ_%i is type %i, |%s|\n", i + 1, tmp->array[i]->type, tmp->array[i]->arg);
+        }
+        printf("\tparam count is: %i\n", tmp->param_count);
+        printf("\ttotal number of bytes: %i\n", tmp->num_bytes);
+        printf("\toffset is: %i\n", tmp->offset);
+        tmp = tmp->next;
+    }
 }
