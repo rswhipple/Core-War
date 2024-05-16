@@ -14,5 +14,6 @@ void free_dict(t_array *dict);
 void free_t_array(t_array *tokens);
 void free_nodes(t_node *head);
 void free_t_arg(t_arg *arg);
+void print_nodes(t_node *head);
 
 #endif

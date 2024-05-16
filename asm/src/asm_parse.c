@@ -4,28 +4,25 @@
 #include "../include/tokenize.h"
 
 int execute_asm(char *filename) {
-    // init .cor file
     FILE *cor = create_cor_file(filename);
-
-    // create header and instruction line storage
     t_header *header = init_header();
     t_node *inst_head = NULL;
-    int total_num_inst = 0;
+    t_prog_size size = {
+        .num_inst = 0,
+        .total_bytes = 0,
+        .curr_byte = 0
+    };
 
-    // open, read and parse .S file
     const char *read = "r";
     FILE *fp = fopen(filename, read);
     if (!fp) return EXIT_FAILURE;
-    inst_head = read_file(fp, &header, &total_num_inst);
+    inst_head = read_file(fp, &header, &size);
+    header->prog_size = (size.total_bytes << 24) | size.num_inst;
     fclose(fp);
 
-    // write header
     if (write_header(cor, header)) return EXIT_FAILURE;
+    if (write_inst(cor, inst_head, &size)) return EXIT_FAILURE;
 
-    // write instructions
-    if (write_inst(cor, inst_head, total_num_inst)) return EXIT_FAILURE;
-
-    // cleanup
     free_nodes(inst_head);
     free(header);
     fclose(cor);
@@ -33,7 +30,7 @@ int execute_asm(char *filename) {
     return EXIT_SUCCESS;
 }
 
-t_node *read_file(FILE *fp, t_header **header, int *total) {
+t_node *read_file(FILE *fp, t_header **header, t_prog_size *size) {
     char *line = NULL;
     size_t len = 0;
     ssize_t nread;
@@ -50,21 +47,29 @@ t_node *read_file(FILE *fp, t_header **header, int *total) {
             continue;
         } 
         else {
-            (*total)++;
+            size->num_inst++;
             if (line[nread - 1] == '\n') line[nread - 1] = '\0';
 
             if (!head) {
-                head = string_to_node(line);
-                head->id = (*total);
+                head = string_to_node(line, size);
+                head->id = size->num_inst;
             } else {
                 t_node *tmp = head;
                 while (tmp->next) tmp = tmp->next;
-                tmp->next = string_to_node(line);
-                tmp->next->id = (*total);
+                tmp->next = string_to_node(line, size);
+                tmp->next->id = size->num_inst;
+
+                // calculate offset
+                if (tmp->next->id == 2) {
+                    tmp->next->offset += tmp->num_bytes;
+                } else {
+                    tmp->next->offset += tmp->num_bytes + tmp->offset;
+                }
             }
         }
     }
     
+    print_nodes(head);  // TESTING
     return head;
 }
 
@@ -92,16 +97,12 @@ void remove_line_title(char *dest, char *line, int size) {
     dest[copied_len - 1] = '\0';
 }
 
-// convert instructions into tokens
-t_node *string_to_node(char *src) {
-    // create tokens from string
+t_node *string_to_node(char *src, t_prog_size *size) {
     t_array *tokens = tokenizer(src, SEPARATOR_SET);
 
-    // init variables
     t_node *args = init_node(4);
     int i = 0;
     
-    // check for label
     int tok_len = my_strlen(tokens->array[0]);
     if (tokens->array[0][tok_len - 1] == LABEL_CHAR) {
         args->label = tokens->array[0];
@@ -109,13 +110,13 @@ t_node *string_to_node(char *src) {
         i++;
     }
 
-    // find the command
     tok_len = my_strlen(tokens->array[i]);
     args->command = init_str(tok_len + 1);
     my_strcpy(args->command, tokens->array[i]);
     i++;
 
-    // parse values into t_args
+    if (is_special_command(args->command)) args->num_bytes -= 1;
+
     while (tokens->array[i]) {   
         if (tokens->array[i][0] == COMMENT_CHAR) continue;
         else if (tokens->array[i][0] == 'r') {
@@ -136,7 +137,7 @@ t_node *string_to_node(char *src) {
         i++;
     }
     
-    // free token array
+    size->total_bytes += (args->num_bytes);
     free_t_array(tokens);
 
     return args;
@@ -158,4 +159,14 @@ void ttoa_remove_char(t_node **args, char *tok, int type)
     tmp->arg = init_str(my_strlen(tok));
     my_strcpy(tmp->arg, tok + 1);
     tmp->type = type;
+}
+
+bool is_special_command(char *command) {
+    if (my_strcmp(command, "live") == 0) return true;
+    if (my_strcmp(command, "zjmp") == 0) return true;
+    if (my_strcmp(command, "fork") == 0) return true;
+    if (my_strcmp(command, "lfork") == 0) return true;
+    if (my_strcmp(command, "aff") == 0) return true;
+
+    return false;
 }

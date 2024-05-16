@@ -14,15 +14,6 @@ int my_atoi(char *num) {
   return output;
 }
 
-char* init_str(int size)  
-{
-    char* str = malloc(sizeof(char) * size + 1);
-
-    for (int i = 0; i < size + 1; i++) { str[i] = '\0'; }
-
-    return str;
-}
-
 int my_strlen(char* str) 
 {
     int i = 0;
@@ -64,22 +55,17 @@ char* my_strncpy(char* dst, char* src, int n)
 
 char* my_strcat(char *dst, char *src) 
 { 
-    // Save original destination pointer
     char *original_dst = dst; 
-    
-    // Move destination pointer to the end of the first string
+
     while (*dst != '\0') {
         dst += 1;
     }
-
-    // Copy characters from src to dst
+    
     while (*src != '\0') {
         *dst = *src;
         dst += 1;
         src += 1;
     }
-
-    // Null-terminate 
     *dst = '\0';
 
     return original_dst;
@@ -110,4 +96,14 @@ int my_strncmp(char* str_1, char* str_2, int index)
         return 1;
     }
 
+}
+
+void my_putstr(char *str) 
+{
+    write(STDOUT_FILENO, str, my_strlen(str));
+}
+
+void my_puterror(char *str) 
+{
+    write(STDERR_FILENO, str, my_strlen(str));
 }

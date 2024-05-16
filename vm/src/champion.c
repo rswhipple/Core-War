@@ -3,38 +3,11 @@
 #include "../include/champion.h"
 #include "../include/vm_parse.h"
 #include "../include/memory.h"
+#include "../include/print_tests.h"
 #include <sys/fcntl.h>
 
 
-// initialize champion
-champion_t *init_champion(flag_t *flags) {
-    champion_t *champ = malloc(sizeof(champion_t));
-    if (champ == NULL) { return NULL; }
-
-    champ->champ_header = malloc(sizeof(header_t));
-    if (champ->champ_header == NULL) { return NULL; }
-    champ->champ_header->magic = COREWAR_EXEC_MAGIC;
-
-    // set id 
-    if (flags->id) { champ->id = flags->id; } 
-    else { champ->id = flags->num_champions + 1; }
-
-    if (flags->address) { champ->address = flags->address; }
-    else { champ->address = 0; }
-
-    champ->num_inst = 0;
-    champ->inst = NULL;
-    for (int i = 0; i < 16; i++) {
-        champ->reg[i] = 0;
-    }
-    champ->ac = 0;
-    champ->carry = 0;
-    champ->next = NULL;
-
-    return champ;
-}
-
-champion_t *create_champion(flag_t *flags, char *filename) {
+champion_t *create_champ(flag_t *flags, char *filename) {
     int fd = open(filename, O_RDONLY, 0644);
     if (!fd) {
         return NULL;
@@ -49,37 +22,74 @@ champion_t *create_champion(flag_t *flags, char *filename) {
     return champ;
 }
 
-// create champion 
+champion_t *init_champion(flag_t *flags)  {
+    champion_t *champ = malloc(sizeof(champion_t));
+    if (champ == NULL) { return NULL; }
+
+    champ->name = NULL;
+    champ->comment = NULL;
+    champ->string = NULL;
+    champ->string_len = 0;
+
+    if (flags->id) champ->id = flags->id;  
+    else champ->id = flags->num_champions + 1;
+
+    champ->time_of_death = 0;
+    champ->cursor = init_cursor(flags);
+    champ->cursor->parent = champ;
+    champ->next = NULL;
+
+    return champ;
+}
+
+cursor_t *init_cursor(flag_t *flags) {
+    cursor_t *cursor = malloc(sizeof(cursor_t));
+    if (cursor == NULL) { return NULL; }
+
+    cursor->next = NULL;
+    cursor->parent = NULL;
+    cursor->dead = false;
+    cursor->live = false;
+    cursor->carry = 0;
+
+    if (flags->address) cursor->index_start = flags->address;
+    else cursor->index_start = 0;
+
+    cursor->ac = cursor->index_start;
+    cursor->num_inst = 0;
+    cursor->current_inst = 0;
+    cursor->opcode = -1;
+    cursor->running = 0;
+    cursor->cycle = 0;
+
+    for (int i = 0; i < 16; i++) {
+        cursor->reg[i] = 0;
+    }
+
+    return cursor;
+}
+
+// parse champion data
 int read_file(champion_t **champ, int fd) {
+    // header data
     ssize_t bytes;
-    // Read header 
-    bytes = read(fd, (*champ)->champ_header, sizeof(header_t));
+    header_t *header = malloc(sizeof(header_t));
+    bytes = read(fd, header, sizeof(header_t)); 
 
-    while (bytes > 0) 
-    {
-        // TODO: Read instructions
-    }
-    
+    /* TODO: add MAGIC check */ 
+
+    (*champ)->name = init_and_strncpy(header->prog_name);
+    (*champ)->comment = init_and_strncpy(header->comment);
+    (*champ)->string_len = (header->prog_size >> 24); 
+    (*champ)->cursor->num_inst = MASK_FF(header->prog_size);
+
+    // instruction data
+    char buf[(*champ)->string_len];
+    memset(buf, 0, (*champ)->string_len);
+    bytes = read(fd, &buf, sizeof(char) * (*champ)->string_len);
+    (*champ)->string = buf;
+
+    free(header);
+
     return EXIT_SUCCESS;
-}
-
-// Print the contents of the 16 general purpose, ac, and carry flag registers
-void print_champ_regs(champion_t *champ) {
-	printf("-----Printing champion %d register contents-----\n", champ->id);
-	for (int i = 0; i < REG_NUMBER; i++) {
-		printf("register %d: %d\n", i + 1, champ->reg[i]);
-	}
-	printf("ac: %d\n", champ->ac);
-	printf("carry: %d\n", champ->carry);
-}
-
-// print champion
-void print_champions(champion_t *head) {
-    champion_t *curr = head;
-    while (curr) {
-        // print
-        printf("\nChamp id number %i is named %s\n", curr->id, curr->champ_header->prog_name);
-        printf("Comment: %s\n", curr->champ_header->comment);
-        curr = curr->next;
-    }
 }

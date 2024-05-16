@@ -19,10 +19,3 @@ const op_t op_tab[] = {
   {"aff", 1, {T_REG}, 16, 2, inst_aff},
   {0, 0, {0}, 0, 0, 0}
 };
-
-// update the champion's carry flag if the previous operation returns 0
-void update_carry(champion_t *champ, int dest_reg) {
-  if (champ->reg[dest_reg] == 0) {
-    champ->carry = 1;
-  }
-}
