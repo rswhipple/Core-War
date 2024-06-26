@@ -16,7 +16,7 @@ int inst_aff(core_t *core, cursor_t* cursor)
     c = (char)(reg_value % 256);
     write(STDOUT_FILENO, &c, 1);
 
-    update_cursor(core, cursor, 2);
+    update_cursor(core, &cursor, 2);
 
     return EXIT_SUCCESS;
 }
